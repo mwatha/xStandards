@@ -1,0 +1,79 @@
+<style>    
+  #latest-outcomes ul {
+    color: #505050;
+    line-height: 1.5em;
+  }        
+
+  #content-right a {
+    color: green;
+    text-decoration: none;
+    font-family: Verdana,Tahoma,Arial;
+    font-size: 10px;
+    font-weight: normal;
+  } 
+                                                            
+  #content-right li {
+    line-height: 0.5em;
+  }
+
+
+#content-left {
+  color: #404040;
+  font-family: Verdana,Tahoma,Arial;
+  font-size: 12px;
+  width: 450px;
+  float: left;
+}
+
+#content-right {
+  color: #404040;
+  font-family: Verdana,Tahoma,Arial;
+  font-size: 12px;
+  width: 450px;
+  background-color: #F6F6F6;
+  border: 1px solid #E4E4E4;
+  color: #505050;
+  line-height: 1.5em;
+  margin-bottom: 10px;
+  padding: 6px;
+  float: right;
+}
+
+#latest-outcomes {
+  border-bottom: 1px dotted #696969;
+  color: #EE8206;
+}
+</style> 
+
+
+  <div class="page-header">                                                     
+    <h1><%=organization_name %> <small>food database system</small></h1>              
+  </div>                                                                        
+
+
+  <div id = "content-left">
+    <%=render(:inline => print_content(about_organization))%>
+  </div>
+
+  <div id = "content-right">
+    <div id = "latest-outcomes">Latest stats</div>
+      <p/>
+      <ul>
+        <li>
+          <a href="#">Total registered manufacturers</a>(<%=@total_registered_assets%>)
+          <p/>
+          <p>Total registered number of manufacturers</p>
+        </li><br />
+        <li>
+          <a href="#">Total registered borders</a>(<%=@total_registered_assets%>)
+          <p/>
+          <p>Total registered number of borders</p>
+        </li><br />
+        <li>
+          <a href="#">Total registered markets</a>(<%=@total_registered_assets%>)
+          <p/>
+          <p>Total registered number of markets</p>
+        </li><br />
+      </ul>
+  </div>
+

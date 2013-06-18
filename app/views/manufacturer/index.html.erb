@@ -1,0 +1,32 @@
+<style>
+  .buttons {                                                                    
+    width: 100% !important;                                                    
+  }                                                                              
+</style>
+
+<div class="page-header">
+  <h1>manufacturer <small>....</small></h1>
+</div>
+
+<section id='modals'>                                              
+  <p>                                                                           
+    <%= link_to "Find manufacturer(s)", '/searchmanufacturer', 
+        :class => 'btn btn-primary btn-large buttons' %>
+  </p>                                                                          
+                                                                                
+  <p>                                                                           
+    <%= link_to "Register manufacturer", '/newmanufacturer', 
+        :class => 'btn btn-primary btn-large buttons' %>
+  </p>                                                                          
+                                                                                
+  <p>                                                                           
+    <%= link_to "Find manufacturer product(s)", '/searchproduct', 
+        :class => 'btn btn-primary btn-large buttons' %>
+  </p>                                                                          
+                                                                                
+  <p>                                                                           
+    <%= link_to "Register manufacturer product", '/newproduct', 
+        :class => 'btn btn-primary btn-large buttons' %>
+  </p>                                                                          
+                                                                                
+</section> 
