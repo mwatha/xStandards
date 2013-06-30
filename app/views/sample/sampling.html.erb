@@ -42,7 +42,8 @@ function submitForm() {
                                                                                 
 }                                                                               
                                                                                 
-function validateForm(){                                                        
+function validateForm(){         
+    return true;                                               
     sample_manufacturer = document.getElementById('sample_manufacturer');                      
     sample_product = document.getElementById('sample_product');                      
     batch_num = document.getElementById("sample_batch_num");
@@ -75,8 +76,8 @@ function validateForm(){
 }  
 
 
-function updateProducts() {
-  manufacturer_id = document.getElementById("sample_manufacturer").value;
+function updateDisctricts() {
+  country_id = document.getElementById("sample_country").value;
   if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari  
         xmlhttp=new XMLHttpRequest();                                             
       }else{// code for IE6, IE5                                                  
@@ -88,11 +89,33 @@ function updateProducts() {
           if(results == 'undefined' || results == '' || results == '"not validate"') {                           
             return;                                                               
           }else{                                                                  
-            document.getElementById('sample_product').innerHTML = results;                                                           
+            document.getElementById('sample_district').innerHTML = results;                                                           
+            document.getElementById('sample_market').innerHTML = '<option>Select trading center</option>';                                                           
           }                                                                       
         }                                                                         
       }                                                                           
-      xmlhttp.open("GET","/sample/update_products?id="+manufacturer_id,true);           
+      xmlhttp.open("GET","/sample/update_districts?id="+country_id,true);           
+      xmlhttp.send();
+}
+
+function updateMarkets() {
+  district_id = document.getElementById("sample_district").value;
+  if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari  
+        xmlhttp=new XMLHttpRequest();                                             
+      }else{// code for IE6, IE5                                                  
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");                           
+      }                                                                           
+      xmlhttp.onreadystatechange=function() {                                     
+        if (xmlhttp.readyState==4 && xmlhttp.status==200) {                       
+          var results = xmlhttp.responseText;                                     
+          if(results == 'undefined' || results == '' || results == '"not validate"') {                           
+            return;                                                               
+          }else{                                                                  
+            document.getElementById('sample_market').innerHTML = results;                                                           
+          }                                                                       
+        }                                                                         
+      }                                                                           
+      xmlhttp.open("GET","/sample/update_markets?id="+district_id,true);           
       xmlhttp.send();
 }
 
@@ -130,7 +153,7 @@ function sampleIodineCategory() {
 
 
 <div class="page-header">
-  <h1>raw data <small>enter industry place control results</small></h1>
+  <h1>raw data <small>enter market place control results</small></h1>
 </div>
 
 <siection id='modals'>                                              
@@ -142,32 +165,49 @@ function sampleIodineCategory() {
       <font id="flash_notice" style="color: red;"><%= flash[:notice] %></font><br />
     <%end%>                                                                     
   </div>
-  <%= form_tag :action => 'create', :method => :post  do %>
+  <%= form_tag :action => 'create_industry_raw_data', :method => :post  do %>
 
   <table class="asset-details">                                              
   <tbody>                                                                       
     <tr>                                                                        
-      <td>&nbsp;</td>                                                           
+      <td><%=text_field(:sample, :date,  :placeholder => "Sample date") %> </td>
+    </tr>
+    <tr>                                                                        
+      <td><hr /></td>                                                           
+    </tr>                                                                       
+    <tr>                                                                        
+      <td>
+        <%@countries.unshift('Select country') %>                                                                  
+        <%= select_tag "sample[country]", options_for_select(@countries),
+          :placeholder => "Select country" ,:onchange => "updateDisctricts();"%>                                              
+      </td>
+    </tr>                                                                       
+    <tr>                                                                        
+      <td>
+        <%= select_tag "sample[district]", options_for_select(['Select district','Select district']),
+          :placeholder => "Select trading center" ,:onchange => "updateMarkets();"%>                                              
+      </td>
+    </tr>                                                                       
+    <tr>                                                                        
+      <td>
+        <%= select_tag "sample[market]", options_for_select(['Select trading center','Select trading center']),
+          :placeholder => "Select trading center" %>                                              
+      </td>
     </tr>                                                                       
     <tr>                                                                        
       <td>
         <%@manufacturers.unshift('Select manufacturer') %>                                                                  
         <%= select_tag "sample[manufacturer]", options_for_select(@manufacturers),
-          :placeholder => "Select store room location" ,:onchange => "updateProducts();"%>                                              
+          :placeholder => "Select manufacturer" %>                                              
       </td>
     </tr>                                                                       
     <tr>                                                                        
       <td>
-        <%= select_tag "sample[product]", options_for_select(['Select brand name','Select brand name']),
-          :placeholder => "Select store room location" %>                                              
+        <%@salt_types.unshift('Select salt type') %>                                                                  
+        <%= select_tag "sample[salt_type]", options_for_select(@salt_types),
+          :placeholder => "Select salt type" %>                                              
       </td>
     </tr>                                                                       
-    <tr>                                                                        
-      <td><%=text_field(:sample, :batch_num, :placeholder => "batch number") %> </td>
-    </tr>
-    <tr>                                                                        
-      <td><%=text_field(:sample, :date,  :placeholder => "Sample date") %> </td>
-    </tr>
     <tr>                                                                        
       <td><hr /></td>   
     </tr>                                                                       

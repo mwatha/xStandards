@@ -9,7 +9,8 @@ module ApplicationHelper
 
   def about_organization
     <<EOF
-    The current overall policy goal of the health sector, which continues from the previous National Health Plan (1986-1995), is to raise the level of health status of all Malawians by reducing the incidence of illness and occurrence of death in the population. This will be done through the development of a sound delivery system capable of promoting health, preventing, reducing and curing disease, protecting life and fostering general well being and increased productivity.
+    <b>Salt Iodization Monitoring Tool</b><br />
+    Border, Industry and Market Level Control.
 EOF
 
   end

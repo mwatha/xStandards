@@ -1,5 +1,22 @@
 XStandards::Application.routes.draw do
 
+  ###### countries #####
+  match '/countries' => 'country#index'
+  match '/findcountries' => 'country#findcountries'
+  match '/findborders' => 'country#findborders'
+  match '/findmarkets' => 'country#findmarkets'
+  match '/finddistricts' => 'country#finddistricts'
+  match '/newcountry' => 'country#newcountry'
+  match '/newborder' => 'country#newborder'
+  match '/newmarket' => 'country#newmarket'
+  match '/newdistrict' => 'country#newdistrict'
+
+  post 'country/createcountry'
+  post 'country/createborder'
+  post 'country/createmarket'
+  post 'country/createdistrict'
+  ###### countries end #####
+
   ###### reports #####
   match '/reports' => 'report#index'
   match '/production' => 'report#production'
@@ -28,6 +45,11 @@ XStandards::Application.routes.draw do
   match '/searchsample' => 'sample#search'
   post "sample/create"                                                             
   get 'sample/update_products'
+  match '/sampling' => 'sample#sampling'
+  get 'sample/update_districts'
+  get 'sample/update_markets'
+  post "sample/create_industry_raw_data"                                                             
+  post "sample/create_quality_monitoring_raw_data"                                                             
   ###### sample end #####
 
   ###### user #######

@@ -47,4 +47,58 @@ class SampleController < ApplicationController
     redirect_to "/newsample" and return
   end
 
+  def sampling
+    @manufacturers = Manufacturer.order('name ASC').collect do |manu|
+      [manu.name , manu.id]
+    end
+
+    @countries = Country.order('name ASC').collect do |country|
+      [country.name , country.id]
+    end
+
+    @salt_types = SaltType.order('name ASC').collect do |salt|
+      [salt.name , salt.id]
+    end
+
+  end
+
+  def update_markets
+    products = Market.where("district_id = ?",params[:id])
+    @products = "<option id='Select brand name'>Select trading center</option>"
+    (products || []).each do |product|
+      @products += "<option value='#{product.id}'>#{product.name}</option>"
+    end
+    render :text => @products and return
+  end
+
+  def update_districts
+    products = District.where("country_id = ?",params[:id])
+    @products = "<option id='Select brand name'>Select district</option>"
+    (products || []).each do |product|
+      @products += "<option value='#{product.id}'>#{product.name}</option>"
+    end
+    render :text => @products and return
+  end
+
+  def create_industry_raw_data
+    RawDataMarket.transaction do
+      sample = RawDataMarket.new()
+      sample.country_id = params[:sample]['country']
+      sample.district_id = params[:sample]['district']
+      sample.market_id = params[:sample]['market']
+      sample.brand_name_id = params[:sample]['manufacturer']
+      sample.salt_type_id = params[:sample]['salt_type']
+      sample.iodine_level = params[:sample]['iodine_level']
+      sample.category = params[:sample]['category']
+      sample.date = params[:sample]['date']
+      if sample.save
+        flash[:notice] = 'Successfully created.'                                
+      else                                                                      
+        flash[:error] = 'Something went wrong - did not create.'                
+      end
+    end
+
+    redirect_to "/sampling" and return
+  end
+
 end

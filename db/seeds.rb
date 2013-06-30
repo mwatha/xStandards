@@ -7,6 +7,15 @@
 #   Mayor.create(:name => 'Emanuel', :city => cities.first)
 
 
+
+salt_types = ['Fine' , 'Course','Other']              
+                             
+salt_types.each do |name|
+  salt = SaltType.new()
+  salt.name = name
+  salt.save
+end                             
+
 countries = ['Kenya' , 'Malawi']              
                              
 countries.each do |name|
