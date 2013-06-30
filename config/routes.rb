@@ -1,5 +1,6 @@
 XStandards::Application.routes.draw do
 
+
   ###### transporter #####
   match '/transporters' => 'transporter#index'
   match '/newtransporter' => 'transporter#new'
@@ -59,6 +60,8 @@ XStandards::Application.routes.draw do
   post "sample/create_industry_raw_data"                                                             
   post "sample/create_quality_monitoring_raw_data"                                                             
   match 'raw_data_quality_monitoring' => 'sample#raw_data_quality_monitoring'
+  match "find_raw_data_quality_monitoring" => "sample#find_raw_data_quality_monitoring"
+  match "find_raw_data_market_control" => "sample#find_raw_data_market_control"
   ###### sample end #####
 
   ###### user #######

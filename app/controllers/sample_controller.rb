@@ -13,6 +13,22 @@ class SampleController < ApplicationController
     end
   end
 
+  def find_raw_data_market_control
+    @samples = {}
+    (RawDataMarket.all || []).each do |sample|
+      @samples[sample.id] = {
+        :district => sample.district.name,
+        :market => sample.market.name,
+        :manufacturer => sample.manufacturer.name,
+        :salt_type => sample.salt_type.name,
+        :quater => quater(sample.date),
+        :iodine_level => sample.iodine_level,
+        :category => sample.category,
+        :date => sample.date.strftime('%d-%b-%Y')
+      }
+    end
+  end
+
   def new
     @manufacturers = Manufacturer.order('name ASC').collect do |manu|
       [manu.name , manu.id]
