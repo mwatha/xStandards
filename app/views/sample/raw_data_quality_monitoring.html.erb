@@ -1,0 +1,231 @@
+<%= stylesheet_link_tag "DatePicker/jsDatePick_ltr.min" %>                      
+<%= javascript_include_tag "DatePicker/jsDatePick.min.1.3" %>
+
+<style>
+  .content-details { text-align: center; }                                                                          
+
+  .asset-details { width: 100%; }                                                                          
+
+</style>
+
+
+<script>
+
+ var currDate = new Date();                                                     
+ var dateNow =  currDate.getDate();                                             
+ var yrNow =  currDate.getFullYear();                                           
+ var monthNow =  (currDate.getMonth() + 1);                                     
+                                                                                
+ function initDate(id){                                                          
+    new JsDatePick({                                                            
+      useMode:2,                                                                
+      target: id ,                                                              
+      dateFormat:"%d-%M-%Y",                                                    
+      selectedDate:{                                                            
+        day: dateNow,                                                           
+        month: monthNow,                                                        
+        year: yrNow                                                             
+      },                                                                        
+      yearsRange:[2000,yrNow],                                                  
+      limitToToday: true,                                                       
+      cellColorScheme:"beige",                                                  
+      dateFormat:"%d-%m-%Y",                                                    
+      imgPath:"img/",                                                           
+      weekStartDay:1                                                            
+    });                                                                         
+  };
+
+
+function submitForm() {                                                         
+  if(validateForm())                                                            
+    document.getElementsByTagName('form')[0].submit();                          
+                                                                                
+}                                                                               
+                                                                                
+function validateForm(){         
+    return true;                                               
+    sample_manufacturer = document.getElementById('sample_manufacturer');                      
+    sample_product = document.getElementById('sample_product');                      
+    batch_num = document.getElementById("sample_batch_num");
+    sample_date = document.getElementById("sample_date");
+    iodine_level = document.getElementById("sample_iodine_level");
+    sample_iodine_category = document.getElementById("sample_iodine_category");
+
+    if(sample_manufacturer.value == 'Select manufacturer') {                                                     
+      alert("Please select manufacturer ...");                                     
+      return false;                                                             
+    }else if(sample_product.value == "Select brand name"){
+      alert("Please select product name ...");                                     
+      return false;                                                             
+    }else if(batch_num.value.length < 1){
+      alert("Please enter batch number ...");                                     
+      return false;                                                             
+    }else if(sample_date.value.length < 1){
+      alert("Please enter sample date ...");                                     
+      return false;                                                             
+    }else if(iodine_level.value.length < 1){
+      alert("Please enter iodine level ...");                                     
+      return false;                                                             
+    }else if(sample_iodine_category.value.length < 1){
+      alert("Please check - iodine category can not be empty...");                                     
+      return false;                                                             
+    }                                                                           
+  
+  sample_iodine_level.value = parseFloat(sample_iodine_level.value);                                      
+  return true;                                                                  
+}  
+
+
+function updateBorders() {
+  country_id = document.getElementById("sample_country").value;
+  if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari  
+        xmlhttp=new XMLHttpRequest();                                             
+      }else{// code for IE6, IE5                                                  
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");                           
+      }                                                                           
+      xmlhttp.onreadystatechange=function() {                                     
+        if (xmlhttp.readyState==4 && xmlhttp.status==200) {                       
+          var results = xmlhttp.responseText;                                     
+          if(results == 'undefined' || results == '' || results == '"not validate"') {                           
+            return;                                                               
+          }else{                                                                  
+            document.getElementById('sample_border').innerHTML = results;                                                           
+          }                                                                       
+        }                                                                         
+      }                                                                           
+      xmlhttp.open("GET","/sample/update_borders?id="+country_id,true);           
+      xmlhttp.send();
+}
+
+function sampleIodineCategory() {
+  sample_iodine_category = document.getElementById('sample_iodine_category');
+  sample_iodine_level = document.getElementById('sample_iodine_level');                                      
+  iodine_category = document.getElementById('iodine_category');                                       
+  
+  try{
+    var level = parseFloat(sample_iodine_level.value);
+    if(!level) {
+      sample_iodine_category.value = null;
+      iodine_category.value = null;
+      return;
+    }
+  }catch(e){}
+
+
+  if(level < 45){
+    sample_iodine_category.value = "Below Market Min";
+  }else if(level >= 45 && level <= 49.9 ){
+    sample_iodine_category.value = "Factory Min-Market Min";
+  }else if(level < 50){
+    sample_iodine_category.value = "< Factory Min";
+  }else if(level >= 50 && level <= 84){
+    sample_iodine_category.value = "Production Range";
+  }else if(level > 84){
+    sample_iodine_category.value = "> Factory Max";
+  }
+
+  iodine_category.value = sample_iodine_category.value;
+}
+</script>
+
+
+
+<div class="page-header">
+  <h1>raw data <small>enter quality monitoring results</small></h1>
+</div>
+
+<siection id='modals'>                                              
+  <div class="content-details">
+  <div>                                                                         
+    <%if flash[:notice]%>                                                       
+      <font id="flash_notice" style="color: green;"><%= flash[:notice] %></font><br />
+    <%elsif flash[:error]%>                                                     
+      <font id="flash_notice" style="color: red;"><%= flash[:notice] %></font><br />
+    <%end%>                                                                     
+  </div>
+  <%= form_tag :action => 'create_quality_monitoring_raw_data', :method => :post  do %>
+
+  <table class="asset-details">                                              
+  <tbody>                                                                       
+    <tr>                                                                        
+      <td><%=text_field(:sample, :date,  :placeholder => "Sample date") %> </td>
+    </tr>
+    <tr>                                                                        
+      <td><hr /></td>                                                           
+    </tr>                                                                       
+    <tr>                                                                        
+      <td><%=text_field(:sample, :iir_code, 
+          :placeholder => "IIR code") %> </td>
+    </tr>                                                                       
+    <tr>                                                                        
+      <td>
+        <%@countries.unshift('Select country') %>                                                                  
+        <%= select_tag "sample[country]", options_for_select(@countries),
+          :placeholder => "Select country" ,:onchange => "updateBorders();" %>                                              
+      </td>
+    </tr>                                                                       
+    <tr>                                                                        
+      <td>
+        <%= select_tag "sample[border]", options_for_select(['Select point of entry']),
+          :placeholder => "Select point of entry" %>                                              
+      </td>
+    </tr>                                                                       
+    <tr>                                                                        
+      <td>
+        <%@transporters.unshift('Select transporter') %>                                                                  
+        <%= select_tag "sample[importer]", options_for_select(@transporters),
+          :placeholder => "Select importer"%>                                              
+      </td>
+    </tr>                                                                       
+    <tr>                                                                        
+      <td>
+        <%@salt_types.unshift('Select salt type') %>                                                                  
+        <%= select_tag "sample[salt_type]", options_for_select(@salt_types),
+          :placeholder => "Select salt type" %>                                              
+      </td>
+    </tr>                                                                       
+    <tr>                                                                        
+      <td><%=text_field(:sample, :volume, 
+          :placeholder => "Volume of import") %> </td>
+    </tr>                                                                       
+    <tr>                                                                        
+      <td><hr /></td>   
+    </tr>                                                                       
+    <tr>                                                                        
+      <td><%=text_field(:sample, :iodine_level, 
+          :placeholder => "Iodine level",:onkeyup => "sampleIodineCategory();",
+          :onchange => "sampleIodineCategory();") %> </td>
+    </tr>                                                                       
+    <tr>                                                                        
+      <td><hr /></td>   
+    </tr>                                                                       
+    <tr>                                                                        
+      <td><%=text_field(:sample, :iodine_category, 
+          :disabled => 'disabled',:placeholder => "Iodine level Category") %> </td>
+    </tr>                                                                       
+    <tr>                                                                        
+      <td><hr /></td>   
+    </tr>                                                                       
+    <tr>                                                                        
+      <td>                                                                      
+        <input onclick="submitForm();" type="button" id="enter" 
+          class="btn btn-primary signup_btn" value="Save" style="width:100%;" />
+      </td>                                                                     
+    </tr>                                                                       
+    <tr>                                                                        
+      <td><hr /></td>   
+    </tr>                                                                       
+  </tbody>                                                                      
+ </table>
+ <input type="hidden" name = "sample[category]" id="iodine_category" />                      
+ <%end%>
+</div>                                                      
+</section> 
+
+
+<script>                                                                        
+  var dates = ['sample_date'];            
+  for(var i = 0; i < dates.length; i++) {                                       
+    initDate(dates[i]);                                                         
+  }                                                                             
+</script>

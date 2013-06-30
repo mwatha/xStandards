@@ -1,5 +1,12 @@
 XStandards::Application.routes.draw do
 
+  ###### transporter #####
+  match '/transporters' => 'transporter#index'
+  match '/newtransporter' => 'transporter#new'
+  match '/findtransporter' => 'transporter#search'
+  post 'transporter/create'
+  ###### transporter end #####
+
   ###### countries #####
   match '/countries' => 'country#index'
   match '/findcountries' => 'country#findcountries'
@@ -48,8 +55,10 @@ XStandards::Application.routes.draw do
   match '/sampling' => 'sample#sampling'
   get 'sample/update_districts'
   get 'sample/update_markets'
+  get 'sample/update_borders'
   post "sample/create_industry_raw_data"                                                             
   post "sample/create_quality_monitoring_raw_data"                                                             
+  match 'raw_data_quality_monitoring' => 'sample#raw_data_quality_monitoring'
   ###### sample end #####
 
   ###### user #######

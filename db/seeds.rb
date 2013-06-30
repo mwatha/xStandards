@@ -7,6 +7,13 @@
 #   Mayor.create(:name => 'Emanuel', :city => cities.first)
 
 
+t_types = ['Transporter' , 'Packer']              
+                             
+t_types.each do |name|
+  tp = TransporterType.new()
+  tp.name = name
+  tp.save
+end                             
 
 salt_types = ['Fine' , 'Course','Other']              
                              

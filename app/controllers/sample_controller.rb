@@ -80,6 +80,15 @@ class SampleController < ApplicationController
     render :text => @products and return
   end
 
+  def update_borders
+    products = Border.where("country_id = ?",params[:id])
+    @products = "<option id='Select brand name'>Select entry point</option>"
+    (products || []).each do |product|
+      @products += "<option value='#{product.id}'>#{product.name}</option>"
+    end
+    render :text => @products and return
+  end
+
   def create_industry_raw_data
     RawDataMarket.transaction do
       sample = RawDataMarket.new()
@@ -99,6 +108,47 @@ class SampleController < ApplicationController
     end
 
     redirect_to "/sampling" and return
+  end
+
+  def raw_data_quality_monitoring
+    @manufacturers = Manufacturer.order('name ASC').collect do |manu|
+      [manu.name , manu.id]
+    end
+
+    @countries = Country.order('name ASC').collect do |country|
+      [country.name , country.id]
+    end
+
+    @salt_types = SaltType.order('name ASC').collect do |salt|
+      [salt.name , salt.id]
+    end
+
+    @transporters = Transporter.order('name ASC').collect do |transporter|
+      [transporter.name , transporter.id]
+    end
+
+  end
+
+  def create_quality_monitoring_raw_data
+    RawDataQualityMonitoring.transaction do
+      sample = RawDataQualityMonitoring.new()
+      sample.iir_code = params[:sample]['iir_code']
+      sample.point_of_entry = params[:sample]['border']
+      sample.importer_id = params[:sample]['importer']
+      sample.salt_type_id = params[:sample]['salt_type']
+      sample.country_id = params[:sample]['country']
+      sample.volume_of_import = params[:sample]['volume']
+      sample.iodine_level = params[:sample]['iodine_level']
+      sample.category = params[:sample]['category']
+      sample.date = params[:sample]['date']
+      if sample.save
+        flash[:notice] = 'Successfully created.'                                
+      else                                                                      
+        flash[:error] = 'Something went wrong - did not create.'                
+      end
+    end
+
+    redirect_to "/raw_data_quality_monitoring" and return
   end
 
 end
