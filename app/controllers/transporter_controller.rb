@@ -22,4 +22,15 @@ class TransporterController < ApplicationController
     redirect_to '/newtransporter'
   end
 
+  def search
+    @transporters = {}
+    (Transporter.order('name') || []).each do |t|
+      @transporters[t.id] = {
+        :name => t.name,
+        :type => t.category.name,
+        :description => t.description
+      }
+    end
+  end
+
 end
