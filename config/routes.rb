@@ -28,8 +28,9 @@ XStandards::Application.routes.draw do
   ###### reports #####
   match '/reports' => 'report#index'
   match '/production' => 'report#production'
-  match '/reportlevels' => 'report#levels'
   match '/line_graph' => 'report#line_graph'
+  get 'report/production_pie_chart'
+  get 'report/production_line_chart'
   ###### reports end #####
 
   ###### product #####

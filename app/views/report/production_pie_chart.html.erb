@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Highcharts Example</title>
+
+		<%#= javascript_include_tag "Highcharts-3.0.2/js/jquery.min" %>
+		<script type="text/javascript">
+
+  function getData() {
+    data = [];
+    <%(@fetched_data || {}).each do |key , level|%>
+      data.push(["<%=key%>",<%=level%>]);
+    <%end%>
+    return data;
+  }
+
+  function loadGraph() {
+    $(function () {
+        $('#container').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            title: {
+                text: ''
+            },
+            tooltip: {
+        	    pointFormat: '{series.name}: <b>{point.percentage}%</b>',
+            	percentageDecimals: 1
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000',
+                        connectorColor: '#000000',
+                        formatter: function() {
+                            return '<b>'+ this.point.name +'</b>: '+ this.percentage +' %';
+                        }
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: '',
+                data: getData()
+            }]
+        });
+    });
+    
+  }
+
+  loadGraph();
+		</script>
+	</head>
+	<body>
+<%= javascript_include_tag "Highcharts-3.0.2/js/highcharts" %>
+<%= javascript_include_tag "Highcharts-3.0.2/js/modules/exporting" %>
+
+<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+
+	</body>
+</html>

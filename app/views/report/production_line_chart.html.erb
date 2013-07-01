@@ -7,8 +7,6 @@
     <%= javascript_include_tag "Highcharts-3.0.2/js/jquery.min.js" %>
     <script type="text/javascript">
 
-  loadGraph();
-
   function loadGraph() {
     $(function () {
         $('#container').highcharts({
@@ -58,11 +56,14 @@
    
     function dataG() {
       var graph = [];
-      for(var key in fetched_data) {
-        graph.push({name: key, data: fetched_data[key]});
-      }
+      <%(@fetched_data || {}).each do |key , data|%>
+        graph.push({name: "<%=key%>", data: <%=data.to_json%>});
+      <%end%>
       return graph
     }
+  
+    loadGraph();
+
     </script>
   </head>
   <body>
