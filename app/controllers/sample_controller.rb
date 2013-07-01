@@ -29,6 +29,23 @@ class SampleController < ApplicationController
     end
   end
 
+  def find_raw_data_quality_monitoring
+    @samples = {}
+    (RawDataQualityMonitoring.all || []).each do |sample|
+      @samples[sample.id] = {
+        :country => sample.country.name,
+        :entry_point => sample.point_of_entry.name,
+        :importer => sample.importer.name,
+        :salt_type => sample.salt_type.name,
+        :volume => sample.volume_of_import,
+        :iodine_level => sample.iodine_level,
+        :category => sample.category,
+        :iir_code => sample.iir_code,
+        :date => sample.date.strftime('%d-%b-%Y')
+      }
+    end
+  end
+
   def new
     @manufacturers = Manufacturer.order('name ASC').collect do |manu|
       [manu.name , manu.id]
@@ -149,7 +166,7 @@ class SampleController < ApplicationController
     RawDataQualityMonitoring.transaction do
       sample = RawDataQualityMonitoring.new()
       sample.iir_code = params[:sample]['iir_code']
-      sample.point_of_entry = params[:sample]['border']
+      sample.border_id = params[:sample]['border']
       sample.importer_id = params[:sample]['importer']
       sample.salt_type_id = params[:sample]['salt_type']
       sample.country_id = params[:sample]['country']

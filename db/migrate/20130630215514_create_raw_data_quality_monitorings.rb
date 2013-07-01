@@ -2,7 +2,7 @@ class CreateRawDataQualityMonitorings < ActiveRecord::Migration
   def change
     create_table :raw_data_quality_monitorings do |t|
       t.string :iir_code, :null => false
-      t.integer :point_of_entry, :null => false
+      t.integer :border_id, :null => false
       t.integer :importer_id, :null => false
       t.integer :salt_type_id, :null => false
       t.integer :country_id, :null => false
