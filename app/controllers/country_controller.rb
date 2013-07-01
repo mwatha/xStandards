@@ -86,4 +86,38 @@ class CountryController < ApplicationController
     end 
   end
 
+  def findborders
+    @borders = {}
+    (Border.order('name') || []).each do |border|
+      @borders[border.id] = {
+        :country => border.country.name,
+        :name => border.name,
+        :description => border.description
+      }
+    end
+  end
+
+  def findmarkets
+    @markets = {}
+    (Market.order('name') || []).each do |market|
+      @markets[market.id] = {
+        :name => market.name,
+        :district => market.district.name,
+        :country => market.district.country.name,
+        :description => market.description
+      }
+    end
+  end
+
+  def finddistricts
+    @districts = {}
+    (District.order('name') || []).each do |district|
+      @districts[district.id] = {
+        :country => district.country.name,
+        :name => district.name,
+        :description => district.description
+      }
+    end
+  end
+
 end
