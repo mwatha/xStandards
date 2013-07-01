@@ -15,14 +15,14 @@ t_types.each do |name|
   tp.save
 end                             
 
-salt_types = ['Fine' , 'Course','Other']              
+salt_types = ['Fine' , 'Coarse','Other']              
                              
 salt_types.each do |name|
   salt = SaltType.new()
   salt.name = name
   salt.save
 end                             
-
+=begin
 countries = ['Kenya' , 'Malawi']              
                              
 countries.each do |name|
@@ -30,6 +30,7 @@ countries.each do |name|
   country.name = name
   country.save
 end                             
+=end
 
 user_roles = ['admin','superuser','standard']
 user_roles.each do |role|

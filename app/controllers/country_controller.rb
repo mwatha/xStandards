@@ -109,13 +109,12 @@ class CountryController < ApplicationController
     end
   end
 
-  def finddistricts
-    @districts = {}
-    (District.order('name') || []).each do |district|
-      @districts[district.id] = {
-        :country => district.country.name,
-        :name => district.name,
-        :description => district.description
+  def findcountries
+    @countries = {}
+    (Country.order('name') || []).each do |country|
+      @countries[country.id] = {
+        :name => country.name,
+        :description => country.description
       }
     end
   end
