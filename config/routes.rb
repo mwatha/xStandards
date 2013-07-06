@@ -1,6 +1,5 @@
 XStandards::Application.routes.draw do
 
-
   ###### transporter #####
   match '/transporters' => 'transporter#index'
   match '/newtransporter' => 'transporter#new'
@@ -63,6 +62,12 @@ XStandards::Application.routes.draw do
   match 'raw_data_quality_monitoring' => 'sample#raw_data_quality_monitoring'
   match "find_raw_data_quality_monitoring" => "sample#find_raw_data_quality_monitoring"
   match "find_raw_data_market_control" => "sample#find_raw_data_market_control"
+  match 'industry' => "sample#industry"
+  match 'prod' => "sample#production"
+  match 'market' => "sample#market"
+
+  match 'import_datagrid' => "sample#import_datagrid"
+  match 'create_quality_monitoring_raw_data' => 'sample#create_quality_monitoring_raw_data'
   ###### sample end #####
 
   ###### user #######

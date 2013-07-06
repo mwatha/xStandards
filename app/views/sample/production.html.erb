@@ -1,0 +1,24 @@
+<style>                                                                         
+  .buttons {                                                                    
+    width: 100% !important;                                                     
+  }                                                                             
+</style>                                                                        
+                                                                                
+<div class="page-header">                                                       
+  <h1>import <small>quality monitoring</small></h1>                                      
+</div>                                                                          
+                                                                                
+<section id='modals'>
+  <p>
+  <%= link_to "sample details (entered)",     
+      '/find_raw_data_quality_monitoring',:class => 'btn btn-primary btn-large buttons' %>
+  </p>                                                                          
+                                                                                
+  <p>                                                                           
+    <%= link_to "Enter sample details", '/import_datagrid', 
+        :class => 'btn btn-primary btn-large buttons' %>                        
+    <%#= link_to "Enter sample details", '/raw_data_quality_monitoring', 
+        :class => 'btn btn-primary btn-large buttons' %>                        
+  </p>             
+
+</section>                                    

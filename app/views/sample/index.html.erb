@@ -9,34 +9,20 @@
 </div>
 
 <section id='modals'>                                              
-  <p>                                                                           
-    <%= link_to "Find sample details (industry control)", '/searchsample', 
-        :class => 'btn btn-primary btn-large buttons' %>
-  </p>                                                                          
-                                                                                
-  <p>                                                                           
-    <%= link_to "Enter sample details (industry control)", '/newsample', 
-        :class => 'btn btn-primary btn-large buttons' %>
-  </p>                                                                          
-                                                                                
-  <p>                                                                           
-    <%= link_to "Find sample details (market place control)", 
-      '/find_raw_data_market_control',:class => 'btn btn-primary btn-large buttons' %>
-  </p>                                                                          
-                                                                                
-  <p>                                                                           
-    <%= link_to "Enter sample details (market place control)", '/sampling', 
-        :class => 'btn btn-primary btn-large buttons' %>
-  </p>                                                                          
-                                                                                
-  <p>                                                                           
-    <%= link_to "Find sample details (import quality monitoring control)", 
-      '/find_raw_data_quality_monitoring',:class => 'btn btn-primary btn-large buttons' %>
-  </p>                                                                          
-                                                                                
-  <p>                                                                           
-    <%= link_to "Enter sample details (import quality monitoring control)", '/raw_data_quality_monitoring', 
-        :class => 'btn btn-primary btn-large buttons' %>
-  </p>                                                                          
 
+  <p>                                                                           
+    <%= link_to "Import monitoring", '/prod', 
+        :class => 'btn btn-primary btn-large buttons' %>
+  </p>                                                                          
+                                                                                
+  <p>                                                                           
+    <%= link_to "Industry", '/industry', 
+        :class => 'btn btn-primary btn-large buttons' %>
+  </p>                                                                          
+                                                                                
+  <p>                                                                           
+    <%= link_to "Market", '/market', 
+        :class => 'btn btn-primary btn-large buttons' %>
+  </p>                                                                          
+                                                                                
 </section> 

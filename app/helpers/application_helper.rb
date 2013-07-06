@@ -1,6 +1,8 @@
 module ApplicationHelper
   def app_name
-    'xStandards'
+    title=<<EOF
+EOF
+
   end
 
   def organization_name

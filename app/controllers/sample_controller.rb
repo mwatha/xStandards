@@ -163,6 +163,39 @@ class SampleController < ApplicationController
   end
 
   def create_quality_monitoring_raw_data
+    if quality_monitoring_raw_data(params)
+      flash[:notice] = 'Successfully created.'                                
+    else                                                                      
+      flash[:error] = 'Something went wrong - did not create.'                
+    end
+    redirect_to "/raw_data_quality_monitoring" and return
+  end
+
+  def import_datagrid
+    @manufacturers = Manufacturer.order('name ASC').collect do |manu|           
+      [manu.name , manu.id]                                                     
+    end                                                                         
+                                                                                
+    @borders = Border.order('name ASC').collect do |border|                 
+      [border.name , border.id]                                               
+    end                                                                         
+                                                                                
+    @salt_types = SaltType.order('name ASC').collect do |salt|                  
+      [salt.name , salt.id]                                                     
+    end                                                                         
+                                                                                
+    @transporters = Transporter.order('name ASC').collect do |transporter|      
+      [transporter.name , transporter.id]                                       
+    end
+  end
+
+  def create_quality_monitoring_raw_data
+    render :text => quality_monitoring_raw_data(params) and return
+  end
+
+  private
+
+  def quality_monitoring_raw_data(params)
     RawDataQualityMonitoring.transaction do
       sample = RawDataQualityMonitoring.new()
       sample.iir_code = params[:sample]['iir_code']
@@ -173,15 +206,13 @@ class SampleController < ApplicationController
       sample.volume_of_import = params[:sample]['volume']
       sample.iodine_level = params[:sample]['iodine_level']
       sample.category = params[:sample]['category']
-      sample.date = params[:sample]['date']
+      sample.date = params[:sample]['date'].to_date
       if sample.save
-        flash[:notice] = 'Successfully created.'                                
-      else                                                                      
-        flash[:error] = 'Something went wrong - did not create.'                
+        return true
+      else
+        return false
       end
     end
-
-    redirect_to "/raw_data_quality_monitoring" and return
   end
 
 end
