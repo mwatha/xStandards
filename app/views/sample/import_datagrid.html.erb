@@ -36,17 +36,17 @@
  var yrNow =  currDate.getFullYear();
  var monthNow =  (currDate.getMonth() + 1);
 
- function setDate(element){
+ function setDate(id){
     new JsDatePick({
       useMode:2,
-      target: element.id ,
+      target: id ,
       dateFormat:"%d-%M-%Y",
       selectedDate:{       
         day: dateNow,            
         month: monthNow,
         year: yrNow
       },
-      yearsRange:[2000,yrNow],
+      yearsRange:[1900,yrNow],
       limitToToday: true,
       cellColorScheme:"beige",
       dateFormat:"%d-%m-%Y",
@@ -55,9 +55,32 @@
     });
   };
 
+
+ function setDateDynamically(id,nowYr,nowMonth,nowDate){
+    set_date = new Date(nowYr, (nowMonth - 1), nowDate);
+    new JsDatePick({
+      useMode:2,
+      target: id ,
+      dateFormat:"%d-%M-%Y",
+      selectedDate:{       
+        day: set_date.getDate(),            
+        month: set_date.getMonth(),
+        year: set_date.getFullYear()
+      },
+      yearsRange:[1900,yrNow],
+      limitToToday: true,
+      cellColorScheme:"beige",
+      dateFormat:"%d-%m-%Y",
+      imgPath:"img/",
+      weekStartDay:1
+    });
+  };
+
+
     function insertRow(e , ev) {
       if(ev.keyCode == 13) {
-        saveRecord(document.getElementById(parseInt(e.id) - 7));                                                                                
+        id = "input_date" + (parseInt(e.id) - 7);      
+        saveRecord(document.getElementById(id));                                                                                
         return;
       }
     }
@@ -75,13 +98,17 @@
           classRow = " row" + rowCount;
           name = "XXX";
           colID = (parseInt(rowCount) + parseInt(i) + 10);
-          valueEntered = document.getElementById(i).value;
-          document.getElementById(i).value = null;
+          if(i == 0) {
+            valueEntered = document.getElementById("input_date" + i).value;
+            document.getElementById("input_date" + i).value = null;
+          }else{
+            valueEntered = document.getElementById(i).value;
+            document.getElementById(i).value = null;
+          }
 
           if(i == 8) {
             element = "<input disabled='disabled' class='input_data" + classRow + "' type='text' name='" + name + "' id='" + colID + "' value='" + valueEntered +"'/>";
-            setDate(document.getElementById(parseInt(rowCount) + 10));
-            document.getElementById(0).focus();
+            document.getElementById("input_date0").focus();
             cell.innerHTML = element;
           }else if(i == 7){
             element = "<input onkeyup='insertRow(this,event);sampleIodineCategory(this);' onchange = 'sampleIodineCategory(this);'  class='input_data" + classRow + "' type='text' name='" + name + "' id='" + colID + "' value='" + valueEntered +"'/>";
@@ -94,6 +121,13 @@
             cell.innerHTML = addSelectSaltType(valueEntered,classRow,name,colID);
           }else if(i == 5){
             cell.innerHTML = addSelectCountry(valueEntered,classRow,name,colID);
+          }else if(i == 0){
+            element = "<input class='input_data" + classRow + "' type='text' name='" + name + "' id='input_date" + colID + "' value='" + valueEntered +"'/>";
+            cell.innerHTML = element;
+            nowYr = parseInt(valueEntered.split('-')[2]);
+            nowMonth = parseInt(valueEntered.split('-')[1]);
+            nowDate = parseInt(valueEntered.split('-')[0]);
+            setDateDynamically(("input_date" + colID),nowYr,nowMonth,nowDate);
           }else{
             element = "<input class='input_data" + classRow + "' type='text' name='" + name + "' id='" + colID + "' value='" + valueEntered +"'/>";
             cell.innerHTML = element;
@@ -216,8 +250,6 @@
   
     }
 
-
-  
 </script>
 
 
@@ -244,8 +276,9 @@
   </thead>                                                                      
   <tbody id='results'>                                                          
     <tr>                                                                        
-      <td><input type="text" name="date" class='input_data' id="0" /></td>
-      <td><input type="text" name="iir_code" class='input_data' id="1" /></td>                                                      
+      <td><!--input type="text" name="date" class='input_data' id="0" /></td-->
+        <%=text_field(:input, "date0",:class => "input_data") %></td>
+      <td><input type="text" name="iir_code" class='input_data' id="1" /></td>
       <td>
         <%@borders.unshift('Select entry point') %>                      
         <%= select_tag "border", options_for_select(@borders), 
@@ -308,7 +341,7 @@ function sampleIodineCategory(element) {
 
 function saveRecord(element) {                                                           
   var selected_date = element;            
-  var elementID = parseInt(element.id);
+  var elementID = parseInt(element.id.split('input_date')[1]);
   var iir_code = document.getElementById(elementID + 1); 
   var entry = document.getElementById(elementID + 2); 
   var importer = document.getElementById(elementID + 3); 
@@ -361,6 +394,6 @@ function saveRecord(element) {
     xmlhttp.send();                                                             
   }
   
-  setDate(document.getElementById(0));
+  setDate(document.getElementById('input_date0').id);
 
 </script>
