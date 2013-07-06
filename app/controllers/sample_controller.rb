@@ -172,7 +172,7 @@ class SampleController < ApplicationController
   end
 
   def import_datagrid
-    @manufacturers = Manufacturer.order('name ASC').collect do |manu|           
+    @markets = Manufacturer.order('name ASC').collect do |manu|           
       [manu.name , manu.id]                                                     
     end                                                                         
                                                                                 
@@ -184,8 +184,8 @@ class SampleController < ApplicationController
       [salt.name , salt.id]                                                     
     end                                                                         
                                                                                 
-    @transporters = Transporter.order('name ASC').collect do |transporter|      
-      [transporter.name , transporter.id]                                       
+    @countries = Country.order('name ASC').collect do |country|      
+      [country.name , country.id]                                       
     end
   end
 
