@@ -74,8 +74,8 @@ XStandards::Application.routes.draw do
   match 'update_quality_monitoring_raw_data' => 'sample#update_quality_monitoring_raw_data'
 
   match 'industry_datagrid' => "sample#industry_datagrid"
-  match 'create_industry_raw_data' => 'sample#create_industry_raw_data'
-  match 'update_industry_raw_data' => 'sample#update_industry_raw_data'
+  match 'raw_data_industry_create' => 'sample#raw_data_industry_create'
+  match 'raw_data_industry_update' => 'sample#raw_data_industry_update'
   ###### sample end #####
 
   ###### user #######

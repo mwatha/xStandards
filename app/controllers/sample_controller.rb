@@ -1,4 +1,5 @@
 class SampleController < ApplicationController
+  
   def search
     @samples = {}
     (Sample.all || []).each do |sample|
@@ -215,8 +216,7 @@ class SampleController < ApplicationController
     end
   end
 
-  def create_industry_raw_data
-    render :text => "create_industry_raw_data(params)" and return
+  def raw_data_industry_create
     render :text => create_industry_raw_data(params) and return
   end
 
