@@ -108,10 +108,10 @@
 
           if(i == 8) {
             element = "<input disabled='disabled' class='input_data" + classRow + "' type='text' name='" + name + "' id='" + colID + "' value='" + valueEntered +"'/>";
-            document.getElementById("input_date0").focus();
+            document.getElementById("1").focus();
             cell.innerHTML = element;
           }else if(i == 7){
-            element = "<input onkeyup='insertRow(this,event);sampleIodineCategory(this);' onchange = 'sampleIodineCategory(this);'  class='input_data" + classRow + "' type='text' name='" + name + "' id='" + colID + "' value='" + valueEntered +"'/>";
+            element = "<input onkeyup='updateRow(this,event," + (rowCount - 1) + ");sampleIodineCategory(this);' onchange = 'sampleIodineCategory(this);'  class='input_data" + classRow + "' type='text' name='" + name + "' id='" + colID + "' value='" + valueEntered +"'/>";
             cell.innerHTML = element;
           }else if(i == 2){
             cell.innerHTML = addSelectBorder(valueEntered,classRow,name,colID);
@@ -313,6 +313,8 @@
 
 <script>
 
+var created_sample_ids = [];
+
 function sampleIodineCategory(element) {                                               
   sampleIodineLevelID = (parseInt(element.id) + 1);
   sample_iodine_category = document.getElementById(sampleIodineLevelID);
@@ -374,7 +376,69 @@ function saveRecord(element) {
   url += "&sample[date]=" + selected_date.value;                                                                         
 
   addRow(); 
-  //return;
+
+  if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari  
+      xmlhttp=new XMLHttpRequest();                                             
+    }else{// code for IE6, IE5                                                  
+      xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");                           
+    }                                                                           
+    xmlhttp.onreadystatechange=function() {                                     
+      if (xmlhttp.readyState==4 && xmlhttp.status==200) {                       
+        var results = JSON.parse(xmlhttp.responseText);  
+        if(results.match("sample id:")) {
+          sample_id = results.split("sample id:")[1];  
+          created_sample_ids.push(sample_id)    
+        }                                                                     
+      }                                                                         
+    }  
+    
+    
+    xmlhttp.open("GET","/create_quality_monitoring_raw_data?" + url, true);           
+    xmlhttp.send();                                                             
+  }
+  
+function updateRow(element , ev , rowCount) {      
+  if(ev.keyCode != 13)
+    return;
+    
+  var elementID = (parseInt(element.id) - 7);
+  var selected_date = document.getElementById("input_date" + elementID); 
+  var iir_code = document.getElementById(elementID + 1); 
+  var entry = document.getElementById(elementID + 2); 
+  var importer = document.getElementById(elementID + 3); 
+  var brand = document.getElementById(elementID + 4); 
+  var country = document.getElementById(elementID + 5); 
+  var volume = document.getElementById(elementID + 6); 
+  var entered_result = document.getElementById(elementID + 7); 
+  var cat = document.getElementById(elementID + 8); 
+
+  if (selected_date.value.length < 1) {
+  }else if(iir_code.value.length < 1) {
+  }else if(entry.value.length < 1) {
+  }else if(importer.value.length < 1) {
+  }else if(brand.value.length < 1) {
+  }else if(volume.value.length < 1) {
+  }else if(entered_result.value.length < 1) {
+  }else if(country.value.length < 1) {
+  }else if(cat.value.length < 1) {
+    return;
+  }
+
+  var url = "sample[iir_code]=" + iir_code.value;                                                                         
+  url += "&sample[border]=" + entry.value;                                                                         
+  url += "&sample[importer]=" + importer.value;                                                                         
+  url += "&sample[salt_type]=" + brand.value;                                                                         
+  url += "&sample[country]=" + country.value;                                                                         
+  url += "&sample[volume]=" + volume.value;                                                                         
+  url += "&sample[iodine_level]=" + entered_result.value;                                                                         
+  url += "&sample[category]=" + cat.value;                                                                         
+  url += "&sample[date]=" + selected_date.value;                                                                         
+
+  sample_id = created_sample_ids[(rowCount - 1)];
+  if(sample_id.length < 1)         
+    return;
+
+  url += "&sample[sample_id]=" + sample_id;
 
   if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari  
       xmlhttp=new XMLHttpRequest();                                             
@@ -384,13 +448,15 @@ function saveRecord(element) {
     xmlhttp.onreadystatechange=function() {                                     
       if (xmlhttp.readyState==4 && xmlhttp.status==200) {                       
         var results = xmlhttp.responseText;                                     
-        if(results) {                           
+        var results = JSON.parse(xmlhttp.responseText);  
+        if(results.match("sample id:")) {
+          alert('Updated record');
         }                                                                     
       }                                                                         
     }  
     
     
-    xmlhttp.open("GET","/create_quality_monitoring_raw_data?" + url, true);           
+    xmlhttp.open("GET","/update_quality_monitoring_raw_data?" + url, true);           
     xmlhttp.send();                                                             
   }
   

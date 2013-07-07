@@ -68,6 +68,7 @@ XStandards::Application.routes.draw do
 
   match 'import_datagrid' => "sample#import_datagrid"
   match 'create_quality_monitoring_raw_data' => 'sample#create_quality_monitoring_raw_data'
+  match 'update_quality_monitoring_raw_data' => 'sample#update_quality_monitoring_raw_data'
   ###### sample end #####
 
   ###### user #######

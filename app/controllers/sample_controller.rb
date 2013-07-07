@@ -193,6 +193,10 @@ class SampleController < ApplicationController
     render :text => quality_monitoring_raw_data(params) and return
   end
 
+  def update_quality_monitoring_raw_data
+    render :text => update_monitoring_raw_data(params) and return
+  end
+
   private
 
   def quality_monitoring_raw_data(params)
@@ -208,7 +212,27 @@ class SampleController < ApplicationController
       sample.category = params[:sample]['category']
       sample.date = params[:sample]['date'].to_date
       if sample.save
-        return true
+        return "sample id:#{sample.id}".to_json
+      else
+        return false
+      end
+    end
+  end
+
+  def update_monitoring_raw_data(params)
+    RawDataQualityMonitoring.transaction do
+      sample = RawDataQualityMonitoring.find(params[:sample]['sample_id'])
+      sample.iir_code = params[:sample]['iir_code']
+      sample.border_id = params[:sample]['border']
+      sample.importer_id = params[:sample]['importer']
+      sample.salt_type_id = params[:sample]['salt_type']
+      sample.country_id = params[:sample]['country']
+      sample.volume_of_import = params[:sample]['volume']
+      sample.iodine_level = params[:sample]['iodine_level']
+      sample.category = params[:sample]['category']
+      sample.date = params[:sample]['date'].to_date
+      if sample.save
+        return "sample id:#{sample.id}".to_json
       else
         return false
       end
