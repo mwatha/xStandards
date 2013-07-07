@@ -57,11 +57,14 @@ XStandards::Application.routes.draw do
   get 'sample/update_districts'
   get 'sample/update_markets'
   get 'sample/update_borders'
-  post "sample/create_industry_raw_data"                                                             
+
+  post "sample/create_market_raw_data"                                                             
   post "sample/create_quality_monitoring_raw_data"                                                             
+
   match 'raw_data_quality_monitoring' => 'sample#raw_data_quality_monitoring'
   match "find_raw_data_quality_monitoring" => "sample#find_raw_data_quality_monitoring"
   match "find_raw_data_market_control" => "sample#find_raw_data_market_control"
+
   match 'industry' => "sample#industry"
   match 'prod' => "sample#production"
   match 'market' => "sample#market"

@@ -122,7 +122,7 @@ class SampleController < ApplicationController
     render :text => @products and return
   end
 
-  def create_industry_raw_data
+  def create_market_raw_data
     RawDataMarket.transaction do
       sample = RawDataMarket.new()
       sample.country_id = params[:sample]['country']
@@ -216,6 +216,7 @@ class SampleController < ApplicationController
   end
 
   def create_industry_raw_data
+    render :text => "create_industry_raw_data(params)" and return
     render :text => create_industry_raw_data(params) and return
   end
 
@@ -254,6 +255,44 @@ class SampleController < ApplicationController
       sample.salt_type_id = params[:sample]['salt_type']
       sample.country_id = params[:sample]['country']
       sample.volume_of_import = params[:sample]['volume']
+      sample.iodine_level = params[:sample]['iodine_level']
+      sample.category = params[:sample]['category']
+      sample.date = params[:sample]['date'].to_date
+      if sample.save
+        return "sample id:#{sample.id}".to_json
+      else
+        return false
+      end
+    end
+  end
+
+  def create_industry_raw_data(params)
+    IndustryRawData.transaction do
+      country = Manufacturer.find(params[:sample]['company']).country
+      sample = IndustryRawData.new()
+      sample.cis_code = params[:sample]['cis_code']
+      sample.salt_type_id = params[:sample]['salt_type']
+      sample.brand_name_id = params[:sample]['company']
+      sample.country_id = country.id
+      sample.iodine_level = params[:sample]['iodine_level']
+      sample.category = params[:sample]['category']
+      sample.date = params[:sample]['date'].to_date
+      if sample.save
+        return "sample id:#{sample.id}".to_json
+      else
+        return false
+      end
+    end
+  end
+
+  def update_industry_raw_data(params)
+    IndustryRawData.transaction do
+      country = Manufacturer.find(params[:sample]['company']).country
+      sample = IndustryRawData.find(params[:sample]['sample_id'])
+      sample.cis_code = params[:sample]['cis_code']
+      sample.salt_type_id = params[:sample]['salt_type']
+      sample.brand_name_id = params[:sample]['company']
+      sample.country_id = country.id
       sample.iodine_level = params[:sample]['iodine_level']
       sample.category = params[:sample]['category']
       sample.date = params[:sample]['date'].to_date

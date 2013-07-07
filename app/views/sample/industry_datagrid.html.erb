@@ -300,7 +300,6 @@ function saveRecord(element) {
   url += "&sample[date]=" + selected_date.value;                                                                         
 
   addRow(); 
-  return;
     
   if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari  
       xmlhttp=new XMLHttpRequest();                                             
@@ -349,8 +348,6 @@ function updateRow(element , ev , rowCount) {
   url += "&sample[iodine_level]=" + entered_result.value;                                                                         
   url += "&sample[category]=" + cat.value;                                                                         
   url += "&sample[date]=" + selected_date.value;                                                                         
-
-  alert(url); return;
 
   sample_id = created_sample_ids[(rowCount - 1)];
   if(sample_id.length < 1)         
