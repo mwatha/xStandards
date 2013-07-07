@@ -197,6 +197,32 @@ class SampleController < ApplicationController
     render :text => update_monitoring_raw_data(params) and return
   end
 
+  def industry_datagrid
+    @manufacturers = Manufacturer.order('name ASC').collect do |manu|           
+      [manu.name , manu.id]                                                     
+    end                                                                         
+                                                                                
+    @borders = Border.order('name ASC').collect do |border|                 
+      [border.name , border.id]                                               
+    end                                                                         
+                                                                                
+    @salt_types = SaltType.order('name ASC').collect do |salt|                  
+      [salt.name , salt.id]                                                     
+    end
+                                                                                
+    @countries = Country.order('name ASC').collect do |country|      
+      [country.name , country.id]                                       
+    end
+  end
+
+  def create_industry_raw_data
+    render :text => create_industry_raw_data(params) and return
+  end
+
+  def update_industry_raw_data
+    render :text => update_industry_raw_data(params) and return
+  end
+
   private
 
   def quality_monitoring_raw_data(params)

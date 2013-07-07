@@ -86,14 +86,14 @@
 
     function insertRow(e , ev) {
       if(ev.keyCode == 13) {
-        id = "input_date" + (parseInt(e.id) - 7);      
+        id = "input_date" + (parseInt(e.id) - 4);      
         saveRecord(document.getElementById(id));                                                                                
         return;
       }
     }
 
     function addRow() {
-        var colCount = 9
+        var colCount = 6
         var table = document.getElementById('search_results');
 
         var rowCount = table.rows.length;
@@ -113,21 +113,17 @@
             document.getElementById(i).value = null;
           }
 
-          if(i == 8) {
+          if(i == 5) {
             element = "<input disabled='disabled' class='input_data" + classRow + "' type='text' name='" + name + "' id='" + colID + "' value='" + valueEntered +"'/>";
             document.getElementById("1").focus();
             cell.innerHTML = element;
-          }else if(i == 7){
+          }else if(i == 4){
             element = "<input onkeyup='updateRow(this,event," + (rowCount - 1) + ");sampleIodineCategory(this);' onchange = 'sampleIodineCategory(this);'  class='input_data" + classRow + "' type='text' name='" + name + "' id='" + colID + "' value='" + valueEntered +"'/>";
             cell.innerHTML = element;
-          }else if(i == 2){
-            cell.innerHTML = addSelectBorder(valueEntered,classRow,name,colID);
           }else if(i == 3){
-            cell.innerHTML = addSelectImporter(valueEntered,classRow,name,colID);
-          }else if(i == 4){
             cell.innerHTML = addSelectSaltType(valueEntered,classRow,name,colID);
-          }else if(i == 5){
-            cell.innerHTML = addSelectCountry(valueEntered,classRow,name,colID);
+          }else if(i == 2){
+            cell.innerHTML = addSelectCompanyName(valueEntered,classRow,name,colID);
           }else if(i == 0){
             element = "<input class='input_data" + classRow + "' type='text' name='" + name + "' id='input_date" + colID + "' value='" + valueEntered +"'/>";
             cell.innerHTML = element;
@@ -172,42 +168,14 @@
     }
 
 
-    function addSelectImporter(valueEntered,classRow,name,colID) {
-      var importerSelect = document.createElement('Select');
-      importerSelect.setAttribute("class",classRow + " input_data");
-      importerSelect.setAttribute("name",name);
-      importerSelect.setAttribute("id",colID);
-      var selectDiv = document.createElement('Div');
-
-      <%@markets.each do |name , id| %>
-        if (parseInt(valueEntered) == parseInt(<%=id%>)) {
-          var opt = document.createElement('option');
-          opt.value = <%=id%>;
-          opt.textContent = "<%=name%>";
-          importerSelect.appendChild(opt);
-        }
-      <%end%>
-
-      <%@markets.each do |name , id| %>
-        var opt = document.createElement('option');
-        opt.value = <%=id%>;
-        opt.textContent = "<%=name%>";
-        importerSelect.appendChild(opt);
-      <%end%>
-
-      selectDiv.appendChild(importerSelect);
-      return selectDiv.innerHTML;
-    } 
-
-
-    function addSelectBorder(valueEntered,classRow,name,colID) {
+    function addSelectCompanyName(valueEntered,classRow,name,colID) {
       var borderSelect = document.createElement('Select');
       borderSelect.setAttribute("class",classRow + " input_data");
       borderSelect.setAttribute("name",name);
       borderSelect.setAttribute("id",colID);
       var selectDiv = document.createElement('Div');
 
-      <%@borders.each do |name , id| %>
+      <%@manufacturers.each do |name , id| %>
         if (parseInt(valueEntered) == parseInt(<%=id%>)) {
           var opt = document.createElement('option');
           opt.value = <%=id%>;
@@ -216,36 +184,7 @@
         }
       <%end%>
 
-      <%@borders.each do |name , id| %>
-        var opt = document.createElement('option');
-        opt.value = <%=id%>;
-        opt.textContent = "<%=name%>";
-        borderSelect.appendChild(opt);
-      <%end%>
-
-      selectDiv.appendChild(borderSelect);
-      return selectDiv.innerHTML;
-  
-    }
-
-
-    function addSelectCountry(valueEntered,classRow,name,colID) {
-      var borderSelect = document.createElement('Select');
-      borderSelect.setAttribute("class",classRow + " input_data");
-      borderSelect.setAttribute("name",name);
-      borderSelect.setAttribute("id",colID);
-      var selectDiv = document.createElement('Div');
-
-      <%@countries.each do |name , id| %>
-        if (parseInt(valueEntered) == parseInt(<%=id%>)) {
-          var opt = document.createElement('option');
-          opt.value = <%=id%>;
-          opt.textContent = "<%=name%>";
-          borderSelect.appendChild(opt);
-        }
-      <%end%>
-
-      <%@countries.each do |name , id| %>
+      <%@manufacturers.each do |name , id| %>
         var opt = document.createElement('option');
         opt.value = <%=id%>;
         opt.textContent = "<%=name%>";
@@ -261,9 +200,9 @@
 
 
 <div class="page-header">                                                       
-  <h1>import <small>quality monitoring</small></h1>   
+  <h1>industry <small>control</small></h1>   
   <input type="button" class="btn btn-primary" 
-    value="Done" id="finish"onclick="document.location='/prod'" />                           
+    value="Done" id="finish"onclick="document.location='/industry'" />                           
 </div>
 
 <section id='modals'>                                              
@@ -273,46 +212,31 @@
   <thead>                                                                       
   <tr id = 'table_head'>                                                        
     <th id="th3" style="">Date</th>                                 
-    <th id="th1" style="">IIR Code</th>                               
-    <th id="th4" style="">Point of Entry</th>                             
-    <th id="th5" style="">Importer</th>                                
+    <th id="th1" style="">CIS Code</th>                               
+    <th id="th4" style="">Company name</th>                             
     <th id="th5" style="">Salt type</th>                                
-    <th id="th5" style="">Brand (origin)</th>                                
-    <th id="th5" style="">Volume of import (tons)</th>                                
     <th id="th5" style="">Result</th>                                
     <th id="th5" style="">Category</th>                                
   </tr>                                                                         
   </thead>                                                                      
   <tbody id='results'>                                                          
     <tr>                                                                        
-      <td><!--input type="text" name="date" class='input_data' id="0" /></td-->
-        <%=text_field(:input, "date0",:class => "input_data") %></td>
+      <td><%=text_field(:input, "date0",:class => "input_data") %></td>
       <td><input type="text" name="iir_code" class='input_data' id="1" /></td>
       <td>
-        <%@borders.unshift('Select entry point') %>                      
-        <%= select_tag "border", options_for_select(@borders), 
+        <%@manufacturers.unshift('Select company') %>                      
+        <%= select_tag "manufacturer", options_for_select(@manufacturers), 
             :class => "input_data", :id => "2" %>
       </td>
       <td>
-        <%@markets.unshift('Select importer') %>                      
-        <%= select_tag "market", options_for_select(@markets), 
+        <%@salt_types.unshift('Select salt type') %>                      
+        <%= select_tag "type", options_for_select(@salt_types), 
             :class => "input_data", :id => "3" %>
       </td>                                                      
       <td>
-        <%@salt_types.unshift('Select salt type') %>                      
-        <%= select_tag "type", options_for_select(@salt_types), 
-            :class => "input_data", :id => "4" %>
-      </td>                                                      
-      <td>
-        <%@countries.unshift('Select country') %>                      
-        <%= select_tag "brand", options_for_select(@countries), 
-            :class => "input_data", :id => "5" %>
-      </td>                                                      
-      <td><input type="text" name="volume" class='input_data' id="6" /></td>                                                      
-      <td>
-        <input type="text" name="result" class='input_data' onkeyup="insertRow(this,event);sampleIodineCategory(this);" onchange = "sampleIodineCategory(this);" id="7" />
+        <input type="text" name="result" class='input_data' onkeyup="insertRow(this,event);sampleIodineCategory(this);" onchange = "sampleIodineCategory(this);" id="4" />
       </td>
-      <td><input disabled='disabled' type="text" name="category" class='input_data' id="8" /></td>
+      <td><input disabled='disabled' type="text" name="category" class='input_data' id="5" /></td>
     </tr>                                                                       
   </tbody>                                                                      
 </table>                                                                      
@@ -353,39 +277,31 @@ function sampleIodineCategory(element) {
 function saveRecord(element) {                                                           
   var selected_date = element;            
   var elementID = parseInt(element.id.split('input_date')[1]);
-  var iir_code = document.getElementById(elementID + 1); 
-  var entry = document.getElementById(elementID + 2); 
-  var importer = document.getElementById(elementID + 3); 
-  var brand = document.getElementById(elementID + 4); 
-  var country = document.getElementById(elementID + 5); 
-  var volume = document.getElementById(elementID + 6); 
-  var entered_result = document.getElementById(elementID + 7); 
-  var cat = document.getElementById(elementID + 8); 
+  var cis_code = document.getElementById(elementID + 1); 
+  var company = document.getElementById(elementID + 2); 
+  var salt_type = document.getElementById(elementID + 3); 
+  var entered_result = document.getElementById(elementID + 4); 
+  var cat = document.getElementById(elementID + 5); 
 
   if (selected_date.value.length < 1) {
-  }else if(iir_code.value.length < 1) {
-  }else if(entry.value.length < 1) {
-  }else if(importer.value.length < 1) {
-  }else if(brand.value.length < 1) {
-  }else if(volume.value.length < 1) {
+  }else if(cis_code.value.length < 1) {
+  }else if(company.value.length < 1) {
+  }else if(salt_type.value.length < 1) {
   }else if(entered_result.value.length < 1) {
-  }else if(country.value.length < 1) {
   }else if(cat.value.length < 1) {
     return;
   }
 
-  var url = "sample[iir_code]=" + iir_code.value;                                                                         
-  url += "&sample[border]=" + entry.value;                                                                         
-  url += "&sample[importer]=" + importer.value;                                                                         
-  url += "&sample[salt_type]=" + brand.value;                                                                         
-  url += "&sample[country]=" + country.value;                                                                         
-  url += "&sample[volume]=" + volume.value;                                                                         
+  var url = "sample[cis_code]=" + cis_code.value;                                                                         
+  url += "&sample[company]=" + company.value;                                                                         
+  url += "&sample[salt_type]=" + salt_type.value;                                                                         
   url += "&sample[iodine_level]=" + entered_result.value;                                                                         
   url += "&sample[category]=" + cat.value;                                                                         
   url += "&sample[date]=" + selected_date.value;                                                                         
 
   addRow(); 
-
+  return;
+    
   if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari  
       xmlhttp=new XMLHttpRequest();                                             
     }else{// code for IE6, IE5                                                  
@@ -402,46 +318,39 @@ function saveRecord(element) {
     }  
     
     
-    xmlhttp.open("GET","/create_quality_monitoring_raw_data?" + url, true);           
+    xmlhttp.open("GET","/create_industry_raw_data?" + url, true);           
     xmlhttp.send();                                                             
   }
   
 function updateRow(element , ev , rowCount) {      
   if(ev.keyCode != 13)
     return;
-    
-  var elementID = (parseInt(element.id) - 7);
+   
+  var elementID = (parseInt(element.id) - 4);
   var selected_date = document.getElementById("input_date" + elementID); 
-  var iir_code = document.getElementById(elementID + 1); 
-  var entry = document.getElementById(elementID + 2); 
-  var importer = document.getElementById(elementID + 3); 
-  var brand = document.getElementById(elementID + 4); 
-  var country = document.getElementById(elementID + 5); 
-  var volume = document.getElementById(elementID + 6); 
-  var entered_result = document.getElementById(elementID + 7); 
-  var cat = document.getElementById(elementID + 8); 
+  var cis_code = document.getElementById(elementID + 1); 
+  var company = document.getElementById(elementID + 2); 
+  var salt_type = document.getElementById(elementID + 3); 
+  var entered_result = document.getElementById(elementID + 4); 
+  var cat = document.getElementById(elementID + 5); 
 
   if (selected_date.value.length < 1) {
-  }else if(iir_code.value.length < 1) {
-  }else if(entry.value.length < 1) {
-  }else if(importer.value.length < 1) {
-  }else if(brand.value.length < 1) {
-  }else if(volume.value.length < 1) {
+  }else if(cis_code.value.length < 1) {
+  }else if(company.value.length < 1) {
+  }else if(salt_type.value.length < 1) {
   }else if(entered_result.value.length < 1) {
-  }else if(country.value.length < 1) {
   }else if(cat.value.length < 1) {
     return;
   }
 
-  var url = "sample[iir_code]=" + iir_code.value;                                                                         
-  url += "&sample[border]=" + entry.value;                                                                         
-  url += "&sample[importer]=" + importer.value;                                                                         
-  url += "&sample[salt_type]=" + brand.value;                                                                         
-  url += "&sample[country]=" + country.value;                                                                         
-  url += "&sample[volume]=" + volume.value;                                                                         
+  var url = "sample[cis_code]=" + cis_code.value;                                                                         
+  url += "&sample[company]=" + company.value;                                                                         
+  url += "&sample[salt_type]=" + salt_type.value;                                                                         
   url += "&sample[iodine_level]=" + entered_result.value;                                                                         
   url += "&sample[category]=" + cat.value;                                                                         
   url += "&sample[date]=" + selected_date.value;                                                                         
+
+  alert(url); return;
 
   sample_id = created_sample_ids[(rowCount - 1)];
   if(sample_id.length < 1)         
@@ -465,7 +374,7 @@ function updateRow(element , ev , rowCount) {
     }  
     
     
-    xmlhttp.open("GET","/update_quality_monitoring_raw_data?" + url, true);           
+    xmlhttp.open("GET","/update_industry_raw_data?" + url, true);           
     xmlhttp.send();                                                             
   }
   
