@@ -113,15 +113,8 @@ class ReportController < ApplicationController
     ]
   end
 
-
-
-
-
-	
-
-
-   #<<<<<<<<<<<<<<<<<<<<<<<<<<<< market <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-   def market_charts
+  #<<<<<<<<<<<<<<<<<<<<<<<<<<<< market <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  def market_charts
     if request.post?
       @samples = {}
       avg_counter = {}
@@ -230,6 +223,15 @@ class ReportController < ApplicationController
       params[:report]['end_date'].to_date.strftime('%b/%Y')
     ]
   end
+  #<<<<<<<<<<<<<<<<<<<<<<<<<<<< market charts end <<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
+
+
+
+
+
 
   #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
