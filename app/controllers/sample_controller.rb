@@ -227,16 +227,8 @@ class SampleController < ApplicationController
   end
 
   def market_datagrid
-    @manufacturers = Manufacturer.order('name ASC').collect do |manu|           
+    @markets = Market.order('name ASC').collect do |manu|           
       [manu.name , manu.id]                                                     
-    end                                                                         
-                                                                                
-    @markets = Manufacturer.order('name ASC').collect do |manu|           
-      [manu.name , manu.id]                                                     
-    end                                                                         
-                                                                                
-    @borders = Border.order('name ASC').collect do |border|                 
-      [border.name , border.id]                                               
     end                                                                         
                                                                                 
     @salt_types = SaltType.order('name ASC').collect do |salt|                  
@@ -253,12 +245,10 @@ class SampleController < ApplicationController
   end
 
   def raw_data_market_create
-    render :text => "AAAA" and return
     render :text => create_market_raw_data(params) and return
   end
 
   def raw_data_market_update
-    render :text => "AAAA" and return
     render :text => create_market_raw_data(params) and return
   end
 
