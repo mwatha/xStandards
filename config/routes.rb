@@ -30,6 +30,8 @@ XStandards::Application.routes.draw do
   match '/line_graph' => 'report#line_graph'
   get 'report/production_pie_chart'
   get 'report/production_line_chart'
+  match 'market' => "report#market"
+  match 'indu' => "report#industry"
 
 
   post "report/production_charts"

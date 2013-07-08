@@ -1,2 +1,107 @@
-<h1>Report#market_charts</h1>
-<p>Find me in app/views/report/market_charts.html.erb</p>
+<style>
+#report-container {
+  background-color:;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.charts {
+  width: 100%;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.chart-container {
+  width: 45%;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.production_table_chart {
+  width: 100%;
+}
+
+.production_table_chart th {
+  text-align: right;
+  padding-right: 5px;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.production_table_chart td {
+  text-align: right;
+  padding-right: 5px;
+  border-width: 1px;
+  border-style: solid;
+}
+
+
+
+
+</style>
+
+<head>
+<%= javascript_include_tag "Highcharts-3.0.2/js/jquery.min.js" %>
+
+<%= javascript_include_tag "Highcharts-3.0.2/js/highcharts" %>                 
+<%= javascript_include_tag "Highcharts-3.0.2/js/modules/data" %>               
+<%= javascript_include_tag "Highcharts-3.0.2/js/modules/exporting" %>
+
+</head>
+
+
+<div id="report-container">
+
+
+<table class="charts">
+  <tr>
+    <td class="chart-container">
+      <%= render  "market_line_chart"%>
+    </td>
+    <td class="chart-container">
+      <%= render "market_colunm"%>
+    </td>
+  </tr>
+
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr><td colspan="2"><hr /></td></tr>
+
+
+  <tr>
+    <td colspan="2">
+      <table class="production_table_chart">
+        <tr>
+          <th>Quarter</th>
+          <th>Below Market Min</th>
+          <th>Factory Min-Market Min</th>
+          <th>Below Factory Min</th>
+          <th>Production Range</th>
+          <th>Above Factory Max</th>
+          <th>Avg Iodization number of samples</th>
+        </tr>
+
+        <%(@samples || {}).each do |quarter , values| %>
+          <tr>
+            <td><%=quarter%></td>
+            <td><%=values[:below_market_min]%></td>
+            <td><%=values[:factory_min_market]%></td>
+            <td><%=values[:below_factory_min]%></td>
+            <td><%=values[:production_range]%></td>
+            <td><%=values[:above_factory_max]%></td>
+            <td><%=values[:avg]%></td>
+          </tr>
+        <%end%>
+      </table>
+    </td>
+  </tr>
+
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr><td colspan="2"><hr /></td></tr>
+
+</table>
+
+
+
+</div>
