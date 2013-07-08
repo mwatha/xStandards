@@ -89,6 +89,31 @@
     });
   };
 
+ function pieChart(start_date , end_date) {
+   jQuery('#content-chart').empty();                                             
+   jQuery('#content-chart').load('/report/production_pie_chart?start_date=' + start_date + '&end_date=' + end_date);
+ }
+
+ function lineChart(start_date , end_date) {
+   jQuery('#content-chart').empty();                                             
+   jQuery('#content-chart').load('/report/production_line_chart?start_date=' + start_date + '&end_date=' + end_date);
+ }
+
+
+ function getData() {                                                       
+   var start_date = document.getElementById('report_start_date').value;               
+   var end_date = document.getElementById('report_end_date').value;               
+   var representation = document.getElementById('data-representation').value;
+    
+   if(representation == 'pie-chart') {
+     pieChart(start_date,end_date);
+   }else if(representation == 'line-chart') {
+     lineChart(start_date,end_date);
+   }
+ }  
+
+ var fetched_data = {};
+
 </script>
 
 
@@ -96,30 +121,33 @@
   <h1>report <small>production level</small></h1>                              
 </div>
 
-<div id = "content-heading">                      
-  <form action = 'production_charts' method = 'post'>                               
+<div id = "content-heading">                                                     
   <table style="width: 99%;">
     <tr>
       <td><%=text_field(:report, :start_date ,:placeholder => "Start date") %></td>
-      <td>
-        <%options = ['Select report']
-          options.push('Iodinize levels over time')
-          options.push('Iodinize levels by customs sector')
-          options.push('Iodinize levels by salt brand and type')
-          options.push('Iodinize levels by importer')
+      <td style="text-align:right;"><%=text_field(:report, :representation ,
+        :placeholder => "Data representation",:disabled => 'disabled') %>
+        &nbsp;
+        <%
+          representation = [
+            ['line-chart','line-chart'],
+            ['pie-chart','pie-chart'],
+            ['table','table'],
+          ]
         %>
-        <%= select_tag "report[report_type]", options_for_select(options)%>
+        <%= select_tag "data-representation", 
+          options_for_select(representation),
+          :placeholder => "Select store room location" %>
       </td>
     </tr>
     <tr>
       <td><%=text_field(:report, :end_date ,:placeholder => "End date") %></td>
       <td>
-          <input type="submit" id="signup"                
+          <input onclick="getData();" type="button" id="signup"                
           class="btn btn-primary signup_btn" value="Apply" style="width:100%;" />
       </td>
     </tr>
   </table>
-  </form>
 </div>
 
 <br><hr /></br>

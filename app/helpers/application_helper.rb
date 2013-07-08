@@ -40,4 +40,22 @@ EOF
       return "Q4 #{date.year}" 
     end
   end
+
+  def category(level)
+    if (level < 45)                                                              
+      return "Below Market Min"                                                  
+    elsif (level >= 45 and level <= 49.9)                                        
+      return "Factory Min-Market Min"                                            
+    elsif (level < 50)                                                           
+      return "< Factory Min"                                                     
+    elsif (level >= 50 && level <= 84)
+      return "Production Range"                                                  
+    elsif (level > 84)                                                           
+      return "> Factory Max"                                                     
+    end
+  end
+
 end
+
+
+
