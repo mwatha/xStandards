@@ -81,7 +81,7 @@ XStandards::Application.routes.draw do
 
   match 'industry' => "sample#industry"
   match 'prod' => "sample#production"
-  match 'market' => "sample#market"
+  match 'mark' => "sample#market"
 
   match 'import_datagrid' => "sample#import_datagrid"
   match 'create_quality_monitoring_raw_data' => 'sample#create_quality_monitoring_raw_data'

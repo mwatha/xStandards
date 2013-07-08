@@ -255,8 +255,8 @@ class SampleController < ApplicationController
       [salt.name , salt.id]                                                     
     end                                                                         
                                                                                 
-    @countries = Country.order('name ASC').collect do |country|      
-      [country.name , country.id]                                       
+    @manufacturers = Manufacturer.order('name ASC').collect do |manu|      
+      [manu.name , manu.id]                                       
     end
                                                                                 
     @districts = District.order('name ASC').collect do |district|      
@@ -269,7 +269,7 @@ class SampleController < ApplicationController
   end
 
   def raw_data_market_update
-    render :text => create_market_raw_data(params) and return
+    render :text => update_market_raw_data(params) and return
   end
 
   private
@@ -355,7 +355,25 @@ class SampleController < ApplicationController
   def create_market_raw_data(params)
     RawDataMarket.transaction do
       sample = RawDataMarket.new()
-      sample.country_id = params[:sample]['country']
+      sample.manufacturer_id = params[:sample]['manufacturer']
+      sample.district_id = params[:sample]['district']
+      sample.market_id = params[:sample]['market']
+      sample.salt_type_id = params[:sample]['salt_type']
+      sample.iodine_level = params[:sample]['iodine_level']
+      sample.category = params[:sample]['category']
+      sample.date = params[:sample]['date']
+      if sample.save
+        return "sample id:#{sample.id}".to_json
+      else                                                                      
+        return false
+      end
+    end
+  end
+
+  def update_market_raw_data(params)
+    RawDataMarket.transaction do
+      sample = RawDataMarket.find(params[:sample]['sample_id'])
+      sample.manufacturer_id = params[:sample]['manufacturer']
       sample.district_id = params[:sample]['district']
       sample.market_id = params[:sample]['market']
       sample.salt_type_id = params[:sample]['salt_type']
