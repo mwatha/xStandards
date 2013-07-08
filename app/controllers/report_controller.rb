@@ -115,6 +115,9 @@ class ReportController < ApplicationController
 
   def market_charts
     if request.post?
+      if params[:report]['report_type'] == 'Iodinize levels by district'
+      end
+
       @samples = {}
       avg_counter = {}
       result_counter = {}
