@@ -1,5 +1,7 @@
 XStandards::Application.routes.draw do
 
+  get "sample/market_datagrid"
+
   ###### transporter #####
   match '/transporters' => 'transporter#index'
   match '/newtransporter' => 'transporter#new'
@@ -75,7 +77,12 @@ XStandards::Application.routes.draw do
 
   match 'industry_datagrid' => "sample#industry_datagrid"
   match 'raw_data_industry_create' => 'sample#raw_data_industry_create'
-  match 'raw_data_industry_update' => 'sample#raw_data_industry_update'
+  match 'update_industry_datagrid' => 'sample#update_industry_datagrid'
+
+
+  match 'market_datagrid' => "sample#market_datagrid"
+  match 'raw_data_market_create' => "sample#raw_data_market_create"                                                             
+  match 'raw_data_market_update' => "sample#raw_data_market_update"                                                             
   ###### sample end #####
 
   ###### user #######

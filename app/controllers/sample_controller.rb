@@ -1,5 +1,5 @@
 class SampleController < ApplicationController
-  
+
   def search
     @samples = {}
     (Sample.all || []).each do |sample|
@@ -123,6 +123,7 @@ class SampleController < ApplicationController
     render :text => @products and return
   end
 
+=begin
   def create_market_raw_data
     RawDataMarket.transaction do
       sample = RawDataMarket.new()
@@ -143,6 +144,7 @@ class SampleController < ApplicationController
 
     redirect_to "/sampling" and return
   end
+=end
 
   def raw_data_quality_monitoring
     @manufacturers = Manufacturer.order('name ASC').collect do |manu|
@@ -220,8 +222,44 @@ class SampleController < ApplicationController
     render :text => create_industry_raw_data(params) and return
   end
 
-  def update_industry_raw_data
+  def update_industry_datagrid
     render :text => update_industry_raw_data(params) and return
+  end
+
+  def market_datagrid
+    @manufacturers = Manufacturer.order('name ASC').collect do |manu|           
+      [manu.name , manu.id]                                                     
+    end                                                                         
+                                                                                
+    @markets = Manufacturer.order('name ASC').collect do |manu|           
+      [manu.name , manu.id]                                                     
+    end                                                                         
+                                                                                
+    @borders = Border.order('name ASC').collect do |border|                 
+      [border.name , border.id]                                               
+    end                                                                         
+                                                                                
+    @salt_types = SaltType.order('name ASC').collect do |salt|                  
+      [salt.name , salt.id]                                                     
+    end                                                                         
+                                                                                
+    @countries = Country.order('name ASC').collect do |country|      
+      [country.name , country.id]                                       
+    end
+                                                                                
+    @districts = District.order('name ASC').collect do |district|      
+      [district.name , district.id]                                       
+    end
+  end
+
+  def raw_data_market_create
+    render :text => "AAAA" and return
+    render :text => create_market_raw_data(params) and return
+  end
+
+  def raw_data_market_update
+    render :text => "AAAA" and return
+    render :text => create_market_raw_data(params) and return
   end
 
   private
@@ -299,6 +337,24 @@ class SampleController < ApplicationController
       if sample.save
         return "sample id:#{sample.id}".to_json
       else
+        return false
+      end
+    end
+  end
+
+  def create_market_raw_data(params)
+    RawDataMarket.transaction do
+      sample = RawDataMarket.new()
+      sample.country_id = params[:sample]['country']
+      sample.district_id = params[:sample]['district']
+      sample.market_id = params[:sample]['market']
+      sample.salt_type_id = params[:sample]['salt_type']
+      sample.iodine_level = params[:sample]['iodine_level']
+      sample.category = params[:sample]['category']
+      sample.date = params[:sample]['date']
+      if sample.save
+        return "sample id:#{sample.id}".to_json
+      else                                                                      
         return false
       end
     end
