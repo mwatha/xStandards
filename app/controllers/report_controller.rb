@@ -9,7 +9,10 @@ class ReportController < ApplicationController
       avg_counter = {}
       result_counter = {}
 
-      (RawDataQualityMonitoring.all || []).each do |sample|
+      raw_data = RawDataQualityMonitoring.where("date >= ? AND date <=?",
+        params[:report]['start_date'].to_date,params[:report]['end_date'].to_date)
+
+      (raw_data || []).each do |sample|
         quarter = quater(sample.date)
         if @samples[quarter].blank?
           @samples[quarter] = {
@@ -88,12 +91,9 @@ class ReportController < ApplicationController
       @colunm[cat] = ((100/highest_value)* count).round(1)
     end
 
-
-
-
     @line_chart = {}
      
-    (RawDataQualityMonitoring.all || []).each do |sample|
+    (raw_data.all || []).each do |sample|
       cat = sample.category
       if @line_chart[cat].blank?
         @line_chart[cat] = [0,0,0,0,0,0,0,0,0,0,0,0]
@@ -107,6 +107,10 @@ class ReportController < ApplicationController
       end
     end
 
+    @date_range = [
+      params[:report]['start_date'].to_date.strftime('%b/%Y'), 
+      params[:report]['end_date'].to_date.strftime('%b/%Y')
+    ]
   end
 
   #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

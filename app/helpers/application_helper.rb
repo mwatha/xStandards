@@ -42,9 +42,9 @@ EOF
   end
 
   def category(level)
-    if (level < 45)                                                              
+    if (level < 25)                                                              
       return "Below Market Min"                                                  
-    elsif (level >= 45 and level <= 49.9)                                        
+    elsif (level >= 25 and level <= 49.9)                                        
       return "Factory Min-Market Min"                                            
     elsif (level < 50)                                                           
       return "< Factory Min"                                                     
