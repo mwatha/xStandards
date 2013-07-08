@@ -1,7 +1,5 @@
 XStandards::Application.routes.draw do
 
-  get "sample/market_datagrid"
-
   ###### transporter #####
   match '/transporters' => 'transporter#index'
   match '/newtransporter' => 'transporter#new'
@@ -64,8 +62,9 @@ XStandards::Application.routes.draw do
   post "sample/create_quality_monitoring_raw_data"                                                             
 
   match 'raw_data_quality_monitoring' => 'sample#raw_data_quality_monitoring'
-  match "find_raw_data_quality_monitoring" => "sample#find_raw_data_quality_monitoring"
+  match "find_raw_data_industry_monitoring" => "sample#find_raw_data_industry_monitoring"
   match "find_raw_data_market_control" => "sample#find_raw_data_market_control"
+  match "import_monitoring" => "sample#import_monitoring"
 
   match 'industry' => "sample#industry"
   match 'prod' => "sample#production"
@@ -83,6 +82,7 @@ XStandards::Application.routes.draw do
   match 'market_datagrid' => "sample#market_datagrid"
   match 'raw_data_market_create' => "sample#raw_data_market_create"                                                             
   match 'raw_data_market_update' => "sample#raw_data_market_update"                                                             
+  #get "sample/market_datagrid"
   ###### sample end #####
 
   ###### user #######

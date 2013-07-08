@@ -20,7 +20,7 @@ class SampleController < ApplicationController
       @samples[sample.id] = {
         :district => sample.district.name,
         :market => sample.market.name,
-        :manufacturer => sample.manufacturer.name,
+        :country => sample.country.name,
         :salt_type => sample.salt_type.name,
         :quater => quater(sample.date),
         :iodine_level => sample.iodine_level,
@@ -30,18 +30,38 @@ class SampleController < ApplicationController
     end
   end
 
-  def find_raw_data_quality_monitoring
+  def find_raw_data_industry_monitoring
+    @samples = {}
+    (IndustryRawData.all || []).each do |sample|
+      @samples[sample.id] = {
+        :cis_code => sample.cis_code,
+        :country => sample.country.name,
+        :manufacturer => sample.manufacturer.name,
+        :salt_type => sample.salt_type.name,
+        :iodine_level => sample.iodine_level,
+        :category => sample.category,
+        :month => sample.date.strftime('%Y/%m - %b'),
+        :quarter => quater(sample.date),
+        :date => sample.date.strftime('%d-%b-%Y')
+      }
+    end
+
+  end
+
+  def import_monitoring
     @samples = {}
     (RawDataQualityMonitoring.all || []).each do |sample|
       @samples[sample.id] = {
+        :iir_code => sample.iir_code,
         :country => sample.country.name,
-        :entry_point => sample.point_of_entry.name,
         :importer => sample.importer.name,
         :salt_type => sample.salt_type.name,
-        :volume => sample.volume_of_import,
         :iodine_level => sample.iodine_level,
         :category => sample.category,
-        :iir_code => sample.iir_code,
+        :border => sample.point_of_entry.name,
+        :volume => sample.volume_of_import,
+        :month => sample.date.strftime('%Y/%m - %b'),
+        :quarter => quater(sample.date),
         :date => sample.date.strftime('%d-%b-%Y')
       }
     end
@@ -175,7 +195,7 @@ class SampleController < ApplicationController
   end
 
   def import_datagrid
-    @markets = Manufacturer.order('name ASC').collect do |manu|           
+    @markets = Transporter.order('name ASC').collect do |manu|           
       [manu.name , manu.id]                                                     
     end                                                                         
                                                                                 
