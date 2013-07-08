@@ -38,6 +38,9 @@ XStandards::Application.routes.draw do
   match 'production_charts' => "report#production_charts"
   match 'market_charts' => "report#market_charts"
   match 'industry_charts' => "report#industry_charts"
+
+  match 'market' => "report#market"
+
   ###### reports end #####
 
   ###### product #####

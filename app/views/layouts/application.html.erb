@@ -133,7 +133,7 @@
 
     <!-- Placed at the end of the document so the pages load faster -->
     <%unless action_name.match(/search/i)%>
-      <%if not action_name.match(/production/i)%>
+      <%if not action_name.match(/production/i) or not action_name.match(/market_chart/i)%>
         <%=javascript_include_tag "jquery"%>                                         
       <%else%>
         <%#= javascript_include_tag "Highcharts-3.0.2/js/jquery.min" %>

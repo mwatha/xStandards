@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Highcharts Example</title>
+
+    <style>
+      .highcharts-axis-labels {
+        /*display: none;*/
+      }
+
+    </style>
+
+		<script type="text/javascript">
+
+    function loadGraph() {
+
+    $(function () {
+        $('#container-2').highcharts({
+            chart: {
+                type: 'line',
+                marginRight: 130,
+                marginBottom: 25
+            },
+            title: {
+                text: 'Import Control',
+                x: -20 //center
+            },
+            subtitle: {
+                text: 'Evolution of Salt Iodization Levels',
+                x: -20
+            },
+            xAxis: {
+                categories: ["<%=@date_range[0]%>" ,'-','-','-','-','-','-','-','-','-','-', '<%=@date_range[1]%>']
+            },
+            yAxis: {
+                title: {
+                    text: 'Iodine levels'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                valueSuffix: ''
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -10,
+                y: 100,
+                borderWidth: 0
+            },
+            series: dataG()
+        });
+    });
+
+    }    
+
+    function dataG() {
+      var graph = [];
+      <%(@line_chart || {}).each do |key , data|%>
+        graph.push({name: "<%=key%>", data: <%=data.to_json%>});
+      <%end%>
+      return graph
+    }
+
+
+   loadGraph(); 
+
+
+		</script>
+	</head>
+	<body>
+
+<!--div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div-->
+<div id="container-2" style="width: 99%; height: 400px; margin: 0 auto"></div>
+
+	</body>
+</html>
