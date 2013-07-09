@@ -58,6 +58,8 @@
     <td class="chart-container">
       <%if @report_type == "Iodinize levels by salt brand and type"%>
         <%= render  "report/market/salt_brand/combination"%>
+      <%elsif @report_type == "Iodinize levels by district"%>
+        <%= render  "report/market/district/combination"%>
       <%else%>
         <%= render  "report/market/overtime/combination"%>
       <%end%>
@@ -65,6 +67,8 @@
     <td class="chart-container">
       <%if @report_type == "Iodinize levels by salt brand and type"%>
         <%= render "report/market/salt_brand/stacked_percentage_column"%>
+      <%elsif @report_type == "Iodinize levels by district"%>
+        <%= render "report/market/district/stacked_percentage_column"%>
       <%else%>
         <%= render "report/market/overtime/stacked_percentage_column"%>
       <%end%>
@@ -79,6 +83,8 @@
     <td colspan="2">
       <%if @report_type == "Iodinize levels by salt brand and type"%>
         <%= render "report/market/salt_brand/table_chart"%>
+      <%elsif @report_type == "Iodinize levels by district"%>
+        <%= render "report/market/district/table_chart"%>
       <%else%>
         <%= render "report/market/overtime/table_chart"%>
       <%end%>
