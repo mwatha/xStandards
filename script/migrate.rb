@@ -1,4 +1,124 @@
 
+def kenya                                                                       
+  csv_text = FasterCSV.read("/home/mwatha/Desktop/migration/kenya.csv")         
+  country =  Country.new()
+  country.name = "Kenya"
+  country.save
+
+  districts = []
+  manufacturers = []
+  markets = []
+  market_hash = {}
+   
+  (csv_text || []).each do |line|                                               
+    next if line[0] == 'LAB NO'                                                 
+    districts << line[1].titleize
+    districts = districts.uniq
+    manufacturers << line[2].titleize
+    manufacturers = manufacturers.uniq
+    markets << [get_random_market,line[1].titleize]
+    market_hash[line[1].titleize] = get_random_market
+    markets = markets.uniq
+  end               
+  
+  (manufacturers || []).each do |name|
+    create_manufacturer(name)
+  end
+  
+  (districts || []).each do |name|
+    create_district(name)
+  end
+  
+  (market_hash || {}).each do |district_name , name |
+    create_market(name , district_name)
+  end
+  
+  
+
+  (csv_text || []).each do |line|                                               
+    next if line[0] == 'LAB NO'                                                 
+    params = {}
+    params['sample'] = {
+      :manufacturer => Manufacturer.where("name = ?",line[2].titleize).first.id,
+      :district => District.where("name = ?",line[1].titleize).first.id,
+      :salt_type => get_type_of_salt,
+      :market => Market.where("name = ?", market_hash[line[1].titleize]).first.id,
+      :category => get_category(line[3].to_f),
+      :iodine_level => line[3],
+      :date => get_random_date
+    }
+    create_market_raw_data(params)                                            
+  end 
+                                                              
+end
+
+def get_type_of_salt
+  [*1..3].sample
+end
+
+def get_random_date
+  Time.at(Time.now.to_i - rand(100000000)).to_date
+end
+
+def get_random_market
+  Faker::Name.last_name
+end
+
+def create_market_raw_data(params)                                            
+  RawDataMarket.transaction do                                                
+    sample = RawDataMarket.new()                                              
+    sample.manufacturer_id = params['sample'][:manufacturer]                  
+    sample.district_id = params['sample'][:district]                          
+    sample.market_id = params['sample'][:market]                              
+    sample.salt_type_id = params['sample'][:salt_type]                        
+    sample.iodine_level = params['sample'][:iodine_level]                     
+    sample.category = params['sample'][:category]                             
+    sample.date = params['sample'][:date]                                     
+    if sample.save                                                            
+      puts "sample id:#{sample.id}"
+    else                                                                      
+      puts "false"                                                            
+    end                                                                       
+  end                                                                         
+end
+
+def create_manufacturer(name)
+  Manufacturer.transaction do 
+    r = Manufacturer.new
+    r.name = name.titleize
+    r.country_id = get_country('Kenya').id
+    r.save
+    puts "Manufacturer: #{name.titleize}"
+  end
+end
+
+def create_district(name)
+  District.transaction do 
+    r = District.new
+    r.name = name.titleize
+    r.country_id = get_country('Kenya').id
+    r.save
+    puts "District: #{name.titleize}"
+  end
+end
+
+def create_market(name,district)
+  Market.transaction do 
+    r = Market.new
+    r.name = name.titleize
+    r.district_id = District.where("name = ?",district.titleize).first.id
+    r.save
+    puts "Market: #{name.titleize}"
+  end
+end
+
+
+
+
+
+
+
+
 
 
 def start
@@ -146,5 +266,5 @@ end
 
 
 
-
-start
+kenya
+#start

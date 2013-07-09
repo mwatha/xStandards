@@ -21,6 +21,7 @@ class ReportController < ApplicationController
             :below_factory_min => nil,
             :production_range => nil,
             :above_factory_max => nil,
+            :num_of_samples => 0,
             :avg => 0,
           }
 
@@ -43,6 +44,7 @@ class ReportController < ApplicationController
 
         result_counter[quarter] +=1 
         avg_counter[quarter] += sample.iodine_level
+        @samples[quarter][:num_of_samples] += 1
         @samples[quarter][:avg] = (avg_counter[quarter]/result_counter[quarter]).round(2)
       end
     end
@@ -155,6 +157,7 @@ class ReportController < ApplicationController
             :below_factory_min => nil,
             :production_range => nil,
             :above_factory_max => nil,
+            :num_of_samples => 0 ,
             :avg => 0,
           }
 
@@ -177,6 +180,7 @@ class ReportController < ApplicationController
 
         result_counter[quarter] +=1 
         avg_counter[quarter] += sample.iodine_level
+        @samples[quarter][:num_of_samples] += 1
         @samples[quarter][:avg] = (avg_counter[quarter]/result_counter[quarter]).round(2)
       end
     end
@@ -304,6 +308,7 @@ class ReportController < ApplicationController
           :below_factory_min => nil,
           :production_range => nil,
           :above_factory_max => nil,
+          :num_of_samples => 0,
           :avg => 0,
         }
 
@@ -326,6 +331,7 @@ class ReportController < ApplicationController
 
       result_counter[quarter] +=1 
       avg_counter[quarter] += sample.iodine_level
+      @samples[quarter][:num_of_samples] += 1
       @samples[quarter][:avg] = (avg_counter[quarter]/result_counter[quarter]).round(2)
     end
 
@@ -409,6 +415,7 @@ class ReportController < ApplicationController
           :below_factory_min => nil,
           :production_range => nil,
           :above_factory_max => nil,
+          :num_of_samples => 0,
           :avg => 0,
         }
 
@@ -431,6 +438,7 @@ class ReportController < ApplicationController
 
       result_counter[salt_brand] +=1 
       avg_counter[salt_brand] += sample.iodine_level
+      @samples[salt_brand][:num_of_samples] += 1
       @samples[salt_brand][:avg] = (avg_counter[salt_brand]/result_counter[salt_brand]).round(2)
     end
 

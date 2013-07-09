@@ -20,7 +20,7 @@ class SampleController < ApplicationController
       @samples[sample.id] = {
         :district => sample.district.name,
         :market => sample.market.name,
-        :country => sample.country.name,
+        :manufacturer => sample.manufacturer.name,
         :salt_type => sample.salt_type.name,
         :quater => quater(sample.date),
         :iodine_level => sample.iodine_level,

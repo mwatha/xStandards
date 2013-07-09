@@ -6,7 +6,8 @@
     <th>Below Factory Min</th>                                            
     <th>Production Range</th>                                             
     <th>Above Factory Max</th>                                            
-    <th>Avg Iodization number of samples</th>                             
+    <th>Avg Iodization</th>
+    <th>Number of samples</th>                             
   </tr>                                                                   
                                                                           
   <%(@samples || {}).each do |brand , values| %>                        
@@ -18,6 +19,7 @@
       <td><%=values[:production_range]%></td>                             
       <td><%=values[:above_factory_max]%></td>                            
       <td><%=values[:avg]%></td>                                          
+      <td><%=values[:num_of_samples]%></td>                                          
     </tr>                                                                 
   <%end%>                                                                 
 </table>
