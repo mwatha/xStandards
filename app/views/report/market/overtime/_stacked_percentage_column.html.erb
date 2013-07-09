@@ -4,69 +4,122 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>Highcharts Example</title>
 
+    <style>
+
+    </style>
+
 		<script type="text/javascript">
-$(function () {
-    $('#container').highcharts({
-        data: {
-            table: document.getElementById('datatable')
-        },
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Market control'
-        },
-        yAxis: {
-            allowDecimals: false,
+
+
+  function loadChart() {
+    $(function () {
+        $('#container').highcharts({
+            chart: {
+                type: 'column'
+            },
             title: {
-                text: 'Percentage (%)'
-            }
-        },
-        tooltip: {
-            formatter: function() {
-                return '<b>'+ this.series.name +'</b><br/>'+
-                    this.y +' '+ this.x.toLowerCase();
-            }
-        }
+                text: 'Market control: Evolution of salt Iodization Levels'
+            },
+            xAxis: {
+                categories: seriesCategories
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Percentage (%)'
+                }
+            },
+            tooltip: {
+                pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>',
+                shared: true
+            },
+            plotOptions: {
+                column: {
+                    stacking: 'percent'
+                }
+            },
+            series: seriesData
+        });
     });
-});
+
+  }     
+
+  var seriesData = [];
+  var seriesCategories = [];
+
+  <%
+     data = {}
+     (@samples || {}).sort_by { |k, v| v[:date] }.each do |x,y| 
+       if data["production range"].blank?
+         data["production range"] = []
+       end
+
+       data["production range"] << y[:production_range].to_f rescue 0
+       break if data["production range"].length == 5
+     end
+
+     (@samples || {}).sort_by { |k, v| v[:date] }.each do |x,y| 
+       if data["above factory max"].blank?
+         data["above factory max"] = []
+        end
+
+        data["above factory max"] << y[:above_factory_max].to_f rescue 0
+        break if data["above factory max"].length == 5
+      end
+
+     (@samples || {}).sort_by { |k, v| v[:date] }.each do |x,y| 
+       if data["below market min"].blank?
+         data["below market min"] = []
+        end
+
+        data["below market min"] << y[:below_market_min].to_f rescue 0
+        break if data["below market min"].length == 5
+      end
+
+     (@samples || {}).sort_by { |k, v| v[:date] }.each do |x,y| 
+       if data["factory min market"].blank?
+         data["factory min market"] = []
+        end
+
+        data["factory min market"] << y[:factory_min_market].to_f rescue 0
+        break if data["factory min market"].length == 5
+      end
+
+     (@samples || {}).sort_by { |k, v| v[:date] }.each do |x,y| 
+       if data["below factory min"].blank?
+         data["below factory min"] = []
+        end
+
+        data["below factory min"] << y[:below_factory_min].to_f rescue 0
+        break if data["below factory min"].length == 5
+      end
+
+  %>
+
+  count = 0
+  function getSeriesData() {
+    <%data.each do |name,values|%>
+      seriesData.push({name: "<%=name%>", data: <%=values.to_json%>});
+    <%end%>
+  }
+
+  function getSeriesCategories() {
+    <%(@samples || {}).sort_by { |k, v| v[:date] }.each do |name,values| %>
+      seriesCategories.push("<%=name%>")
+    <%end%>
+  }
+
+
+  getSeriesData();
+  getSeriesCategories();
+  loadChart()
+
+
 		</script>
 	</head>
 	<body>
 
-<!--div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div-->
-<div id="container" style="width: 99%; height: 400px; margin: 0 auto"></div>
+<div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 
-<table id="datatable" style="display: none;">
-	<thead>
-		<tr>
-			<th>Market control</th>
-			<td>Evolution of average salt iodization level (ppm)</td>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<th>Below Market Min</th>
-			<td><%=@colunm['Below Market Min']%></td>
-		</tr>
-		<tr>
-			<th>Factory Min-Market Min</th>
-			<td><%=@colunm['Factory Min-Market Min']%></td>
-		</tr>
-		<tr>
-			<th>Below factory Min</th>
-			<td><%=@colunm['Less than Factory Min']%></td>
-		</tr>
-		<tr>
-			<th>Production Range</th>
-			<td><%=@colunm['Production Range']%></td>
-		</tr>
-		<tr>
-			<th>Above Factory Max</th>
-			<td><%=@colunm['Above Factory Max']%></td>
-		</tr>
-	</tbody>
-</table>
 	</body>
 </html>
-

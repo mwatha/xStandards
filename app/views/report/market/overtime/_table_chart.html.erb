@@ -1,6 +1,6 @@
 <table class="production_table_chart">                                    
   <tr>                                                                    
-    <th>Salt brand (origin)</th>                                                      
+    <th>Quarter</th>                                                      
     <th>Below Market Min</th>                                             
     <th>Factory Min-Market Min</th>                                       
     <th>Below Factory Min</th>                                            
@@ -10,9 +10,9 @@
     <th>Number of samples</th>                             
   </tr>                                                                   
                                                                           
-  <%(@samples || {}).each do |brand , values| %>                        
+  <%(@samples || {}).sort_by { |k, v| v[:date] }.each do |quarter,values| %>
     <tr>                                                                  
-      <td><%=brand%></td>                                               
+      <td><%=quarter%></td>                                               
       <td><%=values[:below_market_min]%></td>                             
       <td><%=values[:factory_min_market]%></td>                           
       <td><%=values[:below_factory_min]%></td>                            

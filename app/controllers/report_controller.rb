@@ -297,7 +297,8 @@ class ReportController < ApplicationController
     result_counter = {}
 
     raw_data = RawDataMarket.where("date >= ? AND date <=?",
-      params[:report]['start_date'].to_date,params[:report]['end_date'].to_date)
+      params[:report]['start_date'].to_date,
+      params[:report]['end_date'].to_date).order('date ASC')
 
     (raw_data || []).each do |sample|
       quarter = quater(sample.date)
@@ -309,6 +310,7 @@ class ReportController < ApplicationController
           :production_range => nil,
           :above_factory_max => nil,
           :num_of_samples => 0,
+          :date => sample.date,
           :avg => 0,
         }
 

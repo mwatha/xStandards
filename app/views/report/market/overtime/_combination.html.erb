@@ -5,78 +5,116 @@
 		<title>Highcharts Example</title>
 
 		<script type="text/javascript">
+		
 
     function loadCahrt() {
-      $(function () {
+	    $(function () {
         $('#container-2').highcharts({
             chart: {
+                zoomType: 'xy'
             },
             title: {
-                text: 'Combination chart'
+                text: 'Market control'
             },
-            xAxis: {
-                categories: ['Apples', 'Oranges', 'Pears', 'Bananas', 'Plums']
+            subtitle: {
+                text: 'Evolution of average salt Idization level (ppm)'
             },
-            tooltip: {
-                formatter: function() {
-                    var s;
-                    if (this.point.name) { // the pie chart
-                        s = ''+
-                            this.point.name +': '+ this.y +' fruits';
-                    } else {
-                        s = ''+
-                            this.x  +': '+ this.y;
-                    }
-                    return s;
-                }
-            },
-            labels: {
-                items: [{
-                    html: 'Total fruit consumption',
+            xAxis: [{
+                categories: seriesCategories
+            }],
+            yAxis: [{ // Primary yAxis
+                labels: {
+                    format: '',
                     style: {
-                        left: '40px',
-                        top: '8px',
-                        color: 'black'
+                        color: '#89A54E'
                     }
-                }]
+                },
+                title: {
+                    text: '',
+                    style: {
+                        color: '#89A54E'
+                    }
+                }
+            }, { // Secondary yAxis
+                title: {
+                    text: '',
+                    style: {
+                        color: '#4572A7'
+                    }
+                },
+                labels: {
+                    format: '',
+                    style: {
+                        color: '#4572A7'
+                    }
+                },
+                opposite: true
+            }],
+            tooltip: {
+                shared: true
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'left',
+                x: 120,
+                verticalAlign: 'top',
+                y: 100,
+                floating: true,
+                backgroundColor: '#FFFFFF'
             },
             series: [{
+                name: 'Avg',
+                color: '#4572A7',
                 type: 'column',
-                name: 'Jane',
-                data: [3, 2, 1, 3, 4]
+                yAxis: 1,
+                data: averages ,
+                tooltip: {
+                    valueSuffix: ''
+                }
+    
             }, {
-                type: 'column',
-                name: 'John',
-                data: [2, 3, 5, 7, 6]
-            }, {
-                type: 'column',
-                name: 'Joe',
-                data: [4, 3, 3, 9, 0]
-            }, {
+                name: 'Samples',
+                color: '#89A54E',
                 type: 'spline',
-                name: 'Average',
-                data: [3, 2.67, 3, 6.33, 3.33],
-                marker: {
-                	lineWidth: 2,
-                	lineColor: Highcharts.getOptions().colors[3],
-                	fillColor: 'white'
+                data: samples ,
+                tooltip: {
+                    valueSuffix: ''
                 }
             }]
         });
     });
-
+    
   }
 
-  loadCahrt();
+  var seriesCategories = [];
+  var seriesData = [];
+  var averages = [];
+  var samples = [];
 
+  function getSeriesData() {                                                    
+    <%(@samples || {}).sort_by { |k, v| v[:date] }.each do |quarter,values| %>                                 
+      averages.push(parseFloat("<%=values[:avg]%>"));
+      samples.push(parseFloat("<%=values[:num_of_samples]%>"));
+    <%end%>                                                                     
+  }                                                                             
+                                                                                
+  function getSeriesCategories() {                                              
+    <%(@samples || {}).sort_by { |k, v| v[:date] }.each do |quarter,values| %>                                 
+      seriesCategories.push("<%=quarter%>")                                        
+    <%end%>                                                                     
+  } 
+
+  getSeriesCategories();
+  getSeriesData();
+  loadCahrt();
     
 
 		</script>
 	</head>
 	<body>
 
-
 <div id="container-2" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 
 	</body>
 </html>
+
