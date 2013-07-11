@@ -1,0 +1,120 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Highcharts Example</title>
+
+		<script type="text/javascript">
+		
+
+    function loadCahrt() {
+	    $(function () {
+        $('#container-2').highcharts({
+            chart: {
+                zoomType: 'xy'
+            },
+            title: {
+                text: 'Market control'
+            },
+            subtitle: {
+                text: 'Evolution of average salt Idization by customes'
+            },
+            xAxis: [{
+                categories: seriesCategories
+            }],
+            yAxis: [{ // Primary yAxis
+                labels: {
+                    format: '',
+                    style: {
+                        color: '#89A54E'
+                    }
+                },
+                title: {
+                    text: '',
+                    style: {
+                        color: '#89A54E'
+                    }
+                }
+            }, { // Secondary yAxis
+                title: {
+                    text: '',
+                    style: {
+                        color: '#4572A7'
+                    }
+                },
+                labels: {
+                    format: '',
+                    style: {
+                        color: '#4572A7'
+                    }
+                },
+                opposite: true
+            }],
+            tooltip: {
+                shared: true
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'left',
+                x: 120,
+                verticalAlign: 'top',
+                y: 100,
+                floating: true,
+                backgroundColor: '#FFFFFF'
+            },
+            series: [{
+                name: 'Avg',
+                color: '#4572A7',
+                type: 'column',
+                yAxis: 1,
+                data: averages ,
+                tooltip: {
+                    valueSuffix: ''
+                }
+    
+            }, {
+                name: 'Samples',
+                color: '#89A54E',
+                type: 'spline',
+                data: samples ,
+                tooltip: {
+                    valueSuffix: ''
+                }
+            }]
+        });
+    });
+    
+  }
+
+  var seriesCategories = [];
+  var seriesData = [];
+  var averages = [];
+  var samples = [];
+
+  function getSeriesData() {                                                    
+    <%(@samples || {}).sort_by { |k, v| v[:date] }.each do |quarter,values| %>                                 
+      averages.push(parseFloat("<%=values[:avg]%>"));
+      samples.push(parseFloat("<%=values[:num_of_samples]%>"));
+    <%end%>                                                                     
+  }                                                                             
+                                                                                
+  function getSeriesCategories() {                                              
+    <%(@samples || {}).sort_by { |k, v| v[:date] }.each do |quarter,values| %>                                 
+      seriesCategories.push("<%=quarter%>")                                        
+    <%end%>                                                                     
+  } 
+
+  getSeriesCategories();
+  getSeriesData();
+  loadCahrt();
+    
+
+		</script>
+	</head>
+	<body>
+
+<div id="container-2" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+
+	</body>
+</html>
+
