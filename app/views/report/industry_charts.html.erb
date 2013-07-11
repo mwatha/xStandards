@@ -56,10 +56,18 @@
 <table class="charts">
   <tr>
     <td class="chart-container">
-      <%= render  "industry_line_chart"%>
+      <%if @report_type == "Iodinize levels by company"%>
+        <%= render  "report/industry/company/combination"%>
+      <%else%>
+        <%= render  "report/industry/overtime/combination"%>
+      <%end%>
     </td>
     <td class="chart-container">
-      <%= render "industry_colunm"%>
+      <%if @report_type == "Iodinize levels by company"%>
+        <%= render "report/industry/company/stacked_percentage_column"%>
+      <%else%>
+        <%= render "report/industry/overtime/stacked_percentage_column"%>
+      <%end%>
     </td>
   </tr>
 
@@ -67,32 +75,13 @@
   <tr><td colspan="2">&nbsp;</td></tr>
   <tr><td colspan="2"><hr /></td></tr>
 
-
   <tr>
     <td colspan="2">
-      <table class="production_table_chart">
-        <tr>
-          <th>Quarter</th>
-          <th>Below Market Min</th>
-          <th>Factory Min-Market Min</th>
-          <th>Below Factory Min</th>
-          <th>Production Range</th>
-          <th>Above Factory Max</th>
-          <th>Avg Iodization number of samples</th>
-        </tr>
-
-        <%(@samples || {}).each do |quarter , values| %>
-          <tr>
-            <td><%=quarter%></td>
-            <td><%=values[:below_market_min]%></td>
-            <td><%=values[:factory_min_market]%></td>
-            <td><%=values[:below_factory_min]%></td>
-            <td><%=values[:production_range]%></td>
-            <td><%=values[:above_factory_max]%></td>
-            <td><%=values[:avg]%></td>
-          </tr>
-        <%end%>
-      </table>
+      <%if @report_type == "Iodinize levels by company"%>
+        <%= render "report/industry/company/table_chart"%>
+      <%else%>
+        <%= render "report/industry/overtime/table_chart"%>
+      <%end%>
     </td>
   </tr>
 

@@ -104,8 +104,7 @@
       <td>
         <%options = ['Select report']
           options.push('Iodinize levels over time')
-          options.push('Iodinize levels by district')
-          options.push('Iodinize levels by salt brand and type')
+          options.push('Iodinize levels by company')
         %>
         <%= select_tag "report[report_type]", options_for_select(options)%>
       </td>
