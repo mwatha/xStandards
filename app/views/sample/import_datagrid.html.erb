@@ -363,14 +363,31 @@ function saveRecord(element) {
   var cat = document.getElementById(elementID + 8); 
 
   if (selected_date.value.length < 1) {
+    alert('Select a transaction date');
+    return;
   }else if(iir_code.value.length < 1) {
-  }else if(entry.value.length < 1) {
-  }else if(importer.value.length < 1) {
-  }else if(brand.value.length < 1) {
+    alert('Enter IIR code');
+    return;
+  }else if(entry.value == 'Select entry point' ) {
+    alert('Select entry point');
+    return;
+  }else if(importer.value == 'Select importer') {
+    alert('Select importer');
+    return;
+  }else if(brand.value == 'Select salt type') {
+    alert('Select salt type');
+    return;
+  }else if(country.value == 'Select country') {
+    alert('Select country');
+    return;
   }else if(volume.value.length < 1) {
+    alert('Enter volume of import');
+    return;
   }else if(entered_result.value.length < 1) {
-  }else if(country.value.length < 1) {
+    alert('Enter result');
+    return;
   }else if(cat.value.length < 1) {
+    alert('Enter result');
     return;
   }
 

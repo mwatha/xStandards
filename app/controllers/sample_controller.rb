@@ -16,7 +16,7 @@ class SampleController < ApplicationController
 
   def find_raw_data_market_control
     @samples = {}
-    (RawDataMarket.all || []).each do |sample|
+    (RawDataMarket.order("created_at DESC").limit(100) || []).each do |sample|
       @samples[sample.id] = {
         :district => sample.district.name,
         :market => sample.market.name,
@@ -32,7 +32,7 @@ class SampleController < ApplicationController
 
   def find_raw_data_industry_monitoring
     @samples = {}
-    (IndustryRawData.all || []).each do |sample|
+    (IndustryRawData.order("created_at DESC").limit(100) || []).each do |sample|
       @samples[sample.id] = {
         :cis_code => sample.cis_code,
         :country => sample.country.name,
@@ -50,7 +50,7 @@ class SampleController < ApplicationController
 
   def import_monitoring
     @samples = {}
-    (RawDataQualityMonitoring.all || []).each do |sample|
+    (RawDataQualityMonitoring.order("created_at DESC").limit(100) || []).each do |sample|
       @samples[sample.id] = {
         :iir_code => sample.iir_code,
         :country => sample.country.name,

@@ -284,11 +284,22 @@ function saveRecord(element) {
   var cat = document.getElementById(elementID + 5); 
 
   if (selected_date.value.length < 1) {
+    alert('Select transaction date');
+    return;
   }else if(cis_code.value.length < 1) {
-  }else if(company.value.length < 1) {
-  }else if(salt_type.value.length < 1) {
+    alert('Enter CIS code');
+    return;
+  }else if(company.value == 'Select company') {
+    alert('Select company');
+    return;
+  }else if(salt_type.value == 'Select salt type') {
+    alert('Select salt type');
+    return;
   }else if(entered_result.value.length < 1) {
+    alert('Enter results');
+    return;
   }else if(cat.value.length < 1) {
+    alert('Enter results');
     return;
   }
 
