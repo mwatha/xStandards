@@ -260,7 +260,7 @@
 
 
 <div class="page-header">                                                       
-  <h1>market <small>control</small></h1>   
+  <h1>MARKET CONTROL<small> INPUT SALT DETAILS AND RESULTS</small></h1>   
   <input type="button" class="btn btn-primary" 
     value="Back to menu" id="finish"onclick="document.location='/industry'" />                           
 </div>
@@ -271,12 +271,12 @@
   <table id='search_results' class='table table-striped table-bordered table-condensed'>
   <thead>                                                                       
   <tr id = 'table_head'>                                                        
-    <th id="th3" style="">Date</th>                                 
-    <th id="th1" style="">District</th>                               
-    <th id="th4" style="">Trading center</th>                             
-    <th id="th5" style="">Salt type</th>                                
-    <th id="th5" style="">Salt brand (origin)</th>                                
-    <th id="th5" style="">Result</th>                                
+    <th id="th3" style="">Collection Date</th>                                 
+    <th id="th1" style="">County</th>                               
+    <th id="th4" style="">Sub County</th>                             
+    <th id="th5" style="">Trading Center</th>                                
+    <th id="th5" style="">Manufacturer</th>                                
+    <th id="th5" style="">IODINE (mg/kg IODATE)</th>                                
     <th id="th5" style="">Category</th>                                
   </tr>                                                                         
   </thead>                                                                      
@@ -284,29 +284,34 @@
     <tr>                                                                        
       <td><%=text_field(:input, "date0",:class => "input_data") %></td>
       <td>
-        <%@districts.unshift('Select district') %>                      
+        <%@districts.unshift('Select County') %>                      
         <%= select_tag "district", options_for_select(@districts), 
             :class => "input_data", :id => "1" %>
       </td>
       <td>
-        <%@markets.unshift('Select market') %>                      
+        <%@markets.unshift('Select sub county') %>                      
         <%= select_tag "market", options_for_select(@markets), 
             :class => "input_data", :id => "2" %>
       </td>
       <td>
-        <%@salt_types.unshift('Select salt type') %>                      
+        <%@salt_types.unshift('Select trading center') %>                      
         <%= select_tag "type", options_for_select(@salt_types), 
             :class => "input_data", :id => "3" %>
       </td>                                                      
       <td>
-        <%@manufacturers.unshift('Select brand') %>                      
+        <%@manufacturers.unshift('Select manufacturer') %>                      
         <%= select_tag "manufacturer", options_for_select(@manufacturers), 
             :class => "input_data", :id => "4" %>
       </td>                                                      
       <td>
-        <input type="text" name="result" class='input_data' onkeyup="insertRow(this,event);sampleIodineCategory(this);" onchange = "sampleIodineCategory(this);" id="5" />
+        <%@manufacturers.unshift('Select salt brand') %>                      
+        <%= select_tag "brand", options_for_select(@manufacturers), 
+            :class => "input_data", :id => "5" %>
+      </td>                                                      
+      <td>
+        <input type="text" name="result" class='input_data' onkeyup="insertRow(this,event);sampleIodineCategory(this);" onchange = "sampleIodineCategory(this);" id="6" />
       </td>
-      <td><input disabled='disabled' type="text" name="category" class='input_data' id="6" /></td>
+      <td><input disabled='disabled' type="text" name="category" class='input_data' id="7" /></td>
     </tr>                                                                       
   </tbody>                                                                      
 </table>                                                                      
@@ -357,17 +362,17 @@ function saveRecord(element) {
   if (selected_date.value.length < 1) {
     alert('Please select date of transaction')
     return;
-  }else if(parseInt(district.value) < 1 || district.value == 'Select district') {
+  }else if(parseInt(district.value) < 1 || district.value == 'Select County') {
     alert('Please select a district')
     return;
-  }else if(parseInt(market.value) < 1 || market.value == 'Select market') {
+  }else if(parseInt(market.value) < 1 || market.value == 'Select sub county') {
     alert('Please select a market')
     return;
-  }else if(parseInt(salt_type.value) < 1 || salt_type.value == 'Select salt type') {
+  }else if(parseInt(salt_type.value) < 1 || salt_type.value == 'Select trading center') {
     alert('Please select salt type')
     return;
-  }else if(parseInt(manufacturer.value) < 1 || manufacturer.value == 'Select brand') {
-    alert('Please select salt brand (origin)')
+  }else if(parseInt(manufacturer.value) < 1 || manufacturer.value == 'Select manufacturer') {
+    alert('Please select salt manufacturer')
     return;
   }else if(entered_result.value.length < 1) {
     alert('Please enter iodine level')

@@ -4,7 +4,7 @@ class CreateRawDataQualityMonitorings < ActiveRecord::Migration
       t.string :iir_code, :null => false
       t.integer :border_id, :null => false
       t.integer :importer_id, :null => false
-      t.integer :salt_type_id, :null => false
+      t.integer :salt_brand_id, :null => false
       t.integer :country_id, :null => false
       t.float :volume_of_import, :null => false
       t.float :iodine_level, :null => false

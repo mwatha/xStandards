@@ -43,7 +43,7 @@
 
 
 <div class="page-header">
-  <h1>import <small>quality monitoring</small></h1>
+  <h3>IMPORT CONTROL <small>SUMMARY  OF SALT DETAILS AND RESULTS ENTERED</small></h3>
 </div>
 
 <section id='modals'>                                              
@@ -53,14 +53,12 @@
     <th id="th2" style="width:6%;">Date</th>  
     <th id="th1" style="width:6%;">IIR code</th>                           
     <th id="th2" style="width:10%;">Point of Entry</th>                           
-    <th id="th2" style="width:10%;">Importer  </th>                           
-    <th id="th2" style="width:6%;">Salt type</th>                           
-    <th id="th2" style="width:10%;">Salt brand (origin)</th>                           
-    <th id="th2" style="width:5%;">volume of import</th>  
-    <th id="th2" style="width:5%;">Result</th>  
+    <th id="th2" style="width:10%;">Importer</th>                           
+    <th id="th2" style="width:10%;">Salt brand</th>                           
+    <th id="th2" style="width:10%;">Country of origin</th>                           
+    <th id="th2" style="width:5%;">volume (tons)</th>  
+    <th id="th2" style="width:5%;">IODINE (mg/kg IODATE)</th>  
     <th id="th2" style="width:12%;">Category</th>  
-    <th id="th2" style="width:8%;">Month</th>  
-    <th id="th2" style="width:6%;">Quarter</th>  
     <th id="th10" style="width:5%;">&nbsp;</th>                               
   </tr>                                                                         
   </thead>                                                                      
@@ -71,14 +69,12 @@
       <td><%=values[:iir_code]%></td>                                            
       <td><%=values[:border]%></td>                                            
       <td><%=values[:importer]%></td>                                            
-      <td><%=values[:salt_type]%></td>                                            
+      <td><%=values[:salt_brand]%></td>                                            
       <td><%=values[:country]%></td>                                            
       <td><%=values[:volume]%></td>                                            
       <td><%=values[:iodine_level]%></td>                                            
       <td><%=values[:category]%></td>                                            
-      <td><%=values[:month]%></td>                                            
-      <td><%=values[:quarter]%></td>                                            
-      <td><a href="#">Show</a></td>       
+      <td><a href="#">Edit/delete</a></td>       
     </tr>                                                                       
     <%end%>                                                                     
   </tbody>                                                                      

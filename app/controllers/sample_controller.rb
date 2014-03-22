@@ -55,7 +55,7 @@ class SampleController < ApplicationController
         :iir_code => sample.iir_code,
         :country => sample.country.name,
         :importer => sample.importer.name,
-        :salt_type => sample.salt_type.name,
+        :salt_brand => sample.salt_brand.name,
         :iodine_level => sample.iodine_level,
         :category => sample.category,
         :border => sample.point_of_entry.name,
@@ -210,6 +210,11 @@ class SampleController < ApplicationController
     @countries = Country.order('name ASC').collect do |country|      
       [country.name , country.id]                                       
     end
+
+    @salt_brands = Product.order('name ASC').collect do |product|
+      [product.name , product.id]
+    end
+
   end
 
   def create_quality_monitoring_raw_data
@@ -280,7 +285,7 @@ class SampleController < ApplicationController
       sample.iir_code = params[:sample]['iir_code']
       sample.border_id = params[:sample]['border']
       sample.importer_id = params[:sample]['importer']
-      sample.salt_type_id = params[:sample]['salt_type']
+      sample.salt_brand_id = params[:sample]['salt_brand']
       sample.country_id = params[:sample]['country']
       sample.volume_of_import = params[:sample]['volume']
       sample.iodine_level = params[:sample]['iodine_level']
@@ -300,7 +305,7 @@ class SampleController < ApplicationController
       sample.iir_code = params[:sample]['iir_code']
       sample.border_id = params[:sample]['border']
       sample.importer_id = params[:sample]['importer']
-      sample.salt_type_id = params[:sample]['salt_type']
+      sample.salt_brand_id = params[:sample]['salt_brand']
       sample.country_id = params[:sample]['country']
       sample.volume_of_import = params[:sample]['volume']
       sample.iodine_level = params[:sample]['iodine_level']

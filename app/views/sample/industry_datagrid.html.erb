@@ -200,7 +200,7 @@
 
 
 <div class="page-header">                                                       
-  <h1>industry <small>control</small></h1>   
+  <h3>INDUSTRY CONTROL<small> INPUT SALT DETAILS AND RESULTS</small></h3>   
   <input type="button" class="btn btn-primary" 
     value="Back to menu" id="finish"onclick="document.location='/industry'" />                           
 </div>
@@ -211,12 +211,14 @@
   <table id='search_results' class='table table-striped table-bordered table-condensed'>
   <thead>                                                                       
   <tr id = 'table_head'>                                                        
-    <th id="th3" style="">Date</th>                                 
-    <th id="th1" style="">CIS Code</th>                               
-    <th id="th4" style="">Company name</th>                             
-    <th id="th5" style="">Salt type</th>                                
-    <th id="th5" style="">Result</th>                                
+    <th id="th3" style="">Collection date</th>                                 
+    <th id="th1" style="">CIS code</th>                               
+    <th id="th4" style="">Manufacturer</th>                             
+    <th id="th5" style="">Salt brand</th>                                
+    <th id="th5" style="">Matrix/other details</th>                                
+    <th id="th5" style="">IODINE (mg/kg IODATE)</th>                                
     <th id="th5" style="">Category</th>                                
+    <th id="th5" style="">Quarter/Year</th>                                
   </tr>                                                                         
   </thead>                                                                      
   <tbody id='results'>                                                          
@@ -233,10 +235,12 @@
         <%= select_tag "type", options_for_select(@salt_types), 
             :class => "input_data", :id => "3" %>
       </td>                                                      
+      <td><input type="text" name="iir_code" class='input_data' id="1" /></td>
       <td>
         <input type="text" name="result" class='input_data' onkeyup="insertRow(this,event);sampleIodineCategory(this);" onchange = "sampleIodineCategory(this);" id="4" />
       </td>
       <td><input disabled='disabled' type="text" name="category" class='input_data' id="5" /></td>
+      <td><input type="text" name="iir_code" class='input_data' id="1" /></td>
     </tr>                                                                       
   </tbody>                                                                      
 </table>                                                                      

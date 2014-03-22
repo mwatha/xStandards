@@ -150,7 +150,7 @@
       saltSelect.setAttribute("id",colID);
       var selectDiv = document.createElement('Div');
 
-      <%@salt_types.each do |name , id| %>
+      <%@salt_brands.each do |name , id| %>
         if (parseInt(valueEntered) == parseInt(<%=id%>)) {
           var opt = document.createElement('option');
           opt.value = <%=id%>;
@@ -159,7 +159,7 @@
         }
       <%end%>
 
-      <%@salt_types.each do |name , id| %>
+      <%@salt_brands.each do |name , id| %>
         var opt = document.createElement('option');
         opt.value = <%=id%>;
         opt.textContent = "<%=name%>";
@@ -261,7 +261,7 @@
 
 
 <div class="page-header">                                                       
-  <h1>import <small>quality monitoring</small></h1>   
+  <h3>IMPORT CONTROL<small> INPUT SALT DETAILS AND RESULTS</small></h3>   
   <input type="button" class="btn btn-primary" 
     value="Back to menu" id="finish"onclick="document.location='/prod'" />                           
 </div>
@@ -276,10 +276,10 @@
     <th id="th1" style="">IIR Code</th>                               
     <th id="th4" style="">Point of Entry</th>                             
     <th id="th5" style="">Importer</th>                                
-    <th id="th5" style="">Salt type</th>                                
-    <th id="th5" style="">Brand (origin)</th>                                
-    <th id="th5" style="">Volume of import (tons)</th>                                
-    <th id="th5" style="">Result</th>                                
+    <th id="th5" style="">Country of origin</th>                                
+    <th id="th5" style="">Salt brand</th>                                
+    <th id="th5" style="">Volume (tons)</th>                                
+    <th id="th5" style="">IODINE (mg/kg IODATE)</th>                                
     <th id="th5" style="">Category</th>                                
   </tr>                                                                         
   </thead>                                                                      
@@ -299,14 +299,14 @@
             :class => "input_data", :id => "3" %>
       </td>                                                      
       <td>
-        <%@salt_types.unshift('Select salt type') %>                      
-        <%= select_tag "type", options_for_select(@salt_types), 
-            :class => "input_data", :id => "4" %>
-      </td>                                                      
-      <td>
         <%@countries.unshift('Select country') %>                      
         <%= select_tag "brand", options_for_select(@countries), 
             :class => "input_data", :id => "5" %>
+      </td>                                                      
+      <td>
+        <%@salt_brands.unshift('Select salt brand') %>                      
+        <%= select_tag "type", options_for_select(@salt_brands), 
+            :class => "input_data", :id => "4" %>
       </td>                                                      
       <td><input type="text" name="volume" class='input_data' id="6" /></td>                                                      
       <td>
@@ -374,8 +374,8 @@ function saveRecord(element) {
   }else if(importer.value == 'Select importer') {
     alert('Select importer');
     return;
-  }else if(brand.value == 'Select salt type') {
-    alert('Select salt type');
+  }else if(brand.value == 'Select salt brand') {
+    alert('Select salt brand');
     return;
   }else if(country.value == 'Select country') {
     alert('Select country');
@@ -394,7 +394,7 @@ function saveRecord(element) {
   var url = "sample[iir_code]=" + iir_code.value;                                                                         
   url += "&sample[border]=" + entry.value;                                                                         
   url += "&sample[importer]=" + importer.value;                                                                         
-  url += "&sample[salt_type]=" + brand.value;                                                                         
+  url += "&sample[salt_brand]=" + brand.value;                                                                         
   url += "&sample[country]=" + country.value;                                                                         
   url += "&sample[volume]=" + volume.value;                                                                         
   url += "&sample[iodine_level]=" + entered_result.value;                                                                         
@@ -453,7 +453,7 @@ function updateRow(element , ev , rowCount) {
   var url = "sample[iir_code]=" + iir_code.value;                                                                         
   url += "&sample[border]=" + entry.value;                                                                         
   url += "&sample[importer]=" + importer.value;                                                                         
-  url += "&sample[salt_type]=" + brand.value;                                                                         
+  url += "&sample[salt_brand]=" + brand.value;                                                                         
   url += "&sample[country]=" + country.value;                                                                         
   url += "&sample[volume]=" + volume.value;                                                                         
   url += "&sample[iodine_level]=" + entered_result.value;                                                                         
