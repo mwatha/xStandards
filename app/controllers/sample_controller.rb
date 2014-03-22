@@ -37,7 +37,8 @@ class SampleController < ApplicationController
         :cis_code => sample.cis_code,
         :country => sample.country.name,
         :manufacturer => sample.manufacturer.name,
-        :salt_type => sample.salt_type.name,
+        :salt_brand => sample.salt_brand.name,
+        :other => sample.other,
         :iodine_level => sample.iodine_level,
         :category => sample.category,
         :month => sample.date.strftime('%Y/%m - %b'),
@@ -234,8 +235,8 @@ class SampleController < ApplicationController
       [border.name , border.id]                                               
     end                                                                         
                                                                                 
-    @salt_types = SaltType.order('name ASC').collect do |salt|                  
-      [salt.name , salt.id]                                                     
+    @salt_brands = Product.order('name ASC').collect do |product|                  
+      [product.name , product.id]                                                     
     end
                                                                                 
     @countries = Country.order('name ASC').collect do |country|      
@@ -324,7 +325,8 @@ class SampleController < ApplicationController
       country = Manufacturer.find(params[:sample]['company']).country
       sample = IndustryRawData.new()
       sample.cis_code = params[:sample]['cis_code']
-      sample.salt_type_id = params[:sample]['salt_type']
+      sample.salt_brand_id = params[:sample]['salt_brand']
+      sample.other = params[:sample]['other']
       sample.brand_name_id = params[:sample]['company']
       sample.country_id = country.id
       sample.iodine_level = params[:sample]['iodine_level']
@@ -343,7 +345,8 @@ class SampleController < ApplicationController
       country = Manufacturer.find(params[:sample]['company']).country
       sample = IndustryRawData.find(params[:sample]['sample_id'])
       sample.cis_code = params[:sample]['cis_code']
-      sample.salt_type_id = params[:sample]['salt_type']
+      sample.salt_brand_id = params[:sample]['salt_brand']
+      sample.other = params[:sample]['other']
       sample.brand_name_id = params[:sample]['company']
       sample.country_id = country.id
       sample.iodine_level = params[:sample]['iodine_level']
