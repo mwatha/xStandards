@@ -2,6 +2,26 @@ class CountryController < ApplicationController
   def index
   end
 
+  def create_sub_county
+    country = SubCounty.new()                                                       
+    country.name = params[:subcounty]['name']
+    country.county_id = params[:subcounty]['county']
+    unless params[:subcounty]['description'].blank?                                                           
+      country.description = params[:subcounty]['description']
+    end
+    if country.save
+      flash[:notice] = 'Successfully created.'                                
+    else
+      flash[:error] = 'Something went wrong - did not create.'                
+    end
+
+    redirect_to '/sub_county'
+  end
+
+  def sub_county
+    @counties = County.all.map{|c|[c.name, c.id]}
+  end
+
   def createcountry
     country = Country.new()                                                       
     country.name = params[:country]['name']
@@ -19,11 +39,11 @@ class CountryController < ApplicationController
 
   def createdistrict
     District.transaction do
-      district = District.new()                                                       
-      district.name = params[:district]['name']
-      district.country_id = params[:district]['country']
-      unless params[:district]['description'].blank?                                                           
-        district.description = params[:district]['description']
+      district = County.new()                                                       
+      district.name = params[:county]['name']
+      district.country_id = params[:county]['country']
+      unless params[:county]['description'].blank?                                                           
+        district.description = params[:county]['description']
       end
       if district.save
         flash[:notice] = 'Successfully created.'                                

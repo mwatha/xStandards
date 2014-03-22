@@ -22,6 +22,9 @@ XStandards::Application.routes.draw do
   post 'country/createborder'
   post 'country/createmarket'
   post 'country/createdistrict'
+
+  post "country/create_sub_county"
+  match '/sub_county' => 'country#sub_county'
   ###### countries end #####
 
   ###### reports #####

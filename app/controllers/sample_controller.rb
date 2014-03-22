@@ -257,17 +257,22 @@ class SampleController < ApplicationController
       [manu.name , manu.id]                                                     
     end                                                                         
                                                                                 
-    @salt_types = SaltType.order('name ASC').collect do |salt|                  
-      [salt.name , salt.id]                                                     
+    @salt_brands = Product.order('name ASC').collect do |product|                  
+      [product.name , product.id]                                                     
     end                                                                         
                                                                                 
     @manufacturers = Manufacturer.order('name ASC').collect do |manu|      
       [manu.name , manu.id]                                       
     end
                                                                                 
-    @districts = District.order('name ASC').collect do |district|      
+    @counties = County.order('name ASC').collect do |district|      
       [district.name , district.id]                                       
     end
+
+    @subcounties = SubCounty.order('name ASC').collect do |district|      
+      [district.name , district.id]                                       
+    end
+
   end
 
   def raw_data_market_create

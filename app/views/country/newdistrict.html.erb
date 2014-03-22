@@ -18,11 +18,11 @@ function submitForm() {
 }                                                                               
                                                                                 
 function validateForm(){                                                        
-  district_name = document.getElementById('district_name');                      
-  district_country = document.getElementById('district_country');                      
+  district_name = document.getElementById('county_name');                      
+  district_country = document.getElementById('county_country');                      
 
   if(district_name.value == '') {                                                     
-    alert("Please enter district name ...");                                     
+    alert("Please enter county name ...");                                     
     return false;                                                             
   }else if(district_country.value == 'Select country') {                                                     
     alert("Please select a country ...");                                     
@@ -37,7 +37,7 @@ function validateForm(){
 
 
 <div class="page-header">
-  <h1>district <small>register</small></h1>
+  <h1>county <small>register</small></h1>
 </div>
 
 <siection id='modals'>                                              
@@ -57,11 +57,11 @@ function validateForm(){
       <td>&nbsp;</td>                                                           
     </tr>                                                                       
     <tr>                                                                        
-      <td><%=text_field(:district, :name, :placeholder => "Name") %> </td>
+      <td><%=text_field(:county, :name, :placeholder => "Name") %> </td>
     </tr>                                                                       
     <tr>                                                                        
       <td>
-        <%= select_tag "district[country]", 
+        <%= select_tag "county[country]", 
           options_for_select(@countries),
           :placeholder => "Select country" %>
       </td>   
@@ -70,7 +70,7 @@ function validateForm(){
       <td><hr /></td>   
     </tr>                                                                       
     <tr>                                                                        
-      <td><%=text_area_tag("district[description]", nil, :placeholder => "Description") %></td>
+      <td><%=text_area_tag("county[description]", nil, :placeholder => "Description") %></td>
     </tr>                                                                       
     <tr>                                                                        
       <td><hr /></td>   
