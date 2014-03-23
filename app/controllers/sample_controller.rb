@@ -18,7 +18,8 @@ class SampleController < ApplicationController
     @samples = {}
     (RawDataMarket.order("created_at DESC").limit(100) || []).each do |sample|
       @samples[sample.id] = {
-        :district => sample.district.name,
+        :county => sample.county.name,
+        :subcounty => sample.sub_county.name,
         :market => sample.market.name,
         :manufacturer => sample.manufacturer.name,
         :salt_type => sample.salt_type.name,
@@ -369,9 +370,10 @@ class SampleController < ApplicationController
     RawDataMarket.transaction do
       sample = RawDataMarket.new()
       sample.manufacturer_id = params[:sample]['manufacturer']
-      sample.district_id = params[:sample]['district']
+      sample.county_id = params[:sample]['county']
+      sample.sub_county_id = params[:sample]['sub_county']
       sample.market_id = params[:sample]['market']
-      sample.salt_type_id = params[:sample]['salt_type']
+      sample.salt_brand_id = params[:sample]['salt_brand']
       sample.iodine_level = params[:sample]['iodine_level']
       sample.category = params[:sample]['category']
       sample.date = params[:sample]['date']
@@ -387,7 +389,8 @@ class SampleController < ApplicationController
     RawDataMarket.transaction do
       sample = RawDataMarket.find(params[:sample]['sample_id'])
       sample.manufacturer_id = params[:sample]['manufacturer']
-      sample.district_id = params[:sample]['district']
+      sample.county_id = params[:sample]['county']
+      sample.sub_county_id = params[:sample]['sub_county']
       sample.market_id = params[:sample]['market']
       sample.salt_type_id = params[:sample]['salt_type']
       sample.iodine_level = params[:sample]['iodine_level']
