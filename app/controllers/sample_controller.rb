@@ -1,5 +1,65 @@
 class SampleController < ApplicationController
 
+  def delete_entered_data
+    if params[:cmd] == 'import'
+      RawDataQualityMonitoring.delete(params[:id])
+      redirect_to "/import_monitoring" and return
+    end
+  end
+
+  def edit_import
+    if request.post?
+      sample = RawDataQualityMonitoring.where(:id => params['sample_id'])[0]
+      sample.iir_code = params[:input]['iir_code']
+      sample.country_id = Country.where(:name => params['country'])[0].id
+      sample.border_id = Border.where(:name => params['border'])[0].id
+      sample.salt_brand_id = Product.where(:name => params['salt_brand'])[0].id
+      sample.iodine_level = params[:input]['iodine_level']
+      sample.category = get_category(params[:input]['iodine_level'].to_f)
+      sample.volume_of_import = params[:input]['volume']
+      sample.date = params[:input]['date0']
+      sample.importer_id = Transporter.where(:name => params['transporter'])[0].id
+      sample.save
+      redirect_to "/import_monitoring" and return
+    end
+ 
+    sample = RawDataQualityMonitoring.where(:id => params[:id])[0]
+    @sample = {
+      :iir_code => sample.iir_code,
+      :country => sample.country.name,
+      :importer => sample.importer.name,
+      :salt_brand => sample.salt_brand.name,
+      :iodine_level => sample.iodine_level,
+      :category => sample.category,
+      :border => sample.point_of_entry.name,
+      :volume => sample.volume_of_import,
+      :date => sample.date.strftime('%d-%m-%Y'),
+      :quarter => quater(sample.date),
+      :id => sample.id
+    }
+
+    @manufacturers = Manufacturer.order('name ASC').collect do |manu|
+      [manu.name , manu.id]
+    end
+
+    @countries = Country.order('name ASC').collect do |country|
+      [country.name , country.id]
+    end
+
+    @salt_brands = Product.order('name ASC').collect do |product|
+      [product.name , product.id]
+    end
+
+    @transporters = Transporter.order('name ASC').collect do |transporter|
+      [transporter.name , transporter.id]
+    end
+
+    @borders = Border.order('name ASC').collect do |border|                 
+      [border.name , border.id]                                               
+    end                                                                         
+                                                                                
+  end
+
   def search
     @samples = {}
     (Sample.all || []).each do |sample|
@@ -401,6 +461,20 @@ class SampleController < ApplicationController
       else                                                                      
         return false
       end
+    end
+  end
+
+  def get_category(level)
+    if(level < 25)
+      return "Below Market Min"
+    elsif(level >= 25 && level <= 49.9 )
+      return "Factory Min-Market Min"
+    elsif(level < 50)                                          
+      return "< Factory Min"                     
+    elsif(level >= 50 && level <= 84)                              
+      return "Production Range"
+    elsif(level > 84)                           
+      return "> Factory Max"                           
     end
   end
 

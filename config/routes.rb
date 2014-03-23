@@ -1,5 +1,6 @@
 XStandards::Application.routes.draw do
 
+
   ###### transporter #####
   match '/transporters' => 'transporter#index'
   match '/newtransporter' => 'transporter#new'
@@ -99,6 +100,17 @@ XStandards::Application.routes.draw do
   match 'raw_data_market_create' => "sample#raw_data_market_create"                                                             
   match 'raw_data_market_update' => "sample#raw_data_market_update"                                                             
   #get "sample/market_datagrid"
+  match 'delete_entered_data/:id/:cmd' => 'sample#delete_entered_data', :as => :delete_entered_data
+
+
+  match 'edit_industry/:id' => 'sample#edit_industry', :as => :edit_industry
+  post "sample/edit_industry"                                                             
+
+  match 'edit_import/:id' => 'sample#edit_import', :as => :edit_import
+  post "sample/edit_import"                                                             
+
+  match 'edit_market/:id' => 'sample#edit_market', :as => :edit_market
+  post "sample/edit_market"                                                             
   ###### sample end #####
 
   ###### user #######
