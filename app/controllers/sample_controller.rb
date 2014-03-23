@@ -1,10 +1,56 @@
 class SampleController < ApplicationController
 
+  def edit_industry
+    if request.post?
+      sample = IndustryRawData.where(:id => params['sample_id'])[0]
+      sample.cis_code = params[:input]['cis_code']
+      sample.country_id = Country.where(:name => params['country'])[0].id
+      sample.salt_brand_id = Product.where(:name => params['salt_brand'])[0].id
+      sample.iodine_level = params[:input]['iodine_level']
+      sample.category = get_category(params[:input]['iodine_level'].to_f)
+      sample.date = params[:input]['date0']
+      sample.save
+      redirect_to "/find_raw_data_industry_monitoring" and return
+    end
+ 
+    sample = IndustryRawData.where(:id => params[:id])[0]
+    @sample = {
+      :cis_code => sample.cis_code,
+      :country => sample.country.name,
+      :salt_brand => sample.salt_brand.name,
+      :iodine_level => sample.iodine_level,
+      :category => sample.category,
+      :other => sample.other,
+      :date => sample.date.strftime('%d-%m-%Y'),
+      :id => sample.id
+    }
+
+    @manufacturers = Manufacturer.order('name ASC').collect do |manu|
+      [manu.name , manu.name]
+    end
+
+    @salt_brands = Product.order('name ASC').collect do |product|
+      [product.name , product.name]
+    end
+
+    @countries = Country.order('name ASC').collect do |country|
+      [country.name , country.name]
+    end
+
+  end
+
+  #.....................................................................................................................
+
+
   def delete_entered_data
     if params[:cmd] == 'import'
       RawDataQualityMonitoring.delete(params[:id])
-      redirect_to "/import_monitoring" and return
+      redirect_to "/import_monitoring"
+    elsif params[:cmd] == 'industry'
+      IndustryRawData.delete(params[:id])
+      redirect_to "/find_raw_data_industry_monitoring"
     end
+    return
   end
 
   def edit_import
@@ -43,19 +89,19 @@ class SampleController < ApplicationController
     end
 
     @countries = Country.order('name ASC').collect do |country|
-      [country.name , country.id]
+      [country.name , country.name]
     end
 
     @salt_brands = Product.order('name ASC').collect do |product|
-      [product.name , product.id]
+      [product.name , product.name]
     end
 
     @transporters = Transporter.order('name ASC').collect do |transporter|
-      [transporter.name , transporter.id]
+      [transporter.name , transporter.name]
     end
 
     @borders = Border.order('name ASC').collect do |border|                 
-      [border.name , border.id]                                               
+      [border.name , border.name]                                               
     end                                                                         
                                                                                 
   end
