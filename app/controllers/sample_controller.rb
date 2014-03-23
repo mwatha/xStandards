@@ -22,7 +22,7 @@ class SampleController < ApplicationController
         :subcounty => sample.sub_county.name,
         :market => sample.market.name,
         :manufacturer => sample.manufacturer.name,
-        :salt_type => sample.salt_type.name,
+        :salt_brand => sample.salt_brand.name,
         :quater => quater(sample.date),
         :iodine_level => sample.iodine_level,
         :category => sample.category,
