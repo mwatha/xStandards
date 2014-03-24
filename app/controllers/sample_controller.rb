@@ -1,5 +1,57 @@
 class SampleController < ApplicationController
 
+  def edit_market
+    if request.post?
+      sample = RawDataMarket.where(:id => params[:sample_id])[0]
+      sample.county_id = County.where(:name => params[:county])[0].id
+      sample.sub_county_id = SubCounty.where(:name => params[:subcounty])[0].id
+      sample.market_id = Market.where(:name => params[:market])[0].id
+      sample.manufacturer_id = Manufacturer.where(:name => params[:manufacturer])[0].id
+      sample.salt_brand_id = Product.where(:name => params['salt_brand'])[0].id
+      sample.iodine_level = params[:input]['iodine_level']
+      sample.category = get_category(params[:input]['iodine_level'].to_f)
+      sample.date = params[:input]['date0']
+      sample.save
+      redirect_to "/find_raw_data_market_control" and return
+    end
+
+    sample = RawDataMarket.where(:id => params[:id])[0]
+    @sample = {
+      :county => sample.county.name,
+      :id => sample.id,
+      :subcounty => sample.sub_county.name,
+      :market => sample.market.name,
+      :manufacturer => sample.manufacturer.name,
+      :salt_brand => sample.salt_brand.name,
+      :quater => quater(sample.date),
+      :iodine_level => sample.iodine_level,
+      :category => sample.category,
+      :date => sample.date.strftime('%d-%b-%Y')
+    }
+
+    @manufacturers = Manufacturer.order('name ASC').collect do |manu|
+      [manu.name , manu.name]
+    end
+
+    @salt_brands = Product.order('name ASC').collect do |product|
+      [product.name , product.name]
+    end
+
+    @subcounties = SubCounty.order('name ASC').collect do |sub_county|
+      [sub_county.name , sub_county.name]
+    end
+
+    @counties = County.order('name ASC').collect do |county|
+      [county.name , county.name]
+    end
+
+    @markets = Market.order('name ASC').collect do |market|
+      [market.name , market.name]
+    end
+
+  end
+  #.....................................................................................................................
+
   def edit_industry
     if request.post?
       sample = IndustryRawData.where(:id => params['sample_id'])[0]
@@ -49,6 +101,9 @@ class SampleController < ApplicationController
     elsif params[:cmd] == 'industry'
       IndustryRawData.delete(params[:id])
       redirect_to "/find_raw_data_industry_monitoring"
+    elsif params[:cmd] == 'market'
+      RawDataMarket.delete(params[:id])
+      redirect_to "/find_raw_data_market_control"
     end
     return
   end

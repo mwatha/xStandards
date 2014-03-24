@@ -1,2 +1,183 @@
-<h1>Sample#edit_market</h1>
-<p>Find me in app/views/sample/edit_market.html.erb</p>
+<%= stylesheet_link_tag "DatePicker/jsDatePick_ltr.min" %>
+<%= javascript_include_tag "DatePicker/jsDatePick.min.1.3" %>
+
+<script>
+ var currDate = new Date();
+ var dateNow =  currDate.getDate();
+ var yrNow =  currDate.getFullYear();
+ var monthNow =  (currDate.getMonth() + 1);
+
+ function setDate(id){
+    new JsDatePick({
+      useMode:2,
+      target: id ,
+      dateFormat:"%d-%M-%Y",
+      selectedDate:{       
+        day: dateNow,            
+        month: monthNow,
+        year: yrNow
+      },
+      yearsRange:[1900,yrNow],
+      limitToToday: true,
+      cellColorScheme:"beige",
+      dateFormat:"%d-%m-%Y",
+      imgPath:"img/",
+      weekStartDay:1
+    });
+  };
+
+  function setDateDynamically(id,nowYr,nowMonth,nowDate){
+    set_date = new Date(nowYr, (nowMonth - 1), nowDate);
+    new JsDatePick({
+      useMode:2,
+      target: id ,
+      dateFormat:"%d-%M-%Y",
+      selectedDate:{       
+        day: set_date.getDate(),            
+        month: set_date.getMonth(),
+        year: set_date.getFullYear()
+      },
+      yearsRange:[1900,yrNow],
+      limitToToday: true,
+      cellColorScheme:"beige",
+      dateFormat:"%d-%m-%Y",
+      imgPath:"img/",
+      weekStartDay:1
+    });
+  };
+
+
+
+
+</script>
+
+
+<style>
+
+  .btn-table .btn {
+    width: 50% !important;
+  }
+
+</style>
+
+<div class="page-header">
+  <h3>MARKET CONTROL <small>Edit/Delete enetered data</small></h3>
+</div>
+
+<section id='modals'>
+  <form action="/sample/edit_market" method="post" id = "import_form">
+  <table id="search_results" class="table table-striped table-bordered table-condensed">
+    <tr id = 'table_head'>
+      <th id="th1" style="width:50%;">Collection Date</th>
+      <td><%=text_field(:input, "date0",:class => "input_data",:value => @sample[:date]) %></td>
+    </tr>
+    <tr id = 'table_head'>
+      <th id="th1" style="width:50%;">County</th>
+      <td>
+        <%@counties.unshift(@sample[:county]) %>
+        <%= select_tag "county", options_for_select(@counties),
+            :class => "input_data", :id => "county" %>
+      </td>
+    </tr>
+    <tr id = 'table_head'>
+      <th id="th1" style="width:50%;">Sub county</th>
+      <td>
+        <%@subcounties.unshift(@sample[:subcounty]) %>
+        <%= select_tag "subcounty", options_for_select(@subcounties),
+            :class => "input_data", :id => "subcounty" %>
+      </td>
+    </tr>
+    <tr id = 'table_head'>
+      <th id="th1" style="width:50%;">Trading center</th>
+      <td>
+        <%@markets.unshift(@sample[:market]) %>
+        <%= select_tag "market", options_for_select(@markets),
+            :class => "input_data", :id => "market" %>
+      </td>
+    </tr>
+    <tr id = 'table_head'>
+      <th id="th1" style="width:50%;">Manufacturer</th>
+      <td>
+        <%@manufacturers.unshift(@sample[:manufacturer]) %>
+        <%= select_tag "manufacturer", options_for_select(@manufacturers),
+            :class => "input_data", :id => "manufacturer" %>
+      </td>
+    </tr>
+    <tr id = 'table_head'>
+      <th id="th1" style="width:50%;">Salt brand</th>
+      <td>
+        <%@salt_brands.unshift(@sample[:salt_brand]) %>
+        <%= select_tag "salt_brand", options_for_select(@salt_brands),
+            :class => "input_data", :id => "salt_brand" %>
+      </td>
+    </tr>
+    <tr id = 'table_head'>
+      <th id="th1" style="width:50%;">Iodine (mg/kg iodate)</th>
+      <td>
+          <%=text_field(:input, "iodine_level",
+          :class => "input_data",:value => @sample[:iodine_level],
+          :onchange => "sampleIodineCategory(this);",
+          :onkeyup => "sampleIodineCategory(this);") %>
+      </td>
+    </tr>
+    <tr id = 'table_head'>
+      <th id="th1" style="width:50%;">Category</th>
+      <td><input disabled='disabled' type="text" name="category" class='input_data' id="category" value = "<%=@sample[:category]%>" /></td>
+    </tr>
+  </table>
+  <input type="hidden" name="sample_id" value = "<%=@sample[:id]%>" />
+  </form>
+  <br />
+  <table style="width: 100%;" class="btn-table">
+  <tr>
+    <td style="text-align: left;">
+       <input type="button" class="btn btn-primary" 
+        value="delete" id="delete" onclick="document.location='/delete_entered_data/<%=@sample[:id]%>/market'" />
+    </td>
+    <td style="text-align:center;">
+      <input type="button" class="btn btn-primary" 
+      value="update" id="update" onclick="update()" />
+    </td>
+    <td style="text-align: right;">
+      <input type="button" class="btn btn-primary" 
+      value="cancel" id="cancel" onclick="document.location='/import_monitoring'" />
+    </td>
+  </tr>
+  </table>
+
+</section>
+
+
+<script>
+  setDate(document.getElementById('input_date0').id);
+  
+  function update() {
+    document.getElementById('import_form').submit();
+  }
+
+  function sampleIodineCategory(element) {                                               
+  sample_iodine_category = document.getElementById('category');
+                                                          
+  try{                                                                          
+    var level = parseFloat(element.value);                          
+    if(!level) {                                                                
+      sample_iodine_category.value = null;                                      
+      return;                                                                   
+    }                                                                           
+  }catch(e){}                                                                   
+                       
+                                   
+  if(level < 25){                                                               
+    sample_iodine_category.value = "Below Market Min";                          
+  }else if(level >= 25 && level <= 49.9 ){                                      
+    sample_iodine_category.value = "Factory Min-Market Min";                    
+  }else if(level < 50){                                                         
+    sample_iodine_category.value = "< Factory Min";                             
+  }else if(level >= 50 && level <= 84){                                         
+    sample_iodine_category.value = "Production Range";                          
+  }else if(level > 84){                                                         
+    sample_iodine_category.value = "> Factory Max";                             
+  }                                                                             
+
+}
+</script>
