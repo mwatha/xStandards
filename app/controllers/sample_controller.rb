@@ -28,6 +28,26 @@ class SampleController < ApplicationController
         :date => sample.date.strftime('%d-%b-%Y')
       }
     end
+
+    @markets = Market.order('name ASC').collect do |market|
+      [market.name , market.id]
+    end
+
+    @manufacturers = Manufacturer.order('name ASC').collect do |manu|
+      [manu.name , manu.id]
+    end
+
+    @countries = Country.order('name ASC').collect do |country|
+      [country.name , country.id]
+    end
+
+    @salt_types = SaltType.order('name ASC').collect do |salt|
+      [salt.name , salt.id]
+    end
+
+    @transporters = Transporter.order('name ASC').collect do |transporter|
+      [transporter.name , transporter.id]
+    end
   end
 
   def find_raw_data_industry_monitoring
@@ -44,6 +64,26 @@ class SampleController < ApplicationController
         :quarter => quater(sample.date),
         :date => sample.date.strftime('%d-%b-%Y')
       }
+    end
+
+    @borders = Border.order('name ASC').collect do |border|                 
+      [border.name , border.id]                                               
+    end                                                                         
+                                                                                
+    @manufacturers = Manufacturer.order('name ASC').collect do |manu|
+      [manu.name , manu.id]
+    end
+
+    @countries = Country.order('name ASC').collect do |country|
+      [country.name , country.id]
+    end
+
+    @salt_types = SaltType.order('name ASC').collect do |salt|
+      [salt.name , salt.id]
+    end
+
+    @transporters = Transporter.order('name ASC').collect do |transporter|
+      [transporter.name , transporter.id]
     end
 
   end
@@ -65,6 +105,27 @@ class SampleController < ApplicationController
         :date => sample.date.strftime('%d-%b-%Y')
       }
     end
+
+    @borders = Border.order('name ASC').collect do |border|                 
+      [border.name , border.id]                                               
+    end                                                                         
+                                                                                
+    @manufacturers = Manufacturer.order('name ASC').collect do |manu|
+      [manu.name , manu.id]
+    end
+
+    @countries = Country.order('name ASC').collect do |country|
+      [country.name , country.id]
+    end
+
+    @salt_types = SaltType.order('name ASC').collect do |salt|
+      [salt.name , salt.id]
+    end
+
+    @transporters = Transporter.order('name ASC').collect do |transporter|
+      [transporter.name , transporter.id]
+    end
+
   end
 
   def new
@@ -372,6 +433,9 @@ class SampleController < ApplicationController
 
   def update_market_raw_data(params)
     RawDataMarket.transaction do
+      if params[:sample]['district'].blank?
+        params[:sample]['district'] = Market.find(params[:sample]['market']).district_id
+      end
       sample = RawDataMarket.find(params[:sample]['sample_id'])
       sample.manufacturer_id = params[:sample]['manufacturer']
       sample.district_id = params[:sample]['district']
