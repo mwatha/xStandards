@@ -70,18 +70,18 @@
   <tbody id='results'>                                                          
     <%(@samples || []).each do |sample_id,values| %>                                    
     <tr>                                                                        
-      <td><%=values[:date]%></td>                                            
-      <td><%=values[:iir_code]%></td>                                            
-      <td><%=values[:border]%></td>                                            
-      <td><%=values[:importer]%></td>                                            
-      <td><%=values[:salt_type]%></td>                                            
-      <td><%=values[:country]%></td>                                            
-      <td><%=values[:volume]%></td>                                            
-      <td><%=values[:iodine_level]%></td>                                            
-      <td><%=values[:category]%></td>                                            
+      <td id="date_<%=sample_id%>"><%=values[:date]%></td>                                            
+      <td id="iir_code_<%=sample_id%>"><%=values[:iir_code]%></td>                                            
+      <td id="border_<%=sample_id%>"><%=values[:border]%></td>                                            
+      <td id="importer_<%=sample_id%>"><%=values[:importer]%></td>                                            
+      <td id="salt_type_<%=sample_id%>"><%=values[:salt_type]%></td>                                            
+      <td id="country_<%=sample_id%>"><%=values[:country]%></td>                                            
+      <td id="volume_<%=sample_id%>"><%=values[:volume]%></td>                                            
+      <td id="iodine_level_<%=sample_id%>"><%=values[:iodine_level]%></td>                                            
+      <td id="category_<%=sample_id%>"><%=values[:category]%></td>                                            
       <td><%=values[:month]%></td>                                            
       <td><%=values[:quarter]%></td>                                            
-      <td><a href="#" onclick="showLayer(<%=sample_id%>);">Edit</a></td>       
+      <td><a href="#" onclick="showLayer(<%=sample_id%>);fillForm(<%=sample_id%>);setDate();">Edit</a></td>       
     </tr>                                                                       
     <%end%>                                                                     
   </tbody>                                                                      
@@ -113,7 +113,7 @@
       &nbsp; <br/>
       <table id="popuptable">
         <tr>
-          <td>Date</td><td><%=text_field(:input, "popupdate",:class => "input_data", :id => "popupdate") %></td>
+          <td>Date</td><td><%=text_field(:input, "popupdate",:class => "input_data", :id => "popupdate", :readonly => "readonly") %></td>
         </tr>
         <tr>
           <td>IIR Code</td><td><input type="text" name="iir_code" class='input_data' id="iir_code" /></td>
@@ -137,8 +137,8 @@
         <tr>
           <td>Salt type</td>
           <td>
-            <%@borders.unshift('Select salt type') %>
-            <%= select_tag "border", options_for_select(@borders),
+            <%@salt_types.unshift('Select salt type') %>
+            <%= select_tag "border", options_for_select(@salt_types),
             :class => "input_data", :id => "salt_type" %>
           </td>
         </tr>
@@ -179,13 +179,31 @@
 <%= stylesheet_link_tag "DatePicker/jsDatePick_ltr.min" %>
 <%= javascript_include_tag "DatePicker/jsDatePick.min.1.3" %>
 
-<%= javascript_include_tag "zebra_datepicker" %>
-<%= stylesheet_link_tag "default" %>
-
 <script>
 
+function fillForm(sample_id) {
+  //document.getElementById('popupdate').value = document.getElementById("date_" + sample_id).innerHTML;                                             
+  document.getElementById('iir_code').value = document.getElementById("iir_code_" + sample_id).innerHTML;                                             
+
+  document.getElementById('border').options[0].innerHTML = document.getElementById("border_" + sample_id).innerHTML;                                             
+  document.getElementById('border').value = all_borders[document.getElementById("border_" + sample_id).innerHTML];                                             
+
+  document.getElementById('transporter').options[0].innerHTML = document.getElementById("importer_" + sample_id).innerHTML;                                             
+  document.getElementById('transporter').value = all_transporters[document.getElementById("importer_" + sample_id).innerHTML];                                             
+
+  document.getElementById('salt_type').options[0].innerHTML = document.getElementById("salt_type_" + sample_id).innerHTML;                                             
+  document.getElementById('salt_type').value = all_salt_types[document.getElementById("salt_type_" + sample_id).innerHTML];                                             
+  
+  document.getElementById('country').options[0].innerHTML = document.getElementById("country_" + sample_id).innerHTML;                                             
+  document.getElementById('country').value = all_countries[document.getElementById("country_" + sample_id).innerHTML];                                             
+
+  document.getElementById('volume').value = document.getElementById("volume_" + sample_id).innerHTML;                                             
+  document.getElementById('result').value = document.getElementById("iodine_level_" + sample_id).innerHTML;                                             
+  document.getElementById('category').value = document.getElementById("category_" + sample_id).innerHTML;                                             
+
+}
+
 function sampleIodineCategory(element) {                                               
-  //sampleIodineLevelID = (parseInt(element.id) + 1);
   sample_iodine_category = document.getElementById('category');
                                                           
   try{                                                                          
@@ -210,13 +228,36 @@ function sampleIodineCategory(element) {
 
 }
 
-function display_picker(e){
-  $('#popupdate').Zebra_DatePicker({format: "d-M-Y", offset: [-220, (jQuery('#popupdate').position().top * 1.4)]});
-}
+  var currDate = new Date();
+  var dateNow =  currDate.getDate();
+  var yrNow =  currDate.getFullYear();
+  var monthNow =  (currDate.getMonth() + 1);
 
-//setTimeout(display_picker, 1);
+
+  function setDate(){
+    new JsDatePick({
+      useMode:2,
+      target: 'popupdate' ,
+      dateFormat:"%d-%M-%Y",
+      selectedDate:{       
+        day: dateNow,            
+        month: monthNow,
+        year: yrNow
+      },
+      yearsRange:[1900,yrNow],
+      limitToToday: true,
+      cellColorScheme:"beige",
+      dateFormat:"%d-%m-%Y",
+      imgPath:"img/",
+      weekStartDay:1
+    });
+  };
+
+
 
 function saveChanges() {
+  if(document.getElementById('popupdate').value.length < 1)
+    return;
 
   var selected_date = document.getElementById("popupdate"); 
   var iir_code = document.getElementById('iir_code'); 
@@ -275,6 +316,47 @@ function saveChanges() {
     xmlhttp.open("GET","/update_quality_monitoring_raw_data?" + url, true);           
     xmlhttp.send();                                                             
   }
+
+
+
+
+
+
+  var all_borders = {};
+  var all_transporters = {};
+  var all_salt_types = {};
+  var all_countries = {};
+
+  <%@borders.each do |name,id|%>
+    if(!all_borders["<%= name %>"])
+      all_borders["<%= name %>"] = [];
+ 
+    all_borders["<%= name %>"].push(<%= id %>); 
+  <%end%>
+
+  <%@transporters.each do |name,id|%>
+    if(!all_transporters["<%= name %>"])
+      all_transporters["<%= name %>"] = [];
+ 
+    all_transporters["<%= name %>"].push(<%= id %>); 
+  <%end%>
+
+  <%@salt_types.each do |name,id|%>
+    if(!all_salt_types["<%= name %>"])
+      all_salt_types["<%= name %>"] = [];
+ 
+    all_salt_types["<%= name %>"].push(<%= id %>); 
+  <%end%>
+
+  <%@countries.each do |name,id|%>
+    if(!all_countries["<%= name %>"])
+      all_countries["<%= name %>"] = [];
+ 
+    all_countries["<%= name %>"].push(<%= id %>); 
+  <%end%>
+
+
+
 </script>
 
 

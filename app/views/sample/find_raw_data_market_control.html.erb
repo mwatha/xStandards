@@ -9,6 +9,9 @@
 <%=javascript_include_tag "popup" %>
 <%= stylesheet_link_tag "popup" %>
 
+<%= stylesheet_link_tag "DatePicker/jsDatePick_ltr.min" %>
+<%= javascript_include_tag "DatePicker/jsDatePick.min.1.3" %>
+
 <style>
                                                                                 
 </style>
@@ -67,15 +70,15 @@
   <tbody id='results'>                                                          
     <%(@samples || []).each do |sample_id,values| %>                                    
     <tr>                                                                        
-      <td><%=values[:district]%></td>                                            
-      <td><%=values[:market]%></td>                                            
-      <td><%=values[:salt_type]%></td>                                            
-      <td><%=values[:manufacturer]%></td>                                            
-      <td><%=values[:iodine_level]%></td>                                            
-      <td><%=values[:category]%></td>                                            
-      <td><%=values[:date]%></td>                                            
+      <td id="district_<%=sample_id%>"><%=values[:district]%></td>                                            
+      <td id="market_<%=sample_id%>"><%=values[:market]%></td>                                            
+      <td id="salt_type_<%=sample_id%>"><%=values[:salt_type]%></td>                                            
+      <td id="manufacturer_<%=sample_id%>"><%=values[:manufacturer]%></td>                                            
+      <td id="iodine_level_<%=sample_id%>"><%=values[:iodine_level]%></td>                                            
+      <td id="category_<%=sample_id%>"><%=values[:category]%></td>                                            
+      <td id="date_<%=sample_id%>"><%=values[:date]%></td>                                            
       <td><%=values[:quater]%></td>                                            
-      <td><a href="#" onclick="showLayer(<%=sample_id%>);">Edit</a></td> 
+      <td><a href="#" onclick="showLayer(<%=sample_id%>);fillForm(<%=sample_id%>);setDate();">Edit</a></td> 
     </tr>                                                                       
     <%end%>                                                                     
   </tbody>                                                                      
@@ -104,7 +107,7 @@
       &nbsp; <br/>
       <table id="popuptable">
         <tr>
-          <td>Date</td><td><%=text_field(:input, "popupdate",:class => "input_data", :id => "popupdate") %></td>
+          <td>Date</td><td><%=text_field(:input, "popupdate",:class => "input_data", :id => "popupdate", :readonly => "readonly") %></td>
         </tr>
         <tr>
           <td>Select market</td>
@@ -154,9 +157,6 @@
 
 <%#= stylesheet_link_tag "DatePicker/jsDatePick_ltr.min" %>
 <%#= javascript_include_tag "DatePicker/jsDatePick.min.1.3" %>
-
-<%#= javascript_include_tag "zebra_datepicker" %>
-<%#= stylesheet_link_tag "default" %>
 
 <script>
 
@@ -222,6 +222,7 @@ function saveChanges() {
         var results = JSON.parse(xmlhttp.responseText);  
         if(results.match("sample id:")) {
           alert('Updated record');
+          location.reload();
         }                                                                     
       }                                                                         
     }  
@@ -230,10 +231,79 @@ function saveChanges() {
     xmlhttp.open("GET","/raw_data_market_update?" + url, true);           
     xmlhttp.send();
 }
+
+
+var all_markets = {};
+var all_manufacturers = {};
+var all_salt_types = {};
+
+<%@markets.each do |name,id|%>
+  if(!all_markets["<%= name %>"])
+        all_markets["<%= name %>"] = [];
+   
+  all_markets["<%= name %>"].push(<%= id %>);
+<%end%>
+
+<%@salt_types.each do |name,id|%>
+  if(!all_salt_types["<%= name %>"])
+        all_salt_types["<%= name %>"] = [];
+   
+  all_salt_types["<%= name %>"].push(<%= id %>);
+<%end%>
+
+<%@manufacturers.each do |name,id|%>
+  if(!all_manufacturers["<%= name %>"])
+        all_manufacturers["<%= name %>"] = [];
+   
+  all_manufacturers["<%= name %>"].push(<%= id %>);
+<%end%>
+
+function fillForm(sample_id) {
+  //document.getElementById('popupdate').value = document.getElementById("date_" + sample_id).innerHTML;                                             
+
+  document.getElementById('market').options[0].innerHTML = document.getElementById("market_" + sample_id).innerHTML;                                             
+  document.getElementById('market').value = all_markets[document.getElementById("market_" + sample_id).innerHTML];                                             
+
+  document.getElementById('salt_type').options[0].innerHTML = document.getElementById("salt_type_" + sample_id).innerHTML;                                             
+  document.getElementById('salt_type').value = all_salt_types[document.getElementById("salt_type_" + sample_id).innerHTML];                                             
+  
+  document.getElementById('manufacturer').options[0].innerHTML = document.getElementById("manufacturer_" + sample_id).innerHTML;                                             
+  document.getElementById('manufacturer').value = all_manufacturers[document.getElementById("manufacturer_" + sample_id).innerHTML];
+
+  document.getElementById('result').value = document.getElementById("iodine_level_" + sample_id).innerHTML;                                             
+  document.getElementById('category').value = document.getElementById("category_" + sample_id).innerHTML;                                             
+
+}
+
+var currDate = new Date();
+var dateNow =  currDate.getDate();
+var yrNow =  currDate.getFullYear();
+var monthNow =  (currDate.getMonth() + 1);
+
+
+function setDate(){
+  new JsDatePick({
+    useMode:2,
+    target: 'popupdate' ,
+    dateFormat:"%d-%M-%Y",
+    selectedDate:{       
+      day: dateNow,            
+      month: monthNow,
+      year: yrNow
+    },
+    yearsRange:[1900,yrNow],
+    limitToToday: true,
+    cellColorScheme:"beige",
+    dateFormat:"%d-%m-%Y",
+    imgPath:"img/",
+    weekStartDay:1
+  });
+};
+
 </script>
 
 <style>
-  .dialogLayer {
-    height: 380px !important;
-  }
+.dialogLayer {
+  height: 380px !important;
+}
 </style> 

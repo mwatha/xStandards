@@ -9,6 +9,9 @@
 <%=javascript_include_tag "popup" %>
 <%= stylesheet_link_tag "popup" %>
 
+<%= stylesheet_link_tag "DatePicker/jsDatePick_ltr.min" %>
+<%= javascript_include_tag "DatePicker/jsDatePick.min.1.3" %>
+
 <style>
                                                                                 
 </style>
@@ -68,16 +71,16 @@
   <tbody id='results'>                                                          
     <%(@samples || []).each do |sample_id,values| %>                                    
     <tr>                                                                        
-      <td><%=values[:date]%></td>                                            
-      <td><%=values[:cis_code]%></td>                                            
-      <td><%=values[:country]%></td>                                            
-      <td><%=values[:manufacturer]%></td>                                            
-      <td><%=values[:salt_type]%></td>                                            
-      <td><%=values[:iodine_level]%></td>                                            
-      <td><%=values[:category]%></td>                                            
+      <td id="date_<%=sample_id%>"><%=values[:date]%></td>                                            
+      <td id="cis_code_<%=sample_id%>"><%=values[:cis_code]%></td>                                            
+      <td id="country_<%=sample_id%>"><%=values[:country]%></td>                                            
+      <td id="salt_brand_<%=sample_id%>"><%=values[:manufacturer]%></td>                                            
+      <td id="salt_type_<%=sample_id%>"><%=values[:salt_type]%></td>                                            
+      <td id="iodine_level_<%=sample_id%>"><%=values[:iodine_level]%></td>                                            
+      <td id="category_<%=sample_id%>"><%=values[:category]%></td>                                            
       <td><%=values[:month]%></td>                                            
       <td><%=values[:quarter]%></td>                                            
-      <td><a href="#" onclick="showLayer(<%=sample_id%>);">Edit</a></td>
+      <td><a href="#" onclick="showLayer(<%=sample_id%>);fillForm(<%=sample_id%>);setDate();">Edit</a></td>
     </tr>                                                                       
     <%end%>                                                                     
   </tbody>                                                                      
@@ -106,7 +109,7 @@
       &nbsp; <br/>
       <table id="popuptable">
         <tr>
-          <td>Date</td><td><%=text_field(:input, "popupdate",:class => "input_data", :id => "popupdate") %></td>
+          <td>Date</td><td><%=text_field(:input, "popupdate",:class => "input_data", :id => "popupdate", :readonly => "readonly") %></td>
         </tr>
         <tr>
           <td>CIS code</td><td><input type="text" name="cis_code" class='input_data' id="cis_code" /></td>
@@ -115,15 +118,15 @@
           <td>Salt type (Origin)</td>
           <td>
             <%@manufacturers.unshift('Select manufacturer') %>
-            <%= select_tag "transporter", options_for_select(@manufacturers),
-            :class => "input_data", :id => "manufacturer" %>
+            <%= select_tag "salt_brand", options_for_select(@manufacturers),
+            :class => "input_data", :id => "salt_brand" %>
           </td>
         </tr>
         <tr>
           <td>Salt type</td>
           <td>
             <%@salt_types.unshift('Select salt type') %>
-            <%= select_tag "border", options_for_select(@salt_types),
+            <%= select_tag "salt_type", options_for_select(@salt_types),
             :class => "input_data", :id => "salt_type" %>
           </td>
         </tr>
@@ -131,7 +134,7 @@
           <td>Iodine level</td>
           <td>
             <input type="text" name="result" class='input_data' 
-              onkeyup = "sampleIodineCategory(this);" id="result" />
+              onkeyup = "sampleIodineCategory(this);" id="iodine_level" />
           </td>
         </tr>
         <tr>
@@ -148,12 +151,6 @@
  </div>
 </div>
 
-
-<%= stylesheet_link_tag "DatePicker/jsDatePick_ltr.min" %>
-<%= javascript_include_tag "DatePicker/jsDatePick.min.1.3" %>
-
-<%= javascript_include_tag "zebra_datepicker" %>
-<%= stylesheet_link_tag "default" %>
 
 <script>
 
@@ -185,9 +182,9 @@ function sampleIodineCategory(element) {
 function saveChanges() {
   var selected_date = document.getElementById("popupdate"); 
   var cis_code = document.getElementById("cis_code"); 
-  var company = document.getElementById("manufacturer"); 
+  var company = document.getElementById("salt_brand"); 
   var salt_type = document.getElementById("salt_type"); 
-  var entered_result = document.getElementById("result"); 
+  var entered_result = document.getElementById("iodine_level"); 
   var cat = document.getElementById("category"); 
 
   if (selected_date.value.length < 1) {
@@ -217,8 +214,8 @@ function saveChanges() {
         var results = xmlhttp.responseText;                                     
         var results = JSON.parse(xmlhttp.responseText);  
         if(results.match("sample id:")) {
-          alert(results);
           alert('Updated record');
+          location.reload();
         }                                                                     
       }                                                                         
     }  
@@ -228,7 +225,63 @@ function saveChanges() {
     xmlhttp.send();
 }
 
+  var all_salt_types = {};
+  var all_manufacturers = {};
 
+  <%@salt_types.each do |name,id|%>
+    if(!all_salt_types["<%= name %>"])
+      all_salt_types["<%= name %>"] = [];
+ 
+    all_salt_types["<%= name %>"].push(<%= id %>); 
+  <%end%>
+
+  <%@manufacturers.each do |name,id|%>
+    if(!all_manufacturers["<%= name %>"])
+      all_manufacturers["<%= name %>"] = [];
+ 
+    all_manufacturers["<%= name %>"].push(<%= id %>); 
+  <%end%>
+
+  var currDate = new Date();
+  var dateNow =  currDate.getDate();
+  var yrNow =  currDate.getFullYear();
+  var monthNow =  (currDate.getMonth() + 1);
+
+  function setDate(){
+    new JsDatePick({
+      useMode:2,
+      target: 'popupdate' ,
+      dateFormat:"%d-%M-%Y",
+      selectedDate:{       
+        day: dateNow,            
+        month: monthNow,
+        year: yrNow
+      },
+      yearsRange:[1900,yrNow],
+      limitToToday: true,
+      cellColorScheme:"beige",
+      dateFormat:"%d-%m-%Y",
+      imgPath:"img/",
+      weekStartDay:1
+    });
+  };
+
+
+  function fillForm(sample_id) {
+    //document.getElementById('popupdate').value = document.getElementById("date_" + sample_id).innerHTML;                                             
+    document.getElementById('cis_code').value = document.getElementById("cis_code_" + sample_id).innerHTML;                                             
+
+    document.getElementById('salt_type').options[0].innerHTML = document.getElementById("salt_type_" + sample_id).innerHTML;                                             
+    document.getElementById('salt_type').value = all_salt_types[document.getElementById("salt_type_" + sample_id).innerHTML];                                             
+    
+    document.getElementById('salt_brand').options[0].innerHTML = document.getElementById("salt_brand_" + sample_id).innerHTML;                                             
+    document.getElementById('salt_brand').value = all_manufacturers[document.getElementById("salt_brand_" + sample_id).innerHTML];                                            
+
+    //document.getElementById('volume').value = document.getElementById("volume_" + sample_id).innerHTML;                                             
+    document.getElementById('iodine_level').value = document.getElementById("iodine_level_" + sample_id).innerHTML;                                             
+    document.getElementById('category').value = document.getElementById("category_" + sample_id).innerHTML;                                             
+
+  }
 </script>
 
 <style>
