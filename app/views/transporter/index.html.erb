@@ -1,22 +1,95 @@
-<style>
-  .buttons {                                                                    
-    width: 100% !important;                                                    
-  }                                                                              
+
+<script type="text/javascript">
+</script>
+
+<style type="text/css">
+
+  .row {
+    margin-left: -285px !important;
+  }
+
+  .introItemHeader {
+    font-weight: bold;
+  }
+  
+  .introItem {
+    border-bottom: 1px solid #e0e0e0;
+    cursor: pointer;
+    float: left;
+    min-height: 44px;
+    min-width: 260px !important;
+    padding: 15px;
+  }
+
+  
+.introList {
+    color: #444;
+    list-style-type: none;
+    max-width: 1100px;
+    padding-bottom: 20px;
+    padding-top: 10px;
+    width: 100%;
+}
+
+.introIcon {
+    float: left;
+}
+
+img {
+    border: 0 none;
+} 
+
+.introIcon {
+  width: 70px;
+  height: 70px;
+  padding-right: 5px;
+}
+
+.page h3 {
+  color: #606060;
+  font-size: 14pt;
+  font-weight: normal;
+  margin-left: 20px;
+}
+
+.img-container {
+  width: 100%;
+  display: inline-block;
+}
+ 
 </style>
 
-<div class="page-header">
-  <h1>transporters/packers <small>....</small></h1>
+<div id="mainPage" class="page">
+  <h3>transporters/packers <small>....</small></h3>
+<div class="introList">
+ 
+ <div class="img-container">
+  
+    <div class="introItem" onclick="window.location.href='/findtransporter'">
+      <img class="introIcon" src="/assets/folder.png">
+      <div class="introItemText">
+        <div class="introItemHeader">Find transporter(s)</div>
+        <div>....</div>
+      </div>
+    </div>
+
+    <div class="introItem" onclick="window.location.href='/newtransporter'">
+      <img class="introIcon" src="/assets/folder.png">
+      <div class="introItemText">
+        <div class="introItemHeader">Register a transporter/packer</div>
+        <div>....</div>
+      </div>
+    </div>
+
+  </div>
+
+
+ <div class="img-container">
+
+
+  </div>
+
 </div>
 
-<section id='modals'>                                              
-  <p>                                                                           
-    <%= link_to "Find transporter(s)", '/findtransporter', 
-        :class => 'btn btn-primary btn-large buttons' %>
-  </p>                                                                          
-                                                                                
-  <p>                                                                           
-    <%= link_to "Register transporter/packer", '/newtransporter', 
-        :class => 'btn btn-primary btn-large buttons' %>
-  </p>                                                                          
-                                                                                
-</section> 
+</div>
+
