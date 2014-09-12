@@ -119,4 +119,15 @@ class CountryController < ApplicationController
     end
   end
 
+  def finddistricts
+    @districts = {}
+    (District.order('name') || []).each do |county|
+      @districts[county.id] = {
+        :name => county.name,
+        :country => county.country.name,
+        :description => county.description
+      }
+    end
+  end
+
 end
