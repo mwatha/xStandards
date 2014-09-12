@@ -1,28 +1,155 @@
 <style>
-  .buttons {                                                                    
+/*  .buttons {                                                                    
     width: 100% !important;                                                    
-  }                                                                              
+  }                                                                              */
 </style>
 
-<div class="page-header">
+<!--div class="page-header">
   <h1>samples <small>raw data</small></h1>
 </div>
 
 <section id='modals'>                                              
 
-  <p>                                                                           
-    <%= link_to "Import monitoring", '/prod', 
+  <p-->                                                                           
+    <%#= link_to "Import monitoring", '/prod', 
         :class => 'btn btn-primary btn-large buttons' %>
-  </p>                                                                          
+  <!--/p>                                                                          
                                                                                 
-  <p>                                                                           
-    <%= link_to "Industry", '/industry', 
+  <p-->                                                                           
+    <%#= link_to "Industry", '/industry', 
         :class => 'btn btn-primary btn-large buttons' %>
-  </p>                                                                          
+  <!--/p>                                                                          
                                                                                 
-  <p>                                                                           
-    <%= link_to "Market", '/mark', 
+  <p-->                                                                           
+    <%#= link_to "Market", '/mark', 
         :class => 'btn btn-primary btn-large buttons' %>
-  </p>                                                                          
+  <!--/p>                                                                          
                                                                                 
-</section> 
+</section--> 
+
+
+
+
+<script type="text/javascript">
+</script>
+
+<style type="text/css">
+
+  .row {
+    margin-left: -285px !important;
+  }
+
+  .introItemHeader {
+    font-weight: bold;
+  }
+  
+  .introItem {
+    border-bottom: 1px solid #e0e0e0;
+    cursor: pointer;
+    float: left;
+    min-height: 44px;
+    min-width: 260px !important;
+    padding: 15px;
+  }
+
+  
+.introList {
+    color: #444;
+    list-style-type: none;
+    max-width: 1100px;
+    padding-bottom: 20px;
+    padding-top: 10px;
+    width: 100%;
+}
+
+.introIcon {
+    float: left;
+}
+
+img {
+    border: 0 none;
+} 
+
+.introIcon {
+  width: 70px;
+  height: 70px;
+  padding-right: 5px;
+}
+
+.page h3 {
+  color: #606060;
+  font-size: 14pt;
+  font-weight: normal;
+  margin-left: 20px;
+}
+
+.img-container {
+  width: 100%;
+  display: inline-block;
+}
+ 
+</style>
+
+
+<div id="mainPage" class="page">
+<h3>Raw data</h3>
+<div class="introList">
+ 
+ <div class="img-container">
+  
+    <div class="introItem" onclick="window.location.href='/prod'">
+      <img class="introIcon" src="/assets/leather_orange_01.png">
+      <div class="introItemText">
+        <div class="introItemHeader">Import monitoring</div>
+        <div>View,enter and update import raw data.</div>
+      </div>
+    </div>
+
+    <div class="introItem" onclick="window.location.href='/industry'">
+      <img class="introIcon" src="/assets/work.png">
+      <div class="introItemText">
+        <div class="introItemHeader">Industry</div>
+        <div>View,enter and update industry raw data.</div>
+      </div>
+    </div>
+
+  </div>
+
+
+ <div class="img-container">
+
+    <div class="introItem" onclick="window.location.href='/mark'">
+      <img class="introIcon" src="/assets/market.png">
+      <div class="introItemText">
+        <div class="introItemHeader">Market</div>
+        <div>View,enter and update market raw data.</div>
+      </div>
+    </div>
+
+    <!--div class="introItem" onclick="window.location.href='/report/physical_stock_summary'">
+      <img class="introIcon" src="/images/aggregate.png">
+      <div class="introItemText">
+        <div class="introItemHeader">Site physical stock</div>
+        <div>View summary of drugs that are at a site.</div>
+      </div>
+    </div-->
+
+  </div>
+
+</div>
+  <!--div class="img-container">
+
+    <div class="introItem" onclick="window.location.href='/report/notices'">
+      <img class="introIcon" src="/images/notices.png">
+      <div class="introItemText">
+        <div class="introItemHeader">Site Notifications</div>
+        <div>View list of notices for the various sites.</div>
+      </div>
+    </div>
+
+  </div>
+
+</div-->
+
+</div>
+
