@@ -1,24 +1,95 @@
-<style>                                                                         
-  .buttons {                                                                    
-    width: 100% !important;                                                     
-  }                                                                             
-</style>                                                                        
-                                                                                
-<div class="page-header">                                                       
-  <h1>import <small>quality monitoring</small></h1>                                      
-</div>                                                                          
-                                                                                
-<section id='modals'>
-  <p>
-  <%= link_to "data entered",     
-      '/import_monitoring',:class => 'btn btn-primary btn-large buttons' %>
-  </p>                                                                          
-                                                                                
-  <p>                                                                           
-    <%= link_to "input", '/import_datagrid', 
-        :class => 'btn btn-primary btn-large buttons' %>                        
-    <%#= link_to "Enter sample details", '/raw_data_quality_monitoring', 
-        :class => 'btn btn-primary btn-large buttons' %>                        
-  </p>             
 
-</section>                                    
+<script type="text/javascript">
+</script>
+
+<style type="text/css">
+
+  .row {
+    margin-left: -285px !important;
+  }
+
+  .introItemHeader {
+    font-weight: bold;
+  }
+  
+  .introItem {
+    border-bottom: 1px solid #e0e0e0;
+    cursor: pointer;
+    float: left;
+    min-height: 44px;
+    min-width: 260px !important;
+    padding: 15px;
+  }
+
+  
+.introList {
+    color: #444;
+    list-style-type: none;
+    max-width: 1100px;
+    padding-bottom: 20px;
+    padding-top: 10px;
+    width: 100%;
+}
+
+.introIcon {
+    float: left;
+}
+
+img {
+    border: 0 none;
+} 
+
+.introIcon {
+  width: 70px;
+  height: 70px;
+  padding-right: 5px;
+}
+
+.page h3 {
+  color: #606060;
+  font-size: 14pt;
+  font-weight: normal;
+  margin-left: 20px;
+}
+
+.img-container {
+  width: 100%;
+  display: inline-block;
+}
+ 
+</style>
+
+<div id="mainPage" class="page">
+  <h3>import <small>quality monitoring</small></h3>                                      
+<div class="introList">
+ 
+ <div class="img-container">
+  
+    <div class="introItem" onclick="window.location.href='/import_monitoring'">
+      <img class="introIcon" src="/assets/edit.png">
+      <div class="introItemText">
+        <div class="introItemHeader">View samples</div>
+        <div>View/update samples that were entered.</div>
+      </div>
+    </div>
+
+    <div class="introItem" onclick="window.location.href='/import_datagrid'">
+      <img class="introIcon" src="/assets/enter.png">
+      <div class="introItemText">
+        <div class="introItemHeader">Enter sample(s) results</div>
+        <div>Enter new sample results</div>
+      </div>
+    </div>
+
+  </div>
+
+
+ <div class="img-container">
+
+
+  </div>
+
+</div>
+
+</div>
+

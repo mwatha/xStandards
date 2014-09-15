@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery
+  #protect_from_forgery
 
   before_filter :perform_basic_auth, :except => ['login','logout']                         
 

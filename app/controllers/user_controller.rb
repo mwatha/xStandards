@@ -15,6 +15,7 @@ class UserController < ApplicationController
       if user and user.password_matches?(params[:user]["password"]) 
         session[:user_id] = user.id                                             
         redirect_to "/home"                                                         
+        return
       else                                                                      
         flash[:error] = 'That username and/or password was not valid.'          
       end                                                                       

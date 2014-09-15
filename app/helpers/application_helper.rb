@@ -24,7 +24,7 @@ EOF
 
   def admin?
     unless User.current_user.blank?
-      User.current_user.user_roles.map(&:role).include?('admin') 
+      return User.current_user.user_roles.map(&:role).include?('admin') 
     end
   end
 
