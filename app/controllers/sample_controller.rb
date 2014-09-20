@@ -210,6 +210,11 @@ class SampleController < ApplicationController
     @transporters = Transporter.order('name ASC').collect do |transporter|
       [transporter.name , transporter.id]
     end
+    
+    @subcounties = SubCounty.order('name ASC').collect do |county|
+      [county.name , county.id]
+    end
+
   end
 
   def find_raw_data_industry_monitoring
@@ -249,6 +254,10 @@ class SampleController < ApplicationController
       [transporter.name , transporter.id]
     end
 
+    @products = Product.order('name ASC').collect do |product|
+      [product.name , product.id]
+    end
+
   end
 
   def import_monitoring
@@ -273,8 +282,8 @@ class SampleController < ApplicationController
       [border.name , border.id]                                               
     end                                                                         
                                                                                 
-    @manufacturers = Manufacturer.order('name ASC').collect do |manu|
-      [manu.name , manu.id]
+    @products = Product.order('name ASC').collect do |product|
+      [product.name , product.id]
     end
 
     @countries = Country.order('name ASC').collect do |country|
@@ -570,6 +579,10 @@ class SampleController < ApplicationController
 
   def update_industry_raw_data(params)
     IndustryRawData.transaction do
+      if params[:sample]['company'].blank? and not params[:sample]['salt_brand'].blank?
+        params[:sample]['company'] = Product.find(params[:sample]['salt_brand']).manufacturer.id
+      end
+
       country = Manufacturer.find(params[:sample]['company']).country
       sample = IndustryRawData.find(params[:sample]['sample_id'])
       sample.cis_code = params[:sample]['cis_code']
@@ -609,15 +622,24 @@ class SampleController < ApplicationController
 
   def update_market_raw_data(params)
     RawDataMarket.transaction do
-      if params[:sample]['district'].blank?
-        params[:sample]['district'] = Market.find(params[:sample]['market']).district_id
+      if params[:sample]['county'].blank?
+        params[:sample]['county'] = SubCounty.find(params[:sample]['sub_county']).id rescue nil
+        if params[:sample]['county'].blank?
+          params[:sample]['county'] = SubCounty.where(:'name' => params[:sample]['sub_county'])[0].id
+        end
       end
+
+      salt_brand = Manufacturer.find(params[:sample]['manufacturer']) rescue nil
+      if salt_brand.blank?
+        salt_brand = Manufacturer.where(:'name' => params[:sample]['manufacturer'])[0].id
+      end
+
       sample = RawDataMarket.find(params[:sample]['sample_id'])
       sample.manufacturer_id = params[:sample]['manufacturer']
       sample.county_id = params[:sample]['county']
       sample.sub_county_id = params[:sample]['sub_county']
       sample.market_id = params[:sample]['market']
-      sample.salt_type_id = params[:sample]['salt_type']
+      sample.salt_brand_id = salt_brand
       sample.iodine_level = params[:sample]['iodine_level']
       sample.category = params[:sample]['category']
       sample.date = params[:sample]['date']

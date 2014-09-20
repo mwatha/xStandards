@@ -72,7 +72,7 @@
       <td id="iir_code_<%=sample_id%>"><%=values[:iir_code]%></td>                                            
       <td id="border_<%=sample_id%>"><%=values[:border]%></td>                                            
       <td id="importer_<%=sample_id%>"><%=values[:importer]%></td>                                            
-      <td id="salt_type_<%=sample_id%>"><%=values[:salt_brand]%></td>                                            
+      <td id="salt_brand_<%=sample_id%>"><%=values[:salt_brand]%></td>                                            
       <td id="country_<%=sample_id%>"><%=values[:country]%></td>                                            
       <td id="volume_<%=sample_id%>"><%=values[:volume]%></td>                                            
       <td id="iodine_level_<%=sample_id%>"><%=values[:iodine_level]%></td>                                            
@@ -129,11 +129,11 @@
           </td>
         </tr>
         <tr>
-          <td>Salt type</td>
+          <td>Salt brand</td>
           <td>
-            <%@salt_types.unshift('Select salt type') %>
-            <%= select_tag "border", options_for_select(@salt_types),
-            :class => "input_data", :id => "salt_type" %>
+            <%@products.unshift('Select salt brand') %>
+            <%= select_tag "salt_brand", options_for_select(@products),
+            :class => "input_data", :id => "salt_brand" %>
           </td>
         </tr>
         <tr>
@@ -185,8 +185,8 @@ function fillForm(sample_id) {
   document.getElementById('transporter').options[0].innerHTML = document.getElementById("importer_" + sample_id).innerHTML;                                             
   document.getElementById('transporter').value = all_transporters[document.getElementById("importer_" + sample_id).innerHTML];                                             
 
-  document.getElementById('salt_type').options[0].innerHTML = document.getElementById("salt_type_" + sample_id).innerHTML;                                             
-  document.getElementById('salt_type').value = all_salt_types[document.getElementById("salt_type_" + sample_id).innerHTML];                                             
+  document.getElementById('salt_brand').options[0].innerHTML = document.getElementById("salt_brand_" + sample_id).innerHTML;                                             
+  document.getElementById('salt_brand').value = all_salt_brands[document.getElementById("salt_brand_" + sample_id).innerHTML];                                             
   
   document.getElementById('country').options[0].innerHTML = document.getElementById("country_" + sample_id).innerHTML;                                             
   document.getElementById('country').value = all_countries[document.getElementById("country_" + sample_id).innerHTML];                                             
@@ -257,7 +257,7 @@ function saveChanges() {
   var iir_code = document.getElementById('iir_code'); 
   var entry = document.getElementById('border'); 
   var importer = document.getElementById('transporter'); 
-  var brand = document.getElementById('salt_type'); 
+  var brand = document.getElementById('salt_brand'); 
   var country = document.getElementById('country'); 
   var volume = document.getElementById('volume'); 
   var entered_result = document.getElementById('result'); 
@@ -278,7 +278,7 @@ function saveChanges() {
   var url = "sample[iir_code]=" + iir_code.value;                                                                         
   url += "&sample[border]=" + entry.value;                                                                         
   url += "&sample[importer]=" + importer.value;                                                                         
-  url += "&sample[salt_type]=" + brand.value;                                                                         
+  url += "&sample[salt_brand]=" + brand.value;                                                                         
   url += "&sample[country]=" + country.value;                                                                         
   url += "&sample[volume]=" + volume.value;                                                                         
   url += "&sample[iodine_level]=" + entered_result.value;                                                                         
@@ -318,7 +318,7 @@ function saveChanges() {
 
   var all_borders = {};
   var all_transporters = {};
-  var all_salt_types = {};
+  var all_salt_brands = {};
   var all_countries = {};
 
   <%@borders.each do |name,id|%>
@@ -335,11 +335,11 @@ function saveChanges() {
     all_transporters["<%= name %>"].push(<%= id %>); 
   <%end%>
 
-  <%@salt_types.each do |name,id|%>
-    if(!all_salt_types["<%= name %>"])
-      all_salt_types["<%= name %>"] = [];
+  <%@products.each do |name,id|%>
+    if(!all_salt_brands["<%= name %>"])
+      all_salt_brands["<%= name %>"] = [];
  
-    all_salt_types["<%= name %>"].push(<%= id %>); 
+    all_salt_brands["<%= name %>"].push(<%= id %>); 
   <%end%>
 
   <%@countries.each do |name,id|%>

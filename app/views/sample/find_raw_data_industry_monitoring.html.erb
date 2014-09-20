@@ -73,7 +73,7 @@
       <td id="date_<%=sample_id%>"><%=values[:date]%></td>                                            
       <td id="cis_code_<%=sample_id%>"><%=values[:cis_code]%></td>                                            
       <td id="manufacturer_<%=sample_id%>"><%=values[:manufacturer]%></td>                                            
-      <td id="salt_brand_<%=sample_id%>"><%=values[:salt_brand]%></td>                                            
+      <td id="product_<%=sample_id%>"><%=values[:salt_brand]%></td>                                            
       <td id="other_<%=sample_id%>"><%=values[:other]%></td>                                            
       <td id="iodine_level_<%=sample_id%>"><%=values[:iodine_level]%></td>                                            
       <td id="category_<%=sample_id%>"><%=values[:category]%></td>                                            
@@ -114,20 +114,23 @@
           <td>CIS code</td><td><input type="text" name="cis_code" class='input_data' id="cis_code" /></td>
         </tr>
         <tr>
-          <td>Salt type (Origin)</td>
+          <td>Salt brand</td>
           <td>
-            <%@manufacturers.unshift('Select manufacturer') %>
-            <%= select_tag "salt_brand", options_for_select(@manufacturers),
-            :class => "input_data", :id => "salt_brand" %>
+            <%@products.unshift('Select product') %>
+            <%= select_tag "product", options_for_select(@products),
+            :class => "input_data", :id => "product" %>
           </td>
         </tr>
-        <tr>
+        <!--tr>
           <td>Salt type</td>
-          <td>
-            <%@salt_types.unshift('Select salt type') %>
-            <%= select_tag "salt_type", options_for_select(@salt_types),
+          <td-->
+            <%#@salt_types.unshift('Select salt type') %>
+            <%#= select_tag "salt_type", options_for_select(@salt_types),
             :class => "input_data", :id => "salt_type" %>
-          </td>
+          <!--/td>
+        </tr-->
+        <tr>
+          <td>Matrix/other details</td><td><input type="text" id="other" /></td>
         </tr>
         <tr>
           <td>Iodine level</td>
@@ -181,25 +184,24 @@ function sampleIodineCategory(element) {
 function saveChanges() {
   var selected_date = document.getElementById("popupdate"); 
   var cis_code = document.getElementById("cis_code"); 
-  var company = document.getElementById("salt_brand"); 
-  var salt_type = document.getElementById("salt_type"); 
+  var product = document.getElementById("product"); 
   var entered_result = document.getElementById("iodine_level"); 
   var cat = document.getElementById("category"); 
+  var other = document.getElementById("other"); 
 
   if (selected_date.value.length < 1) {
   }else if(cis_code.value.length < 1) {
-  }else if(company.value.length < 1) {
-  }else if(salt_type.value.length < 1) {
+  }else if(product.value.length < 1) {
   }else if(entered_result.value.length < 1) {
   }else if(cat.value.length < 1) {
     return;
   }
 
   var url = "sample[cis_code]=" + cis_code.value;                                                                         
-  url += "&sample[company]=" + company.value;                                                                         
-  url += "&sample[salt_type]=" + salt_type.value;                                                                         
+  url += "&sample[salt_brand]=" + product.value;                                                                         
   url += "&sample[iodine_level]=" + entered_result.value;                                                                         
   url += "&sample[category]=" + cat.value;                                                                         
+  url += "&sample[other]=" + other.value;                                                                         
   url += "&sample[date]=" + selected_date.value;                                                                         
   url += "&sample[sample_id]=" + document.getElementById("record_id").value;
 
@@ -224,21 +226,13 @@ function saveChanges() {
     xmlhttp.send();
 }
 
-  var all_salt_types = {};
-  var all_manufacturers = {};
+  var all_products = {};
 
-  <%@salt_types.each do |name,id|%>
-    if(!all_salt_types["<%= name %>"])
-      all_salt_types["<%= name %>"] = [];
+  <%@products.each do |name,id|%>
+    if(!all_products["<%= name %>"])
+      all_products["<%= name %>"] = [];
  
-    all_salt_types["<%= name %>"].push(<%= id %>); 
-  <%end%>
-
-  <%@manufacturers.each do |name,id|%>
-    if(!all_manufacturers["<%= name %>"])
-      all_manufacturers["<%= name %>"] = [];
- 
-    all_manufacturers["<%= name %>"].push(<%= id %>); 
+    all_products["<%= name %>"].push(<%= id %>); 
   <%end%>
 
   var currDate = new Date();
@@ -270,13 +264,11 @@ function saveChanges() {
     //document.getElementById('popupdate').value = document.getElementById("date_" + sample_id).innerHTML;                                             
     document.getElementById('cis_code').value = document.getElementById("cis_code_" + sample_id).innerHTML;                                             
 
-    document.getElementById('salt_type').options[0].innerHTML = document.getElementById("salt_type_" + sample_id).innerHTML;                                             
-    document.getElementById('salt_type').value = all_salt_types[document.getElementById("salt_type_" + sample_id).innerHTML];                                             
-    
-    document.getElementById('salt_brand').options[0].innerHTML = document.getElementById("salt_brand_" + sample_id).innerHTML;                                             
-    document.getElementById('salt_brand').value = all_manufacturers[document.getElementById("salt_brand_" + sample_id).innerHTML];                                            
+    document.getElementById('product').options[0].innerHTML = document.getElementById("product_" + sample_id).innerHTML;                                             
+    document.getElementById('product').value = all_products[document.getElementById("product_" + sample_id).innerHTML];                                            
 
-    //document.getElementById('volume').value = document.getElementById("volume_" + sample_id).innerHTML;                                             
+    document.getElementById('other').value = document.getElementById("other_" + sample_id).innerHTML;                                             
+
     document.getElementById('iodine_level').value = document.getElementById("iodine_level_" + sample_id).innerHTML;                                             
     document.getElementById('category').value = document.getElementById("category_" + sample_id).innerHTML;                                             
 

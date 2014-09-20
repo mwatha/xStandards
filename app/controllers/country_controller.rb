@@ -2,6 +2,17 @@ class CountryController < ApplicationController
   def index
   end
 
+  def finddistricts
+    @counties = {}
+    (County.order('name') || []).each do |c|
+      @counties[c.id] = {
+        :country => c.country.name,
+        :name => c.name,
+        :description => c.description
+      }
+    end
+  end
+
   def create_sub_county
     country = SubCounty.new()                                                       
     country.name = params[:subcounty]['name']
@@ -95,7 +106,7 @@ class CountryController < ApplicationController
   end
 
   def newmarket
-    @districts = District.order('name ASC').collect do |district|                    
+    @districts = County.order('name ASC').collect do |district|                    
       [district.name , district.id]                                                   
     end 
   end

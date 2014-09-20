@@ -13,7 +13,7 @@ XStandards::Application.routes.draw do
   match '/findcountries' => 'country#findcountries'
   match '/findborders' => 'country#findborders'
   match '/findmarkets' => 'country#findmarkets'
-  match '/finddistricts' => 'country#finddistricts'
+  match '/viewcounties' => 'country#finddistricts'
   match '/newcountry' => 'country#newcountry'
   match '/newborder' => 'country#newborder'
   match '/newmarket' => 'country#newmarket'

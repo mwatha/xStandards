@@ -77,11 +77,11 @@
     <%(@samples || []).each do |sample_id,values| %>                                    
     <tr>                                                                        
       <td id="date_<%=sample_id%>"><%=values[:date]%></td>                                            
-      <td id="country_<%=sample_id%>"><%=values[:county]%></td>                                            
-      <td id="district_<%=sample_id%>"><%=values[:subcounty]%></td>                                            
+      <td id="county_<%=sample_id%>"><%=values[:county]%></td>                                            
+      <td id="subcounty_<%=sample_id%>"><%=values[:subcounty]%></td>                                            
       <td id="market_<%=sample_id%>"><%=values[:market]%></td>                                            
       <td id="manufacturer_<%=sample_id%>"><%=values[:manufacturer]%></td>                                            
-      <td id="salt_type_<%=sample_id%>"><%=values[:salt_brand]%></td>                                            
+      <td id="salt_brand_<%=sample_id%>"><%=values[:salt_brand]%></td>                                            
       <td id="iodine_level_<%=sample_id%>"><%=values[:iodine_level]%></td>                                            
       <td id="category_<%=sample_id%>"><%=values[:category]%></td>                                            
       <!--td><a href="/edit_market/<%#=sample_id%>">Edit/delete</a></td-->       
@@ -119,25 +119,25 @@
         <tr>
           <td>Select market</td>
           <td>
-            <%@markets.unshift('Select market') %>
+            <%#@markets.unshift('Select market') %>
             <%= select_tag "transporter", options_for_select(@markets),
             :class => "input_data", :id => "market" %>
           </td>
         </tr>
         <tr>
-          <td>Salt type</td>
+          <td>Sub county</td>
           <td>
-            <%@salt_types.unshift('Select salt type') %>
-            <%= select_tag "salt_type", options_for_select(@salt_types),
-            :class => "input_data", :id => "salt_type" %>
+            <%#@subcounties.unshift('Select sub county') %>
+            <%= select_tag "subcounty", options_for_select(@subcounties),
+            :class => "input_data", :id => "subcounty" %>
           </td>
         </tr>
         <tr>
           <td>Salt brand(origin)</td>
           <td>
-            <%@manufacturers.unshift('Select manufacturer') %>
-            <%= select_tag "manufacturer", options_for_select(@manufacturers),
-            :class => "input_data", :id => "manufacturer" %>
+            <%#@manufacturers.unshift('Select manufacturer') %>
+            <%= select_tag "salt_brand", options_for_select(@manufacturers),
+            :class => "input_data", :id => "salt_brand" %>
           </td>
         </tr>
         <tr>
@@ -177,40 +177,30 @@ function setCategory(element) {
       return;                                                                   
     }                                                                           
   }catch(e){}                                                                   
-                                                          
-  if(level < 25){                                                               
-    sample_iodine_category.value = "Below Market Min";                          
-  }else if(level >= 25 && level <= 49.9 ){                                      
-    sample_iodine_category.value = "Factory Min-Market Min";                    
-  }else if(level < 50){                                                         
-    sample_iodine_category.value = "< Factory Min";                             
-  }else if(level >= 50 && level <= 84){                                         
-    sample_iodine_category.value = "Production Range";                          
-  }else if(level > 84){                                                         
-    sample_iodine_category.value = "> Factory Max";                             
-  }                                                                             
+   
+  sample_iodine_category.value = sCategory(level);                                                       
 
 }
 
 function saveChanges() {
   var selected_date = document.getElementById("popupdate"); 
   var market = document.getElementById("market"); 
-  var manufacturer = document.getElementById("manufacturer"); 
-  var salt_type = document.getElementById("salt_type"); 
+  var manufacturer = document.getElementById("salt_brand"); 
+  var subcounty = document.getElementById("subcounty"); 
   var entered_result = document.getElementById("result"); 
   var cat = document.getElementById("category"); 
 
   if (selected_date.value.length < 1) {
   }else if(market.value.length < 1) {
   }else if(manufacturer.value.length < 1) {
-  }else if(salt_type.value.length < 1) {
+  }else if(subcounty.value.length < 1) {
   }else if(entered_result.value.length < 1) {
   }else if(cat.value.length < 1) {
     return;
   }
 
   var url = "sample[market]=" + market.value;                                                                         
-  url += "&sample[salt_type]=" + salt_type.value;                                                                         
+  url += "&sample[sub_county]=" + subcounty.value;                                                                         
   url += "&sample[iodine_level]=" + entered_result.value;                                                                         
   url += "&sample[manufacturer]=" + manufacturer.value;                                                                         
   url += "&sample[category]=" + cat.value;                                                                         
@@ -242,7 +232,8 @@ function saveChanges() {
 
 var all_markets = {};
 var all_manufacturers = {};
-var all_salt_types = {};
+var all_salt_brand = {};
+var all_sub_counties = {};
 
 <%@markets.each do |name,id|%>
   if(!all_markets["<%= name %>"])
@@ -251,11 +242,11 @@ var all_salt_types = {};
   all_markets["<%= name %>"].push(<%= id %>);
 <%end%>
 
-<%@salt_types.each do |name,id|%>
-  if(!all_salt_types["<%= name %>"])
-        all_salt_types["<%= name %>"] = [];
+<%@subcounties.each do |name,id|%>
+  if(!all_sub_counties["<%= name %>"])
+        all_sub_counties["<%= name %>"] = [];
    
-  all_salt_types["<%= name %>"].push(<%= id %>);
+  all_sub_counties["<%= name %>"].push(<%= id %>);
 <%end%>
 
 <%@manufacturers.each do |name,id|%>
@@ -265,17 +256,24 @@ var all_salt_types = {};
   all_manufacturers["<%= name %>"].push(<%= id %>);
 <%end%>
 
+<%@subcounties.each do |name,id|%>
+  if(!all_sub_counties["<%= name %>"])
+        all_sub_counties["<%= name %>"] = [];
+   
+  all_sub_counties["<%= name %>"].push(<%= id %>);
+<%end%>
+
 function fillForm(sample_id) {
   //document.getElementById('popupdate').value = document.getElementById("date_" + sample_id).innerHTML;                                             
 
   document.getElementById('market').options[0].innerHTML = document.getElementById("market_" + sample_id).innerHTML;                                             
   document.getElementById('market').value = all_markets[document.getElementById("market_" + sample_id).innerHTML];                                             
 
-  document.getElementById('salt_type').options[0].innerHTML = document.getElementById("salt_type_" + sample_id).innerHTML;                                             
-  document.getElementById('salt_type').value = all_salt_types[document.getElementById("salt_type_" + sample_id).innerHTML];                                             
+  document.getElementById('subcounty').options[0].innerHTML = document.getElementById("subcounty_" + sample_id).innerHTML;                                             
+  document.getElementById('subcounty').value = all_sub_counties[document.getElementById("subcounty_" + sample_id).innerHTML];                                             
   
-  document.getElementById('manufacturer').options[0].innerHTML = document.getElementById("manufacturer_" + sample_id).innerHTML;                                             
-  document.getElementById('manufacturer').value = all_manufacturers[document.getElementById("manufacturer_" + sample_id).innerHTML];
+  document.getElementById('salt_brand').options[0].innerHTML = document.getElementById("manufacturer_" + sample_id).innerHTML;                                             
+  document.getElementById('salt_brand').value = all_manufacturers[document.getElementById("manufacturer_" + sample_id).innerHTML];
 
   document.getElementById('result').value = document.getElementById("iodine_level_" + sample_id).innerHTML;                                             
   document.getElementById('category').value = document.getElementById("category_" + sample_id).innerHTML;                                             
@@ -306,6 +304,30 @@ function setDate(){
     weekStartDay:1
   });
 };
+
+function sCategory(result) {                                               
+  category = null;
+                                                          
+  try{                                                                          
+    var level = parseFloat(result);                          
+    if(!level) {                                                                
+      return;                                                                   
+    }                                                                           
+  }catch(e){}                                                                   
+                                                          
+  if(level < 25){                                                               
+    return "Below Market Min";                          
+  }else if(level >= 25 && level <= 49.9 ){                                      
+    return "Factory Min-Market Min";                    
+  }else if(level < 50){                                                         
+    return "< Factory Min";                             
+  }else if(level >= 50 && level <= 84){                                         
+    return "Production Range";                          
+  }else if(level > 84){                                                         
+    return "> Factory Max";                             
+  }                                                                             
+
+}
 
 </script>
 
