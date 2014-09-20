@@ -2,7 +2,7 @@ require 'csv'
 
 def start
   csv_text = CSV.read("/home/mwatha/Documents/Makhumula/county.csv")
-  #country = create_countries
+  country = create_countries
 
   counties = {}
 
@@ -13,7 +13,7 @@ def start
     next if name.blank?
 
     if counties[name].blank?
-      counties[name] = {:description => population,:sub_counties => []}
+      counties[name] = {:population => population,:sub_counties => []}
     end
 
     (sub_counties || []).each do |sub|
@@ -23,14 +23,37 @@ def start
 
   end
 
-  counties.each do |c,s|
-    puts "........... #{s.to_yaml}"
+  (counties || {}).each_with_index do |(county, data), i|
+    c = create_county(country, county, data[:population])
+    create_subcounties(c, data[:sub_counties])
+    puts "created county: #{county}........... #{i} OF #{counties.length}"
   end
 
 
 end
 
+def create_county(country, county_name, population = nil)
+  c = County.new
+  c.name = county_name
+  c.country_id = country.id
+  c.description = population unless population.blank?
+  c.save
+  return c
+end
+
+def create_subcounties(county, sub_counties)
+  (sub_counties || []).each do |name|
+    c = SubCounty.new
+    c.name = name
+    c.county_id = county.id
+    c.save
+    puts "Sub county: #{name}"
+  end
+end
+
+
 def create_countries
+  #return Country.find(1)
   c = Country.new
   c.name = 'Kenya'
   c.save
