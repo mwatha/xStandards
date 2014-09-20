@@ -272,15 +272,15 @@ function saveChanges() {
 
   function fillForm(sample_id) {
     //document.getElementById('popupdate').value = document.getElementById("date_" + sample_id).innerHTML;                                             
-    document.getElementById('cis_code').value = document.getElementById("cis_code_" + sample_id).innerHTML;                                             
+    document.getElementById('cis_code').value = document.getElementById("cis_code_" + sample_id).textContent;                                             
 
-    document.getElementById('product').options[0].innerHTML = document.getElementById("product_" + sample_id).innerHTML;                                             
-    document.getElementById('product').value = all_products[document.getElementById("product_" + sample_id).innerHTML];                                            
+    document.getElementById('product').options[0].innerHTML = document.getElementById("product_" + sample_id).textContent;                                             
+    document.getElementById('product').value = all_products[document.getElementById("product_" + sample_id).textContent];                                            
 
-    document.getElementById('other').value = document.getElementById("other_" + sample_id).innerHTML;                                             
+    document.getElementById('other').value = document.getElementById("other_" + sample_id).textContent;                                             
 
-    document.getElementById('iodine_level').value = document.getElementById("iodine_level_" + sample_id).innerHTML;                                             
-    document.getElementById('category').value = document.getElementById("category_" + sample_id).innerHTML.replace("&gt;", ">");
+    document.getElementById('iodine_level').value = document.getElementById("iodine_level_" + sample_id).textContent;                                             
+    document.getElementById('category').value = document.getElementById("category_" + sample_id).textContent;
 
   }
 </script>

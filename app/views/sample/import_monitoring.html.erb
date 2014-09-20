@@ -187,23 +187,23 @@
 
 function fillForm(sample_id) {
   //document.getElementById('popupdate').value = document.getElementById("date_" + sample_id).innerHTML;                                             
-  document.getElementById('iir_code').value = document.getElementById("iir_code_" + sample_id).innerHTML;                                             
+  document.getElementById('iir_code').value = document.getElementById("iir_code_" + sample_id).textContent;                                             
 
-  document.getElementById('border').options[0].innerHTML = document.getElementById("border_" + sample_id).innerHTML;                                             
-  document.getElementById('border').value = all_borders[document.getElementById("border_" + sample_id).innerHTML];                                             
+  document.getElementById('border').options[0].innerHTML = document.getElementById("border_" + sample_id).textContent;                                             
+  document.getElementById('border').value = all_borders[document.getElementById("border_" + sample_id).textContent];                                             
 
-  document.getElementById('transporter').options[0].innerHTML = document.getElementById("importer_" + sample_id).innerHTML;                                             
-  document.getElementById('transporter').value = all_transporters[document.getElementById("importer_" + sample_id).innerHTML];                                             
+  document.getElementById('transporter').options[0].innerHTML = document.getElementById("importer_" + sample_id).textContent;                                             
+  document.getElementById('transporter').value = all_transporters[document.getElementById("importer_" + sample_id).textContent];                                             
 
-  document.getElementById('salt_brand').options[0].innerHTML = document.getElementById("salt_brand_" + sample_id).innerHTML;                                             
-  document.getElementById('salt_brand').value = all_salt_brands[document.getElementById("salt_brand_" + sample_id).innerHTML];                                             
+  document.getElementById('salt_brand').options[0].innerHTML = document.getElementById("salt_brand_" + sample_id).textContent;                                             
+  document.getElementById('salt_brand').value = all_salt_brands[document.getElementById("salt_brand_" + sample_id).textContent];                                             
   
-  document.getElementById('country').options[0].innerHTML = document.getElementById("country_" + sample_id).innerHTML;                                             
-  document.getElementById('country').value = all_countries[document.getElementById("country_" + sample_id).innerHTML];                                             
+  document.getElementById('country').options[0].innerHTML = document.getElementById("country_" + sample_id).textContent;                                             
+  document.getElementById('country').value = all_countries[document.getElementById("country_" + sample_id).textContent];                                             
 
-  document.getElementById('volume').value = document.getElementById("volume_" + sample_id).innerHTML;                                             
-  document.getElementById('result').value = document.getElementById("iodine_level_" + sample_id).innerHTML;                                             
-  document.getElementById('category').value = document.getElementById("category_" + sample_id).innerHTML.replace("&gt;", ">");
+  document.getElementById('volume').value = document.getElementById("volume_" + sample_id).textContent;                                             
+  document.getElementById('result').value = document.getElementById("iodine_level_" + sample_id).textContent;                                             
+  document.getElementById('category').value = document.getElementById("category_" + sample_id).textContent;
 
 }
 

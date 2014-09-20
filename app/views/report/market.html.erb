@@ -100,7 +100,7 @@
   <form action = 'market_charts' method = 'post'>                               
   <table style="width: 99%;">
     <tr>
-      <td><%=text_field(:report, :start_date ,:placeholder => "Start date") %></td>
+      <td><%=text_field(:report, :start_date ,:placeholder => "Start date",:readonly => "readonly") %></td>
       <td>
         <%options = ['Select report']
           options.push('Iodinize levels over time')
@@ -111,7 +111,7 @@
       </td>
     </tr>
     <tr>
-      <td><%=text_field(:report, :end_date ,:placeholder => "End date") %></td>
+      <td><%=text_field(:report, :end_date ,:placeholder => "End date",:readonly => "readonly") %></td>
       <td>
           <input type="submit" id="signup"                
           class="btn btn-primary signup_btn" value="Apply" style="width:100%;" />

@@ -275,17 +275,17 @@ var all_sub_counties = {};
 function fillForm(sample_id) {
   //document.getElementById('popupdate').value = document.getElementById("date_" + sample_id).innerHTML;                                             
 
-  document.getElementById('market').options[0].innerHTML = document.getElementById("market_" + sample_id).innerHTML;                                             
-  document.getElementById('market').value = all_markets[document.getElementById("market_" + sample_id).innerHTML];                                             
+  document.getElementById('market').options[0].innerHTML = document.getElementById("market_" + sample_id).textContent;                                             
+  document.getElementById('market').value = all_markets[document.getElementById("market_" + sample_id).textContent];                                             
 
-  document.getElementById('subcounty').options[0].innerHTML = document.getElementById("subcounty_" + sample_id).innerHTML;                                             
-  document.getElementById('subcounty').value = all_sub_counties[document.getElementById("subcounty_" + sample_id).innerHTML];                                             
+  document.getElementById('subcounty').options[0].innerHTML = document.getElementById("subcounty_" + sample_id).textContent;                                             
+  document.getElementById('subcounty').value = all_sub_counties[document.getElementById("subcounty_" + sample_id).textContent];                                             
   
-  document.getElementById('salt_brand').options[0].innerHTML = document.getElementById("manufacturer_" + sample_id).innerHTML;                                             
-  document.getElementById('salt_brand').value = all_manufacturers[document.getElementById("manufacturer_" + sample_id).innerHTML];
+  document.getElementById('salt_brand').options[0].innerHTML = document.getElementById("manufacturer_" + sample_id).textContent;                                             
+  document.getElementById('salt_brand').value = all_manufacturers[document.getElementById("manufacturer_" + sample_id).textContent];
 
-  document.getElementById('result').value = document.getElementById("iodine_level_" + sample_id).innerHTML;                                             
-  document.getElementById('category').value = document.getElementById("category_" + sample_id).innerHTML.replace("&gt;", ">");                                             
+  document.getElementById('result').value = document.getElementById("iodine_level_" + sample_id).textContent;                                             
+  document.getElementById('category').value = document.getElementById("category_" + sample_id).textContent;                                             
 
 }
 

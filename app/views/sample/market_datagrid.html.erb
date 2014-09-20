@@ -314,7 +314,7 @@
   </thead>                                                                      
   <tbody id='results'>                                                          
     <tr>                                                                        
-      <td><%=text_field(:input, "date0",:class => "input_data") %></td>
+      <td><%=text_field(:input, "date0",:class => "input_data",:readonly => "readonly") %></td>
       <td>
         <%@counties.unshift('Select County') %>                      
         <%= select_tag "county", options_for_select(@counties), 
