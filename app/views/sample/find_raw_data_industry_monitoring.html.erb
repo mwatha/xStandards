@@ -280,7 +280,7 @@ function saveChanges() {
     document.getElementById('other').value = document.getElementById("other_" + sample_id).innerHTML;                                             
 
     document.getElementById('iodine_level').value = document.getElementById("iodine_level_" + sample_id).innerHTML;                                             
-    document.getElementById('category').value = document.getElementById("category_" + sample_id).innerHTML;                                             
+    document.getElementById('category').value = document.getElementById("category_" + sample_id).innerHTML.replace("&gt;", ">");
 
   }
 </script>

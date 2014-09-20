@@ -285,7 +285,7 @@ function fillForm(sample_id) {
   document.getElementById('salt_brand').value = all_manufacturers[document.getElementById("manufacturer_" + sample_id).innerHTML];
 
   document.getElementById('result').value = document.getElementById("iodine_level_" + sample_id).innerHTML;                                             
-  document.getElementById('category').value = document.getElementById("category_" + sample_id).innerHTML;                                             
+  document.getElementById('category').value = document.getElementById("category_" + sample_id).innerHTML.replace("&gt;", ">");                                             
 
 }
 

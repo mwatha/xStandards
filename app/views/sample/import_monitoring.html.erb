@@ -203,7 +203,7 @@ function fillForm(sample_id) {
 
   document.getElementById('volume').value = document.getElementById("volume_" + sample_id).innerHTML;                                             
   document.getElementById('result').value = document.getElementById("iodine_level_" + sample_id).innerHTML;                                             
-  document.getElementById('category').value = document.getElementById("category_" + sample_id).innerHTML;                                             
+  document.getElementById('category').value = document.getElementById("category_" + sample_id).innerHTML.replace("&gt;", ">");
 
 }
 
