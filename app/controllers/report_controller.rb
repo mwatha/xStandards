@@ -319,8 +319,8 @@ class ReportController < ApplicationController
 
       result_counter[r] +=1 
       avg_counter[r] += sample.iodine_level
-      @samples[r][:num_of_samples] += 1
-      @samples[r][:avg] = (avg_counter[r]/result_counter[r]).round(2)
+      #@samples[r][:num_of_samples] += 1
+      #@samples[r][:avg] = (avg_counter[r]/result_counter[r]).round(2)
     end
 
     @colunm = {}
