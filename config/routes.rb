@@ -1,6 +1,11 @@
 XStandards::Application.routes.draw do
 
 
+  ###### properties #####
+  #get "property/index"
+  match '/properties' => 'property#index'
+  ###### properties end #####
+
   ###### transporter #####
   match '/transporters' => 'transporter#index'
   match '/newtransporter' => 'transporter#new'

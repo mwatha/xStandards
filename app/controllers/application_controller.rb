@@ -16,6 +16,12 @@ class ApplicationController < ActionController::Base
     end                                                                         
   end 
 
+  def admin?
+    unless User.current_user.blank?
+      return User.current_user.user_roles.map(&:role).include?('admin')
+    end
+  end
+
   protected                                                                     
                                                                                 
   def perform_basic_auth                                                        
