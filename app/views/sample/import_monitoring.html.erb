@@ -274,13 +274,21 @@ function saveChanges() {
   var cat = document.getElementById('category'); 
 
   if (selected_date.value.length < 1) {
+    return;
   }else if(iir_code.value.length < 1) {
+    return;
   }else if(entry.value.length < 1) {
+    return;
   }else if(importer.value.length < 1) {
+    return;
   }else if(brand.value.length < 1) {
+    return;
   }else if(volume.value.length < 1) {
+    return;
   }else if(entered_result.value.length < 1) {
+    return;
   }else if(country.value.length < 1) {
+    return;
   }else if(cat.value.length < 1) {
     return;
   }

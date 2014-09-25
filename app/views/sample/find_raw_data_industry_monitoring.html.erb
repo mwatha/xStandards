@@ -200,9 +200,15 @@ function saveChanges() {
   var other = document.getElementById("other"); 
 
   if (selected_date.value.length < 1) {
+    return;
+  }else if(selected_date.value.length < 1) {
+    return;
   }else if(cis_code.value.length < 1) {
+    return;
   }else if(product.value.length < 1) {
+    return;
   }else if(entered_result.value.length < 1) {
+    return;
   }else if(cat.value.length < 1) {
     return;
   }

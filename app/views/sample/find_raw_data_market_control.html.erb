@@ -200,10 +200,17 @@ function saveChanges() {
   var cat = document.getElementById("category"); 
 
   if (selected_date.value.length < 1) {
+    return;
+  }else if(selected_date.value.length < 1) {
+    return;
   }else if(market.value.length < 1) {
+    return;
   }else if(manufacturer.value.length < 1) {
+    return;
   }else if(subcounty.value.length < 1) {
+    return;
   }else if(entered_result.value.length < 1) {
+    return;
   }else if(cat.value.length < 1) {
     return;
   }
