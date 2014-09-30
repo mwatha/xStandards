@@ -34,43 +34,48 @@ def start
 end
 
 def create_manufacturers(country)
-  csv_text = CSV.read("/home/mwatha/Documents/Makhumula/brand.csv")
-  brands = []
+  csv_text = CSV.read("/home/mwatha/Documents/Makhumula/producer_brand.csv")
+  brands = {}
   (csv_text || []).each do |brand|
-    b = brand[0].squish.titleize rescue nil
-    next if b.blank?
-    brands << b
+    producer = brand[0].squish.titleize rescue nil
+    product = brand[1].squish.titleize rescue nil
+    next if product.blank? or producer.blank?
+    brands[producer] = [] if brands[producer].blank?
+    brands[producer] << product
+    brands[producer] = brands[producer].uniq
   end
 
-  brands = brands.uniq
-
-  (brands || []).each_with_index do |name, i|
+  (brands || {}).each_with_index do |(producer,products),  i|
     brand = Manufacturer.new
-    brand.name = name
+    brand.name = producer
     brand.country_id = country.id
     brand.save
-    puts "Created manufacturer: #{name} .... #{i+1} of #{brands.length}"
+    unless products.blank?
+      create_brand(brand, products) 
+    end
+    puts "Created manufacturer: #{brand.name} .... #{i+1} of #{brands.length}"
   end
 
-  create_brand(brands)
   create_markets
 end
 
 def create_markets
-  market = Market.new
-  market.name = 'Unknown'
-  market.district_id = County.where(:'name' => 'Nairobi')[0].sub_counties[0].id
-  market.save
-  puts "Created market: #{market.name} .... "
+  (SubCounty.all || []).each_with_index do |sub_county|
+    market = Market.new
+    market.name = "#{sub_county.name} Unknown"
+    market.district_id = sub_county.id
+    market.save
+    puts "Created market: #{market.name} .... "
+  end
 end
 
-def create_brand(brand_names)
-  (brand_names || []).each_with_index do |name, i|
+def create_brand(producer, products)
+  (products || []).each_with_index do |product, i|
     brand = Product.new
-    brand.name = name
-    brand.manufacturer_id = Manufacturer.where(:'name' => name)[0].id
+    brand.name = product
+    brand.manufacturer_id = producer.id
     brand.save
-    puts "Created brand/product: #{name} .... #{i+1} of #{brand_names.length}"
+    puts ":::: Created brand/product: #{product} .... #{i+1} of #{products.length}"
   end
 end
 

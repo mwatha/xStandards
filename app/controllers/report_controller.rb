@@ -176,7 +176,7 @@ class ReportController < ApplicationController
       if type_of_report == "Iodinize levels by salt brand and type"
         r = sample.manufacturer.name
       elsif type_of_report == "Iodinize levels by district"
-        r = sample.district.name
+        r = sample.county.name
       else
         r = quater(sample.date)
       end
