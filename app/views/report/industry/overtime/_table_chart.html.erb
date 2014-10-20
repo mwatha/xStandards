@@ -10,36 +10,7 @@
     <th>Number of samples</th>                             
   </tr>                                                                   
                                                                           
-  <%(@samples || {}).sort_by { |k, v| v[:date] }.each do |quarter,values| 
-    num_of_samples = 0; avg = 0
-    if values[:below_market_min]
-      num_of_samples += 1
-      avg += values[:below_market_min]
-    end
-
-    if values[:factory_min_market]
-      num_of_samples += 1
-      avg += values[:factory_min_market]
-    end
-
-    if values[:below_factory_min]
-      num_of_samples += 1
-      avg += values[:below_factory_min]
-    end
-
-    if values[:production_range]
-      num_of_samples += 1
-      avg += values[:production_range]
-    end
-
-    if values[:above_factory_max]
-      num_of_samples += 1
-      avg += values[:above_factory_max]
-    end
-
-    avg = (avg/num_of_samples).round(2)
-
-  %>
+  <%(@samples || {}).sort_by { |k, v| v[:date] }.each do |quarter,values| %>
     <tr>                                                                  
       <td><%=quarter%></td>                                               
       <td><%=values[:below_market_min]%></td>                             
@@ -47,8 +18,8 @@
       <td><%=values[:below_factory_min]%></td>                            
       <td><%=values[:production_range]%></td>                             
       <td><%=values[:above_factory_max]%></td>                            
-      <td><%=avg%></td>                                          
-      <td><%=num_of_samples%></td>                                          
+      <td><%=values[:avg]%></td>                                          
+      <td><%=values[:num_of_samples]%></td>                                          
     </tr>                                                                 
   <%end%>                                                                 
 </table>
