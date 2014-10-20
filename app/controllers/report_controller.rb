@@ -73,77 +73,85 @@ class ReportController < ApplicationController
 
       if @samples[r].blank?
         @samples[r] = {
-          :below_market_min => nil,
-          :factory_min_market => nil,
-          :below_factory_min => nil,
-          :production_range => nil,
-          :above_factory_max => nil,
+          :below_market_min => 0,
+          :factory_min_market => 0,
+          :below_factory_min => 0,
+          :production_range => 0,
+          :above_factory_max => 0,
           :num_of_samples => 0,
           :date => sample.date,
           :avg => 0,
         }
 
-        avg_counter[r] = 0
         result_counter[r] = 0
       end    
+      
+       case sample.category
+        when "Below Market Min"
+          @samples[r][:below_market_min] += 1 unless sample.iodine_level.blank?
+          @samples[r][:num_of_samples] += 1
+        when 'Factory Min-Market Min'
+          @samples[r][:factory_min_market] += 1 unless sample.iodine_level.blank?
+          @samples[r][:num_of_samples] += 1
+        when '< Factory Min'
+          @samples[r][:below_factory_min] += 1 unless sample.iodine_level.blank?
+          @samples[r][:num_of_samples] += 1
+        when 'Production Range'
+          @samples[r][:production_range] += 1 unless sample.iodine_level.blank?
+          @samples[r][:num_of_samples] += 1
+        when '> Factory Max'
+          @samples[r][:above_factory_max] += 1 unless sample.iodine_level.blank?
+          @samples[r][:num_of_samples] += 1
+      end
+
+      result_counter[r] += sample.iodine_level
+      @samples[r][:avg] = (result_counter[r]/@samples[r][:num_of_samples]).round(2)
+    end
+
+    #..........................................................................................
+
+    @colunm = {}
+
+    (raw_data || []).each do |sample|
+      if type_of_report == "Iodinize levels by salt brand and type"
+        r = sample.country.name
+      elsif type_of_report == "Iodinize levels by customs station"
+        r = sample.point_of_entry.name
+      elsif type_of_report == "Iodinize levels over time"
+        r = quater(sample.date)
+      elsif type_of_report == "Iodinize levels by importer"
+        r = sample.importer.name
+      end
+
+      if @colunm[r].blank?
+        @colunm[r] = {
+          :below_market_min => 0,
+          :factory_min_market => 0,
+          :below_factory_min => 0,
+          :production_range => 0,
+          :above_factory_max => 0,
+          :num_of_samples => 0,
+          :date => sample.date
+        }
+
+      end
 
       case sample.category
         when "Below Market Min"
-          @samples[r][:below_market_min] += sample.iodine_level rescue  @samples[r][:below_market_min] = sample.iodine_level
+          @colunm[r][:below_market_min] += sample.iodine_level unless sample.iodine_level.blank?
         when 'Factory Min-Market Min'
-          @samples[r][:factory_min_market] += sample.iodine_level rescue @samples[r][:factory_min_market] = sample.iodine_level
+          @colunm[r][:factory_min_market] += sample.iodine_level unless sample.iodine_level.blank?
         when '< Factory Min'
-          @samples[r][:below_factory_min] += sample.iodine_level rescue  @samples[r][:below_factory_min] = sample.iodine_level
+          @colunm[r][:below_factory_min] += sample.iodine_level unless sample.iodine_level.blank?
         when 'Production Range'
-          @samples[r][:production_range] += sample.iodine_level rescue @samples[r][:production_range] = sample.iodine_level
+          @colunm[r][:production_range] += sample.iodine_level unless sample.iodine_level.blank?
         when '> Factory Max'
-          @samples[r][:above_factory_max] += sample.iodine_level rescue  @samples[r][:above_factory_max] = sample.iodine_level
+          @colunm[r][:above_factory_max] += sample.iodine_level unless sample.iodine_level.blank?
       end
 
-      result_counter[r] +=1 
-      avg_counter[r] += sample.iodine_level
-      @samples[r][:num_of_samples] += 1
-      @samples[r][:avg] = (avg_counter[r]/result_counter[r]).round(2)
     end
 
-    @colunm = {}
-    colunm_avg = {}
-
-    (@samples || {}).each do |quarter , values|
-      if @colunm['Below Market Min'].blank?
-        @colunm['Below Market Min'] = 0
-      end
-      @colunm['Below Market Min'] += values[:below_market_min] if values[:below_market_min]
-
-      if @colunm['Factory Min-Market Min'].blank?
-        @colunm['Factory Min-Market Min'] = 0
-      end
-      @colunm['Factory Min-Market Min'] += values[:factory_min_market] if values[:factory_min_market]
-
-      if @colunm['Less than Factory Min'].blank?
-        @colunm['Less than Factory Min'] = 0
-      end
-      @colunm['Less than Factory Min'] += values[:below_factory_min] if values[:below_factory_min]
-
-      if @colunm['Production Range'].blank?
-        @colunm['Production Range'] = 0
-      end
-      @colunm['Production Range'] += values[:production_range] if values[:production_range]
-
-      if @colunm['Above Factory Max'].blank?
-        @colunm['Above Factory Max'] = 0
-      end
-      @colunm['Above Factory Max'] += values[:above_factory_max] if values[:above_factory_max]
-    end
-
-    highest_value = 0
-    (@colunm || {}).each do |cat , count|
-      highest_value+=count
-    end
-
-    (@colunm || {}).each do |cat , count|
-      @colunm[cat] = ((100/highest_value)* count).round(1)
-    end
+    #.................................................................................................
 
     @line_chart = {}
    
