@@ -19,8 +19,17 @@
 <script>
 
   function dataT(){                                                               
-    $('#search_results').dataTable();                                                  
+    //$('#search_results').dataTable();                                                  
+    $('#search_results').dataTable({
+            "bAutoWidth": true,
+            "bPaginate": true,
+            "bProcessing": true,
+            "sScrollY": "550px",
+            "bInfo": true,
+            "bPaginate": true
+          });
   }
+
 
   function findStudents() {                                                       
     var search_str = document.getElementById('search_words').value;               
@@ -289,6 +298,23 @@ function saveChanges() {
     document.getElementById('category').value = document.getElementById("category_" + sample_id).textContent;
 
   }
+
+  function addMore() {
+    dropdown = document.getElementsByName('search_results_length')[0];
+    var i = 100; 
+    rec_len = <%=@samples.length%>;
+    while(i <= rec_len) {
+      i = (i + 100);
+      var option = document.createElement("option");
+      option.text = i;
+      option.value = i;
+      dropdown.appendChild(option);
+    }
+  }
+
+
+addMore();
+
 </script>
 
 <style>

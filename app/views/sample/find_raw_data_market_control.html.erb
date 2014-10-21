@@ -355,18 +355,19 @@ function sCategory(result) {
 
 function addMore() {
   dropdown = document.getElementsByName('search_results_length')[0];
-  var i = 200; 
-  while(i < 1000) {
+  var i = 100; 
+  rec_len = <%=@samples.length%>;
+  while(i <= rec_len) {
+    i = (i + 100);
     var option = document.createElement("option");
     option.text = i;
     option.value = i;
     dropdown.appendChild(option);
-    i = (i + 100);
   }
 }
 
 
-
+addMore();
 
 
 </script>
