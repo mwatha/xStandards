@@ -6,28 +6,32 @@
 
 		<script type="text/javascript">
 		
-    var chart_length = parseInt("<%= @samples.length * 80%>");
+    var maximumLength = <%= (@samples.length > 10 ? 10 : @samples.length - 1)%>;
 
     function loadCahrt() {
 	    $(function () {
         $('#container-2').highcharts({
             chart: {
-                zoomType: 'xy',
-              width: chart_length
+              zoomType: 'xy',
             },
             title: {
                 text: 'Market control'
-            },
-            subtitle: {
-                text: 'Evolution of average salt iodisation by customes'
-            },
+                },
             xAxis: [{
-              categories: seriesCategories,
-              labels: {
-                rotation: -45,
-                align: 'right'
-              }
+                categories: seriesCategories,
+
+                min: 0,
+                max: maximumLength,
+                labels: {
+                    rotation: -45,
+                    style: {
+                        fontSize: '13px'
+                    }
+                }
             }],
+            scrollbar: {
+                enabled: true
+            },
             yAxis: [{ // Primary yAxis
                 labels: {
                     format: '',
@@ -60,25 +64,23 @@
                 shared: true
             },
             legend: {
-                layout: 'vertical',
-                align: 'left',
-                x: 120,
-                verticalAlign: 'top',
-                y: 100,
-                floating: true,
-                backgroundColor: '#FFFFFF'
-            },
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },credits:{ enabled: false},
             series: [{
                 name: 'Avg',
                 color: '#4572A7',
                 type: 'column',
                 yAxis: 1,
+                pointWidth: 28,
                 data: averages ,
                 tooltip: {
                     valueSuffix: ''
                 }
     
-            }, {
+            },
+                {
                 name: 'Samples',
                 color: '#89A54E',
                 type: 'spline',
@@ -119,10 +121,7 @@
 	</head>
 	<body>
 
-<div id="cahrt-container" style="overflow:auto; width: 600px;">
-  <div id="container-2" style="height: 400px; margin: 0 auto;"></div>
-</div>
-
+  <div id="container-2" style="min-width: 400px;height: 400px; margin: 0 auto"></div>
 
 	</body>
 </html>

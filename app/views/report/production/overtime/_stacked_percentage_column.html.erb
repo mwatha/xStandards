@@ -10,24 +10,27 @@
 
 		<script type="text/javascript">
 
-
+   var maximumLength = <%= (@colunm.length > 10 ? 10 : @samples.length - 1)%>;
   function loadChart() {
     $(function () {
+        Highcharts.setOptions({
+            colors: [ '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655','#6AF9C4']
+        });
+
         $('#container').highcharts({
             chart: {
-                type: 'column',
-                width: chart_length
+                type: 'column'
             },
             title: {
                 text: 'Market control: Evolution of salt Iodisation by customs'
             },
             xAxis: {
                 categories: seriesCategories,
-              abels: {
-              rotation: -45,
-              align: 'right'
-
-            }
+                mix: 0,
+                max: maximumLength
+            },
+            scrollbar: {
+             enabled: true
 
             },
             yAxis: {
@@ -35,6 +38,11 @@
                 title: {
                     text: 'Percentage (%)'
                 }
+            },
+            legend: {
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
             },
             tooltip: {
                 pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>',
@@ -45,11 +53,13 @@
                     stacking: 'percent'
                 }
             },
-            series: seriesData
+            series: seriesData,
+            credits: { enabled: false}
         });
     });
 
   }     
+ 
 
   var seriesData = [];
   var seriesCategories = [];
