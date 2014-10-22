@@ -75,7 +75,6 @@ class ReportController < ApplicationController
         @samples[r] = {
           :below_market_min => 0,
           :factory_min_market => 0,
-          :below_factory_min => 0,
           :production_range => 0,
           :above_factory_max => 0,
           :num_of_samples => 0,
@@ -92,9 +91,6 @@ class ReportController < ApplicationController
           @samples[r][:num_of_samples] += 1
         when 'Factory Min-Market Min'
           @samples[r][:factory_min_market] += 1 unless sample.iodine_level.blank?
-          @samples[r][:num_of_samples] += 1
-        when '< Factory Min'
-          @samples[r][:below_factory_min] += 1 unless sample.iodine_level.blank?
           @samples[r][:num_of_samples] += 1
         when 'Production Range'
           @samples[r][:production_range] += 1 unless sample.iodine_level.blank?
@@ -127,7 +123,6 @@ class ReportController < ApplicationController
         @colunm[r] = {
           :below_market_min => 0,
           :factory_min_market => 0,
-          :below_factory_min => 0,
           :production_range => 0,
           :above_factory_max => 0,
           :num_of_samples => 0,
@@ -141,8 +136,6 @@ class ReportController < ApplicationController
           @colunm[r][:below_market_min] += sample.iodine_level unless sample.iodine_level.blank?
         when 'Factory Min-Market Min'
           @colunm[r][:factory_min_market] += sample.iodine_level unless sample.iodine_level.blank?
-        when '< Factory Min'
-          @colunm[r][:below_factory_min] += sample.iodine_level unless sample.iodine_level.blank?
         when 'Production Range'
           @colunm[r][:production_range] += sample.iodine_level unless sample.iodine_level.blank?
         when '> Factory Max'
@@ -192,7 +185,6 @@ class ReportController < ApplicationController
         @samples[r] = {
           :below_market_min => 0,
           :factory_min_market => 0,
-          :below_factory_min => 0,
           :production_range => 0,
           :above_factory_max => 0,
           :num_of_samples => 0,
@@ -210,9 +202,6 @@ class ReportController < ApplicationController
           @samples[r][:num_of_samples] += 1
         when 'Factory Min-Market Min'
           @samples[r][:factory_min_market] += 1 unless sample.iodine_level.blank?
-          @samples[r][:num_of_samples] += 1
-        when '< Factory Min'
-          @samples[r][:below_factory_min] += 1 unless sample.iodine_level.blank?
           @samples[r][:num_of_samples] += 1
         when 'Production Range'
           @samples[r][:production_range] += 1 unless sample.iodine_level.blank?
@@ -242,7 +231,6 @@ class ReportController < ApplicationController
         @colunm[r] = {
           :below_market_min => 0,
           :factory_min_market => 0,
-          :below_factory_min => 0,
           :production_range => 0,
           :above_factory_max => 0,
           :num_of_samples => 0,
@@ -256,8 +244,6 @@ class ReportController < ApplicationController
           @colunm[r][:below_market_min] += sample.iodine_level unless sample.iodine_level.blank?
         when 'Factory Min-Market Min'
           @colunm[r][:factory_min_market] += sample.iodine_level unless sample.iodine_level.blank?
-        when '< Factory Min'
-          @colunm[r][:below_factory_min] += sample.iodine_level unless sample.iodine_level.blank?
         when 'Production Range'
           @colunm[r][:production_range] += sample.iodine_level unless sample.iodine_level.blank?
         when '> Factory Max'
@@ -307,7 +293,6 @@ class ReportController < ApplicationController
         @samples[r] = {
           :below_market_min => 0,
           :factory_min_market => 0,
-          :below_factory_min => 0,
           :production_range => 0,
           :above_factory_max => 0,
           :num_of_samples => 0,
@@ -324,9 +309,6 @@ class ReportController < ApplicationController
           @samples[r][:num_of_samples] += 1
         when 'Factory Min-Market Min'
           @samples[r][:factory_min_market] += 1 unless sample.iodine_level.blank?
-          @samples[r][:num_of_samples] += 1
-        when '< Factory Min'
-          @samples[r][:below_factory_min] += 1 unless sample.iodine_level.blank?
           @samples[r][:num_of_samples] += 1
         when 'Production Range'
           @samples[r][:production_range] += 1 unless sample.iodine_level.blank?
@@ -355,7 +337,6 @@ class ReportController < ApplicationController
         @colunm[r] = {
           :below_market_min => 0,
           :factory_min_market => 0,
-          :below_factory_min => 0,
           :production_range => 0,
           :above_factory_max => 0,
           :num_of_samples => 0,
@@ -369,8 +350,6 @@ class ReportController < ApplicationController
           @colunm[r][:below_market_min] += sample.iodine_level unless sample.iodine_level.blank?
         when 'Factory Min-Market Min'
           @colunm[r][:factory_min_market] += sample.iodine_level unless sample.iodine_level.blank?
-        when '< Factory Min'
-          @colunm[r][:below_factory_min] += sample.iodine_level unless sample.iodine_level.blank?
         when 'Production Range'
           @colunm[r][:production_range] += sample.iodine_level unless sample.iodine_level.blank?
         when '> Factory Max'

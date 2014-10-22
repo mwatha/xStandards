@@ -98,14 +98,6 @@
         data["factory min market"] << y[:factory_min_market].to_f rescue 0
       end
 
-     (@colunm || {}).sort_by { |k, v| v[:date] }.each do |x,y| 
-       if data["below factory min"].blank?
-         data["below factory min"] = []
-        end
-
-        data["below factory min"] << y[:below_factory_min].to_f rescue 0
-      end
-
   %>
 
   count = 0
