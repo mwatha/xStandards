@@ -55,22 +55,22 @@
 <table class="charts">
   <tr>
     <td class="chart-container">
-      <%if @report_type == "Iodinize levels by salt brand and type"%>
+      <%if @report_type == "Iodine levels by salt brand and type"%>
         <%= render  "report/market/salt_brand/combination"%>
-      <%elsif @report_type == "Iodinize levels by customs station"%>
+      <%elsif @report_type == "Iodine levels by customs station"%>
         <%= render  "report/production/customs/combination"%>
-      <%elsif @report_type == "Iodinize levels by importer"%>
+      <%elsif @report_type == "Iodine levels by importer"%>
         <%= render  "report/production/importer/combination"%>
       <%else%>
         <%= render  "report/production/overtime/combination"%>
       <%end%>
     </td>
     <td class="chart-container">
-      <%if @report_type == "Iodinize levels by salt brand and type"%>
+      <%if @report_type == "Iodine levels by salt brand and type"%>
         <%= render "report/production/salt_brand/stacked_percentage_column"%>
-      <%elsif @report_type == "Iodinize levels by customs station"%>
+      <%elsif @report_type == "Iodine levels by customs station"%>
         <%= render "report/production/customs/stacked_percentage_column"%>
-      <%elsif @report_type == "Iodinize levels by importer"%>
+      <%elsif @report_type == "Iodine levels by importer"%>
         <%= render "report/production/importer/stacked_percentage_column"%>
       <%else%>
         <%= render "report/production/overtime/stacked_percentage_column"%>
@@ -84,11 +84,11 @@
 
   <tr>
     <td colspan="2">
-      <%if @report_type == "Iodinize levels by salt brand and type"%>
+      <%if @report_type == "Iodine levels by salt brand and type"%>
         <%= render "report/production/salt_brand/table_chart"%>
-      <%elsif @report_type == "Iodinize levels by customs station"%>
+      <%elsif @report_type == "Iodine levels by customs station"%>
         <%= render "report/production/customs/table_chart"%>
-      <%elsif @report_type == "Iodinize levels by importer"%>
+      <%elsif @report_type == "Iodine levels by importer"%>
         <%= render "report/production/importer/table_chart"%>
       <%else%>
         <%= render "report/production/overtime/table_chart"%>

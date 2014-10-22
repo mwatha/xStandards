@@ -103,8 +103,8 @@
       <td><%=text_field(:report, :start_date ,:placeholder => "Start date",:readonly => "readonly") %></td>
       <td>
         <%options = ['Select report']
-          options.push('Iodinize levels over time')
-          options.push('Iodinize levels by company')
+          options.push('Iodine levels over time')
+          options.push('Iodine levels by company')
         %>
         <%= select_tag "report[report_type]", options_for_select(options)%>
       </td>

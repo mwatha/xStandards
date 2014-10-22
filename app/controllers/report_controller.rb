@@ -61,13 +61,13 @@ class ReportController < ApplicationController
       params[:report]['start_date'].to_date,params[:report]['end_date'].to_date)
 
     (raw_data || []).each do |sample|
-      if type_of_report == "Iodinize levels by salt brand and type"
+      if type_of_report == "Iodine levels by salt brand and type"
         r = sample.country.name
-      elsif type_of_report == "Iodinize levels by customs station"
+      elsif type_of_report == "Iodine levels by customs station"
         r = sample.point_of_entry.name
-      elsif type_of_report == "Iodinize levels over time"
+      elsif type_of_report == "Iodine levels over time"
         r = quater(sample.date)
-      elsif type_of_report == "Iodinize levels by importer"
+      elsif type_of_report == "Iodine levels by importer"
         r = sample.importer.name
       end
 
@@ -113,13 +113,13 @@ class ReportController < ApplicationController
     @colunm = {}
 
     (raw_data || []).each do |sample|
-      if type_of_report == "Iodinize levels by salt brand and type"
+      if type_of_report == "Iodine levels by salt brand and type"
         r = sample.country.name
-      elsif type_of_report == "Iodinize levels by customs station"
+      elsif type_of_report == "Iodine levels by customs station"
         r = sample.point_of_entry.name
-      elsif type_of_report == "Iodinize levels over time"
+      elsif type_of_report == "Iodine levels over time"
         r = quater(sample.date)
-      elsif type_of_report == "Iodinize levels by importer"
+      elsif type_of_report == "Iodine levels by importer"
         r = sample.importer.name
       end
 
@@ -181,9 +181,9 @@ class ReportController < ApplicationController
       params[:report]['start_date'].to_date,params[:report]['end_date'].to_date)
 
     (raw_data || []).each do |sample|
-      if type_of_report == "Iodinize levels by salt brand and type"
+      if type_of_report == "Iodine levels by salt brand and type"
         r = sample.manufacturer.name
-      elsif type_of_report == "Iodinize levels by district"
+      elsif type_of_report == "Iodine levels by district"
         r = sample.county.name
       else
         r = quater(sample.date)
@@ -231,9 +231,9 @@ class ReportController < ApplicationController
     @colunm = {}
 
     (raw_data || []).each do |sample|
-      if type_of_report == "Iodinize levels by salt brand and type"
+      if type_of_report == "Iodine levels by salt brand and type"
         r = sample.manufacturer.name
-      elsif type_of_report == "Iodinize levels by district"
+      elsif type_of_report == "Iodine levels by district"
         r = sample.county.name
       else
         r = quater(sample.date)
@@ -297,7 +297,7 @@ class ReportController < ApplicationController
       params[:report]['start_date'].to_date,params[:report]['end_date'].to_date)
 
     (raw_data || []).each do |sample|
-      if type_of_report == "Iodinize levels by company"
+      if type_of_report == "Iodine levels by company"
         r = sample.manufacturer.name
       else
         r = quater(sample.date)
@@ -345,7 +345,7 @@ class ReportController < ApplicationController
     @colunm = {}
 
     (raw_data || []).each do |sample|
-      if type_of_report == "Iodinize levels by company"
+      if type_of_report == "Iodine levels by company"
         r = sample.manufacturer.name
       else
         r = quater(sample.date)

@@ -55,14 +55,14 @@
 <table class="charts">
   <tr>
     <td class="chart-container">
-      <%if @report_type == "Iodinize levels by company"%>
+      <%if @report_type == "Iodine levels by company"%>
         <%= render  "report/industry/company/combination"%>
       <%else%>
         <%= render  "report/industry/overtime/combination"%>
       <%end%>
     </td>
     <td class="chart-container">
-      <%if @report_type == "Iodinize levels by company"%>
+      <%if @report_type == "Iodine levels by company"%>
         <%= render "report/industry/company/stacked_percentage_column"%>
       <%else%>
         <%= render "report/industry/overtime/stacked_percentage_column"%>
@@ -76,7 +76,7 @@
 
   <tr>
     <td colspan="2">
-      <%if @report_type == "Iodinize levels by company"%>
+      <%if @report_type == "Iodine levels by company"%>
         <%= render "report/industry/company/table_chart"%>
       <%else%>
         <%= render "report/industry/overtime/table_chart"%>
