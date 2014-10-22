@@ -50,6 +50,11 @@ end
 
 def validate_producer_brand(producer = [])
   valid_producer = Manufacturer.where(:'name' => producer)[0] rescue nil
+
+  if valid_producer.blank?
+    valid_producer = create_valid_producer(producer) unless producer.blank?
+  end
+
   if valid_producer
     products = valid_producer.products
     if products.length == 1
@@ -59,6 +64,24 @@ def validate_producer_brand(producer = [])
     end
   end
   return []
+end
+
+def create_valid_producer(name)
+  brand = Manufacturer.new
+  brand.name = name
+  brand.country_id = Country.first.id
+  brand.save
+  if brand.products.blank?
+    create_product(brand, 'Unknown')
+  end
+  return brand
+end
+
+def create_product(producer, name)
+  brand = Product.new
+  brand.name = name
+  brand.manufacturer_id = producer.id
+  brand.save
 end
 
 def get_category(level)
