@@ -13,8 +13,8 @@ class ReportController < ApplicationController
     @report_type =  params[:report]['report_type']
 
     @date_range = [
-      params[:report]['start_date'].to_date.strftime('%b/%Y'), 
-      params[:report]['end_date'].to_date.strftime('%b/%Y')
+      params[:report]['start_date'].to_date, 
+      params[:report]['end_date'].to_date
     ]
   end
 
@@ -29,8 +29,8 @@ class ReportController < ApplicationController
     @report_type =  params[:report]['report_type']
 
     @date_range = [
-      params[:report]['start_date'].to_date.strftime('%b/%Y'), 
-      params[:report]['end_date'].to_date.strftime('%b/%Y')
+      params[:report]['start_date'].to_date, 
+      params[:report]['end_date'].to_date
     ]
   end
 
@@ -45,8 +45,8 @@ class ReportController < ApplicationController
     @report_type =  params[:report]['report_type']
 
     @date_range = [
-      params[:report]['start_date'].to_date.strftime('%b/%Y'), 
-      params[:report]['end_date'].to_date.strftime('%b/%Y')
+      params[:report]['start_date'].to_date,
+      params[:report]['end_date'].to_date
     ]
   end
   

@@ -50,6 +50,11 @@
 
 
 <div id="report-container">
+  
+<div id="dates" style="padding-bottom: 10px;">
+  <b>Report period:</b>&nbsp;<%= @date_range[0].to_date.strftime('%d, %B, %Y') %>
+  &nbsp;to&nbsp;<%= @date_range[1].to_date.strftime('%d, %B, %Y') %>
+</div>
 
 
 <table class="charts">
